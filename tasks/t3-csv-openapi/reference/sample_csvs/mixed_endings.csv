@@ -1,0 +1,4 @@
+email,name,age,signup_date,country
+alice@example.com,Alice Smith,30,2024-01-15,US
+bob@example.org,Bob Jones,25,2023-06-01,CA
+carol@example.net,Carol Lee,45,2022-09-15,UK

@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+# pm-ask — Forward a clarifying question to the locked PM persona; print response.
+#
+# Uses local `claude -p` (Pro auth) — no API key needed. The persona's
+# tokens go to a separate Claude Code session_id, so the cell's /status numbers
+# are NOT contaminated. Pinned to claude-opus-4-8 per the latest-Opus model
+# policy (2026-05-28; see analysis/handoff.md + project_model_policy memory).
+#
+# Usage:
+#   pm-ask "your question here"
+#   echo "your question" | pm-ask
+#
+# Cell detection (in order):
+#   1. $SDD_BENCH_CELL env var (set by run-cell.sh — NOT exported into cell session)
+#   2. ~/.cache/sdd-bench/active-cell (written by run-cell.sh, lives OUTSIDE cell working dir)
+#   3. .pm-ask-cell file in cwd (legacy fallback — only used for cells launched before 2026-05-28 patch)
+#   4. --cell <task>/<methodology>/<run> flag
+#
+# Format: <task>/<methodology>/<run-number>
+#   Example: t4-fitness-app/bmad/001
+#
+# Behavior:
+#   - Loads harness/pm-persona-v1.md and substitutes the task's brief + me.md
+#     into the bracketed placeholders (matches the locked persona setup)
+#   - If runs/.../pm-convo.md exists, re-pipes the conversation history so
+#     the persona has within-cell context (no cross-cell bleed)
+#   - Calls `claude -p --system-prompt <persona> --no-session-persistence`
+#   - Prints the persona's response to stdout
+#   - Appends Q+A to runs/<task>/<methodology>/run-<run>/artifacts/pm-convo.md
+
+set -euo pipefail
+
+HARNESS="${SDD_BENCH_HARNESS:-$HOME/dev/sdd-bench}"
+PERSONA_FILE="$HARNESS/harness/pm-persona-v1.md"
+
+# Parse --cell flag if present
+CELL_OVERRIDE=""
+if [ "${1:-}" = "--cell" ]; then
+  CELL_OVERRIDE="$2"
+  shift 2
+fi
+
+# Detect cell — precedence: --cell flag > env var > ~/.cache/sdd-bench/active-cell > legacy .pm-ask-cell in cwd
+CELL="${CELL_OVERRIDE:-${SDD_BENCH_CELL:-}}"
+if [ -z "$CELL" ] && [ -f "$HOME/.cache/sdd-bench/active-cell" ]; then
+  CELL=$(cat "$HOME/.cache/sdd-bench/active-cell")
+fi
+if [ -z "$CELL" ] && [ -f .pm-ask-cell ]; then
+  CELL=$(cat .pm-ask-cell)
+fi
+if [ -z "$CELL" ]; then
+  cat <<EOF >&2
+ERROR: cell not specified.
+
+Set SDD_BENCH_CELL, drop a .pm-ask-cell file in cwd, or use --cell flag.
+
+Example:
+  SDD_BENCH_CELL=t4-fitness-app/bmad/001 pm-ask "your question"
+  pm-ask --cell t4-fitness-app/bmad/001 "your question"
+
+run-cell.sh sets this automatically when launching a cell.
+EOF
+  exit 2
+fi
+
+# Parse <task>/<methodology>/<run>
+IFS='/' read -r TASK METH RUN <<< "$CELL"
+if [ -z "${TASK:-}" ] || [ -z "${METH:-}" ] || [ -z "${RUN:-}" ]; then
+  echo "ERROR: SDD_BENCH_CELL must be <task>/<methodology>/<run> (got: $CELL)" >&2
+  exit 2
+fi
+
+# Load question from args or stdin
+if [ $# -gt 0 ]; then
+  QUESTION="$*"
+else
+  QUESTION=$(cat)
+fi
+if [ -z "${QUESTION// /}" ]; then
+  echo "ERROR: no question provided" >&2
+  exit 2
+fi
+
+# Validate task brief exists
+BRIEF_FILE="$HARNESS/tasks/$TASK/brief.md"
+ME_FILE="$HARNESS/tasks/$TASK/reference/me.md"
+if [ ! -f "$BRIEF_FILE" ]; then
+  echo "ERROR: brief not found at $BRIEF_FILE" >&2
+  exit 2
+fi
+
+# Build persona system prompt by substituting brief + me.md
+PERSONA=$(cat "$PERSONA_FILE")
+BRIEF_CONTENT=$(cat "$BRIEF_FILE")
+ME_CONTENT=$(cat "$ME_FILE" 2>/dev/null || echo "(no reference materials for this task)")
+PERSONA="${PERSONA//\[BRIEF.MD CONTENT PASTED HERE PER TASK\]/$BRIEF_CONTENT}"
+PERSONA="${PERSONA//\[REFERENCE\/ME.MD CONTENT PASTED HERE IF APPLICABLE\]/$ME_CONTENT}"
+
+# Per-cell conversation log
+PM_CONVO_DIR="$HARNESS/runs/$TASK/$METH/run-$RUN/artifacts"
+PM_CONVO="$PM_CONVO_DIR/pm-convo.md"
+mkdir -p "$PM_CONVO_DIR"
+
+# Build user prompt: include any prior exchanges so persona has within-cell context
+if [ -f "$PM_CONVO" ] && [ -s "$PM_CONVO" ]; then
+  USER_PROMPT="Previous exchanges in this conversation (for your context — these were sent
+to you by the same dev team earlier in this cell):
+
+$(cat "$PM_CONVO")
+
+---
+
+New question from the development team:
+
+$QUESTION"
+else
+  USER_PROMPT="$QUESTION"
+fi
+
+# Initialize pm-convo.md header if first call
+if [ ! -f "$PM_CONVO" ]; then
+  cat > "$PM_CONVO" <<EOF
+# PM Persona Conversation — $TASK / $METH / run-$RUN
+
+Auto-captured by \`pm-ask\` CLI. Each exchange logged with local timestamp.
+
+Persona file: \`harness/pm-persona-v1.md\` (sha256 in README)
+Task brief: \`tasks/$TASK/brief.md\`
+Reference: \`tasks/$TASK/reference/me.md\`
+
+EOF
+fi
+
+# Call claude -p with persona as system. Model pinned per latest-Opus policy (2026-05-28).
+MODEL="${SDD_BENCH_MODEL:-claude-opus-4-8}"
+RESPONSE=$(claude -p --model "$MODEL" --system-prompt "$PERSONA" --no-session-persistence "$USER_PROMPT" 2>&1) || {
+  echo "ERROR: claude -p failed:" >&2
+  echo "$RESPONSE" >&2
+  exit 3
+}
+
+# Print response on stdout (operator pastes this back into methodology)
+echo "$RESPONSE"
+
+# Append to per-cell conversation log
+TS=$(date '+%Y-%m-%d %H:%M:%S %Z')
+{
+  echo ""
+  echo "## Q ($TS)"
+  echo ""
+  echo "$QUESTION"
+  echo ""
+  echo "### A"
+  echo ""
+  echo "$RESPONSE"
+  echo ""
+  echo "---"
+} >> "$PM_CONVO"

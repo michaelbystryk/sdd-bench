@@ -1,0 +1,242 @@
+Change set: Loans API (checkout / return / member loan listing).
+No VCS available; this is a hand-constructed diff of all changes vs. the
+pre-change baseline. All changes are additive except small edits to
+database.py, deps.py, main.py, and routers/members.py.
+
+================================================================
+app/models.py
+================================================================
+@@ imports @@
+-from dataclasses import dataclass
++from dataclasses import dataclass, field
++from datetime import datetime, timezone
++from enum import Enum
++
++
++class LoanStatus(str, Enum):
++    ACTIVE = "active"
++    RETURNED = "returned"
+
+@@ appended after Member @@
++@dataclass
++class Loan:
++    id: int
++    book_id: int
++    member_id: int
++    status: LoanStatus = LoanStatus.ACTIVE
++    checked_out_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
++    returned_at: datetime | None = None
+
+================================================================
+app/schemas.py
+================================================================
+@@ imports @@
++from datetime import datetime
+ from typing import Generic, TypeVar
+ from pydantic import BaseModel, ConfigDict, Field
++from .models import LoanStatus
+
+@@ appended after MemberRead @@
++class LoanCreate(BaseModel):
++    book_id: int
++    member_id: int
++
++
++class LoanRead(BaseModel):
++    model_config = ConfigDict(from_attributes=True)
++
++    id: int
++    book_id: int
++    member_id: int
++    status: LoanStatus
++    checked_out_at: datetime
++    returned_at: datetime | None
+
+================================================================
+app/repository.py
+================================================================
+@@ imports @@
+-from .models import Book, Member
++from .models import Book, Loan, LoanStatus, Member
+
+@@ appended after MemberRepository @@
++class LoanRepository:
++    def __init__(self) -> None:
++        self._items: dict[int, Loan] = {}
++        self._next_id = 1
++
++    def add(self, loan: Loan) -> Loan:
++        loan.id = self._next_id
++        self._items[loan.id] = loan
++        self._next_id += 1
++        return loan
++
++    def get(self, loan_id: int) -> Loan | None:
++        return self._items.get(loan_id)
++
++    def list_for_member(
++        self, member_id: int, *, status: LoanStatus | None = None
++    ) -> list[Loan]:
++        items = [loan for loan in self._items.values() if loan.member_id == member_id]
++        if status is not None:
++            items = [loan for loan in items if loan.status == status]
++        return items
+
+================================================================
+app/database.py
+================================================================
+@@ @@
+-from .repository import BookRepository, MemberRepository
++from .repository import BookRepository, LoanRepository, MemberRepository
+
+ class Database:
+     def __init__(self) -> None:
+         self.books = BookRepository()
+         self.members = MemberRepository()
++        self.loans = LoanRepository()
+
+ def reset_db() -> None:
+     ...
+     db.books = BookRepository()
+     db.members = MemberRepository()
++    db.loans = LoanRepository()
+     seed(db)
+
+================================================================
+app/services.py
+================================================================
+@@ imports @@
++from datetime import datetime, timezone
++from .config import MAX_ACTIVE_LOANS
+-from .exceptions import NotFoundError
++from .exceptions import ConflictError, NotFoundError
+-from .models import Book, Member
++from .models import Book, Loan, LoanStatus, Member
+-from .repository import BookRepository, MemberRepository
++from .repository import BookRepository, LoanRepository, MemberRepository
+-from .schemas import BookCreate, MemberCreate
++from .schemas import BookCreate, LoanCreate, MemberCreate
+
+@@ appended after MemberService @@
++class LoanService:
++    """Lending logic. Validates identities and eligibility, then mutates the
++    shared ``Book`` entity's availability. Reuses ``BookService``/``MemberService``
++    so not-found handling stays in one place."""
++
++    def __init__(
++        self, repo: LoanRepository, books: BookService, members: MemberService
++    ) -> None:
++        self.repo = repo
++        self.books = books
++        self.members = members
++
++    def checkout(self, data: LoanCreate) -> Loan:
++        book = self.books.get_book(data.book_id)
++        self.members.get_member(data.member_id)
++
++        active = self.repo.list_for_member(data.member_id, status=LoanStatus.ACTIVE)
++        if len(active) >= MAX_ACTIVE_LOANS:
++            raise ConflictError(
++                f"Member {data.member_id} already holds {MAX_ACTIVE_LOANS} active loans",
++                code="loan_limit_exceeded",
++            )
++        if book.available_copies <= 0:
++            raise ConflictError(
++                f"No copies of book {book.id} are available",
++                code="no_copies_available",
++            )
++
++        book.available_copies -= 1
++        return self.repo.add(Loan(id=0, book_id=book.id, member_id=data.member_id))
++
++    def return_loan(self, loan_id: int) -> Loan:
++        loan = self.repo.get(loan_id)
++        if loan is None:
++            raise NotFoundError(f"Loan {loan_id} not found")
++        if loan.status == LoanStatus.RETURNED:
++            raise ConflictError(f"Loan {loan_id} already returned", code="already_returned")
++
++        loan.status = LoanStatus.RETURNED
++        loan.returned_at = datetime.now(timezone.utc)
++        self.books.get_book(loan.book_id).available_copies += 1
++        return loan
++
++    def list_member_loans(
++        self, member_id: int, *, status: LoanStatus | None = None
++    ) -> list[Loan]:
++        self.members.get_member(member_id)
++        return self.repo.list_for_member(member_id, status=status)
+
+================================================================
+app/deps.py
+================================================================
+@@ @@
+-from .services import BookService, MemberService
++from .services import BookService, LoanService, MemberService
+
++def get_loan_service() -> LoanService:
++    return LoanService(db.loans, BookService(db.books), MemberService(db.members))
+
+================================================================
+app/routers/loans.py  (NEW FILE)
+================================================================
++from __future__ import annotations
++
++from fastapi import APIRouter, Depends
++
++from ..deps import get_loan_service
++from ..schemas import LoanCreate, LoanRead
++from ..services import LoanService
++
++router = APIRouter(prefix="/loans", tags=["loans"])
++
++
++@router.post("", response_model=LoanRead, status_code=201)
++def checkout(data: LoanCreate, service: LoanService = Depends(get_loan_service)) -> LoanRead:
++    return LoanRead.model_validate(service.checkout(data))
++
++
++@router.post("/{loan_id}/return", response_model=LoanRead)
++def return_loan(loan_id: int, service: LoanService = Depends(get_loan_service)) -> LoanRead:
++    return LoanRead.model_validate(service.return_loan(loan_id))
+
+================================================================
+app/routers/members.py
+================================================================
+@@ imports @@
+-from ..deps import get_member_service
++from ..deps import get_loan_service, get_member_service
++from ..models import LoanStatus
+-from ..schemas import MemberCreate, MemberRead, Page
++from ..schemas import LoanRead, MemberCreate, MemberRead, Page
+-from ..services import MemberService
++from ..services import LoanService, MemberService
+
+@@ appended after create_member @@
++@router.get("/{member_id}/loans", response_model=Page[LoanRead])
++def list_member_loans(
++    member_id: int,
++    status: LoanStatus | None = None,
++    limit: int = Query(DEFAULT_PAGE_LIMIT, ge=1, le=MAX_PAGE_LIMIT),
++    offset: int = Query(0, ge=0),
++    service: LoanService = Depends(get_loan_service),
++) -> Page[LoanRead]:
++    loans = service.list_member_loans(member_id, status=status)
++    page_items, total = paginate(loans, limit=limit, offset=offset)
++    return Page[LoanRead](
++        items=[LoanRead.model_validate(loan) for loan in page_items],
++        total=total,
++        limit=limit,
++        offset=offset,
++    )
+
+================================================================
+app/main.py
+================================================================
+@@ @@
+-from .routers import books, members
++from .routers import books, loans, members
+
+     app.include_router(books.router)
++    app.include_router(loans.router)
+     app.include_router(members.router)

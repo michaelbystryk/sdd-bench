@@ -1,0 +1,235 @@
+openapi: 3.0.3
+info:
+  title: CSV Import Service
+  version: 1.0.0
+  description: |
+    Upload a CSV of users for validation; receive per-row results and a summary
+    along with an `import_id` that can be used to retrieve the same payload
+    later via GET.
+
+servers:
+  - url: /
+
+paths:
+  /imports/users:
+    post:
+      summary: Upload a CSV of users for validation.
+      description: |
+        Accepts a CSV file via multipart/form-data. The file must have a header
+        row containing every required column. Each data row is validated
+        independently against `UserRow`; rows that fail validation are reported
+        per-row with `status: "error"` while the request as a whole still
+        returns 200. The response includes an `import_id` that can be used to
+        retrieve the same payload later via `GET /imports/{import_id}`.
+
+        **Required columns** (header row): `email`, `name`, `age`,
+        `signup_date`, `country`.
+
+        **Limits.** The implementation must enforce these and return the
+        documented status codes when exceeded:
+          - Maximum file size: 10 MB (10,485,760 bytes) → `413`.
+          - Maximum data rows: 100,000.
+
+        **Encoding.** UTF-8. A leading UTF-8 BOM is permitted and must be
+        stripped before parsing the header.
+      operationId: createUserImport
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The CSV file.
+      responses:
+        '200':
+          description: |
+            CSV was parsed and processed. Per-row results are returned. Status
+            200 is returned even when some or all rows fail row-level
+            validation — per-row failures are reported inside `results`, not as
+            an HTTP error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResult'
+        '400':
+          description: |
+            The request could not be processed as a whole. Distinct from
+            row-level validation errors, which return `200` with per-row
+            `status: "error"`. Possible `error.code` values:
+              - `malformed_csv` — file is not parseable as CSV (e.g. unmatched
+                quote, structural break).
+              - `missing_required_columns` — header row is missing one or more
+                required columns. The missing column names are returned in
+                `error.details.missing_columns` (array of strings).
+              - `empty_file` — file contains zero data rows (header-only file
+                or fully empty file).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: |
+            Uploaded file exceeds the maximum size. `error.code` is
+            `file_too_large`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /imports/{import_id}:
+    get:
+      summary: Retrieve the results of a previous import.
+      description: |
+        Returns the full `ImportResult` body that was returned by the original
+        POST, identified by `import_id`.
+      operationId: getUserImport
+      parameters:
+        - name: import_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Import results for the given id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResult'
+        '404':
+          description: |
+            No import is available for that id. `error.code` is
+            `import_not_found`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+
+    UserRow:
+      type: object
+      description: A single validated user row.
+      required: [email, name, age, signup_date, country]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        age:
+          type: integer
+          minimum: 0
+          maximum: 150
+        signup_date:
+          type: string
+          format: date
+          description: ISO 8601 date (YYYY-MM-DD).
+        country:
+          type: string
+          enum: [US, CA, UK, AU, DE, FR, JP]
+
+    FieldError:
+      type: object
+      description: One field-level validation failure on a row.
+      required: [field, code, message]
+      properties:
+        field:
+          type: string
+          description: The column name that failed validation.
+        code:
+          type: string
+          enum: [missing, invalid_type, out_of_range, invalid_format]
+          description: |
+            Stable machine-readable failure code:
+              - `missing` — value is empty/absent for a required column.
+              - `invalid_type` — value could not be coerced to the declared
+                type (e.g. `age` not parseable as integer).
+              - `out_of_range` — value parsed but is outside the allowed range
+                (e.g. `age` < 0 or > 150).
+              - `invalid_format` — value did not match the declared format
+                (e.g. `email` not a valid email; `signup_date` not ISO 8601).
+        message:
+          type: string
+
+    RowResult:
+      type: object
+      description: |
+        Result for one input row. Rows are returned in input order, with
+        `row_number` starting at 1 for the first data row (the header row is
+        not counted).
+      required: [row_number, status]
+      properties:
+        row_number:
+          type: integer
+          minimum: 1
+        status:
+          type: string
+          enum: [success, error]
+        data:
+          allOf:
+            - $ref: '#/components/schemas/UserRow'
+          nullable: true
+          description: Present (non-null) when `status` is `success`.
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+          nullable: true
+          description: Present (non-null) when `status` is `error`.
+
+    ImportResult:
+      type: object
+      required: [import_id, total, succeeded, failed, results]
+      properties:
+        import_id:
+          type: string
+          format: uuid
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of data rows processed.
+        succeeded:
+          type: integer
+          minimum: 0
+        failed:
+          type: integer
+          minimum: 0
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowResult'
+          description: Per-row results in input order.
+
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          description: Stable machine-readable error code (snake_case).
+        message:
+          type: string
+          description: Human-readable summary.
+        details:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: Optional error-specific structured detail.
+
+    ErrorResponse:
+      type: object
+      description: The standard error envelope used by all non-2xx responses.
+      required: [error]
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'

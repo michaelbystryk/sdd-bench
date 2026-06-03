@@ -1,0 +1,13 @@
+[project]
+name = "postal-validator"
+version = "0.1.0"
+description = "Postal-code validator + CLI for CA / US / UK"
+requires-python = ">=3.11"
+# Runtime: standard library only — no third-party dependencies (see reference/formats.md).
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

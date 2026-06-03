@@ -1,0 +1,14 @@
+.DS_Store
+.claude/
+.obsidian/
+*.pyc
+__pycache__/
+node_modules/
+.env
+.env.local
+
+# Session transcripts → live in the private sdd-bench-logs repo, never the harness repo
+*.jsonl
+
+# Operator-conversation transcripts — kept private (also in sdd-bench-logs)
+analysis/harness-sessions/
