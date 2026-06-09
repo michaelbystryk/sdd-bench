@@ -19,7 +19,10 @@ analysis/
 │   └── rigor-pass-tie-audit.md   ← the 49.5 four-way-tie de-bias audit
 ├── t4-fitness-app-rich/          ← ✅ SCORED: T4-rich hexad×3 (runtime / no-runtime / headless)
 ├── t5-actual-feature/
-└── t6-bug-fix/
+├── t6-bug-fix/
+│
+├── party-findings/               ← P-TRACK (party mode vs plain Claude on advisory tasks)
+│   └── 00-detection-saturation.md  ← pre-run finding: plain Opus pass saturates detection; objective axis re-roled
 │
 └── (future) v0.4.md, v1.0.md     ← frozen version writeups when each version ships
 ```
