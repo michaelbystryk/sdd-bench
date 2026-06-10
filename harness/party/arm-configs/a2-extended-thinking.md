@@ -30,5 +30,16 @@ Same as A1 steps 1–6, with one addition to the pasted message — append the l
 
 (Locked phrasing; do not elaborate further or you're smuggling in A3-style structure.)
 
+## Headless execution (pv0.2 default)
+Runs blind headless like A1/A3 (NOT a Workflow subagent — blindness). The matched thinking
+budget is passed as the 6th arg, which the wrapper exports as `MAX_THINKING_TOKENS` *inside*
+the script (an env-var prefix would break the scoped allow-rule):
+```
+harness/scripts/cell-headless.sh party <task> a2 <run> decision.md <prompt-file> <A4-opus-output-tokens>
+```
+`<prompt-file>` = brief + the locked think-as-long line. Record A4's observed number, the
+budget set, and A2's actual thinking-token usage in token-log.md (verify the mechanism took
+effect on the first A2 cell — the result JSON should show elevated output/thinking tokens).
+
 ## Logging
 - session-log.md as A1, plus the budget-matching numbers in token-log.md.

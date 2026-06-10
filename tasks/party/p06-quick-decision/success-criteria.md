@@ -244,10 +244,25 @@ deliberately small question**, which no other task in the set isolates.
 
 ## § calibration
 
-Cold-pass recall: TBD — filled during calibration.
+**LOCKED 2026-06-09 (pv0.2 pilot, all four arms run).**
 
-Cold-pass notes to capture during calibration (rubric task, so "recall" = the
-sanity checks below, not planted-item recall):
+- **Cost-tax divisor: `$0.14`** (≈ A1's lean reference spend). Rationale: at this divisor the
+  cheap solo-class arms (A1 $0.142, A2 $0.167, A3 $0.209) each incur the same minimal 0.25
+  tax — i.e. ≈0 with no *relative* penalty among them — while a 6× heavier spend incurs ≥1.5,
+  so a 6× cost gap flips any sub-1pt quality lead (the overlay's locked intent). A larger
+  divisor (e.g. $0.30) makes A1 exactly 0 but a 6× gap then only moves 0.75 (<1pt) — fails the
+  locked intent — so $0.14 is preferred. `cost_tax = round($ / 0.14) × 0.25`, cap −8.
+- **A1 / A4 reference spends:** A1 = **$0.142** / 30s / 353w; A4 = **$0.57** / 130s / 354w
+  (A4 = 4.0× A1). A4 total output ≈ **7,900 tokens** → A2 thinking budget set to **8,000**.
+- **Result (see `runs/party/p06-quick-decision/_scoring/SUMMARY.md`):** quality clustered and
+  capped at 20 for all four (raw A2 22.5 > A1 21.5 > A4 21.25 > A3 20.75); composite A1=A2=A3
+  **19.75**, A4 **19.00** (sole loser on cost). Intended clustering-with-cost-spread achieved.
+- **Ceremony-tax word thresholds:** unchanged from the overlay (band ≤~450 body words); all
+  four arms landed in-band (353–375w), so the *length* tax never fired — party mode's ceremony
+  was in its 4-subagent process, not the doc, and is caught by the cost tax instead. Confirms
+  the over-length symptom is not load-bearing on a strong solver; the cost axis carries P6.
+
+Cold-pass notes (rubric task, so "recall" = the sanity checks below, not planted-item recall):
 - A cold solo Opus 4.8 pass should land a single committed value, four sections,
   and stay ≤ 1 page. If the solo pass *also* over-ceremonies (multi-page), the
   brief's "don't overthink it / thirty-second standup" framing is too weak —

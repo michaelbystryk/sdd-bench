@@ -270,6 +270,66 @@ for m, a in sorted(models.items()):
 PY
     ;;
 
+  party)
+    # P-track advisory cell (arms A1/A2/A3): blind headless `claude -p`.
+    # The brief (+ any arm wrapper, e.g. A3's roleplay prompt or A2's think
+    # line) is the prompt file $PF; reference/ is seeded so the cell reads it
+    # exactly as a real cell would. Runs in a throwaway mktemp dir with NO eval
+    # framing or harness CLAUDE.md, so the cell is blind. The deliverable file
+    # the cell writes is copied into the run dir's artifacts/. Cost comes from
+    # the result JSON (total_cost_usd + per-model modelUsage), same as the
+    # main-track automated arm.
+    #   party <task> <arm> <run> <deliverable-filename> <prompt-file> [think-budget]
+    # think-budget (optional, A2 only): MAX_THINKING_TOKENS for matched extended
+    # thinking. Set INSIDE the script (not an env prefix) so the scoped
+    # cell-headless allow-rule still matches.
+    TASK="$1"; ARM="$2"; RUN="$3"; DELIV="$4"; PF="$5"; THINK="${6:-}"
+    RUN_DIR="$HARNESS/runs/party/$TASK/$ARM/run-$RUN"
+    TURNS_DIR="$RUN_DIR/artifacts/turns"
+    [ -d "$RUN_DIR" ] || die "run logbook dir missing: $RUN_DIR (scaffold it first)"
+    [ -f "$PF" ] || die "prompt file missing: $PF"
+    mkdir -p "$TURNS_DIR"
+    WORK="$(mktemp -d "${TMPDIR:-/tmp}/advisory.XXXXXX")"
+    REF="$HARNESS/tasks/party/$TASK/reference"
+    if [ -d "$REF" ] && find "$REF" -type f | grep -q .; then
+      mkdir -p "$WORK/reference"; cp -R "$REF/." "$WORK/reference/"
+    fi
+    [ -n "$THINK" ] && export MAX_THINKING_TOKENS="$THINK"
+    PROMPT="$(cat "$PF")"
+    OUT="$TURNS_DIR/turn-001.json"
+    ( cd "$WORK" && claude -p --model "$MODEL" --dangerously-skip-permissions \
+        --output-format json "$PROMPT" </dev/null ) > "$OUT" 2>"$OUT.err" || {
+        echo "TURN_ERROR (exit $?). stderr:"; tail -5 "$OUT.err" >&2; }
+    if [ -f "$WORK/$DELIV" ]; then
+      cp "$WORK/$DELIV" "$RUN_DIR/artifacts/$DELIV"
+      echo "DELIVERABLE: $RUN_DIR/artifacts/$DELIV"
+    else
+      echo "DELIVERABLE_FILE_MISSING: cell did not write $DELIV — capturing result text instead"
+      python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get('result') or '')" "$OUT" \
+        > "$RUN_DIR/artifacts/$DELIV" 2>/dev/null && \
+        echo "DELIVERABLE (from result text): $RUN_DIR/artifacts/$DELIV"
+    fi
+    echo "WORKDIR: $WORK"
+    [ -n "$THINK" ] && echo "MAX_THINKING_TOKENS: $THINK"
+    python3 - "$OUT" <<'PY'
+import sys, json
+try: d = json.load(open(sys.argv[1]))
+except Exception as e: print("PARSE_FAIL", e); sys.exit(0)
+print("SESSION:", d.get("session_id"))
+print("IS_ERROR:", d.get("is_error"))
+print("NUM_TURNS:", d.get("num_turns"))
+print("API_MS:", d.get("duration_api_ms"))
+print("COST_USD:", d.get("total_cost_usd"))
+for m, u in (d.get("modelUsage") or {}).items():
+    print(f"MODEL {m}: in={u.get('inputTokens',0)} out={u.get('outputTokens',0)} "
+          f"cache_r={u.get('cacheReadInputTokens',0)} cache_w={u.get('cacheCreationInputTokens',0)} "
+          f"cost=${u.get('costUSD',0):.4f}")
+r = d.get("result") or ""
+print("RESULT_CHARS:", len(r))
+PY
+    echo "TURN_JSON: $OUT"
+    ;;
+
   *)
     sed -n '2,40p' "$0" | sed 's/^# \?//'
     exit 1 ;;

@@ -1,0 +1,76 @@
+{
+  "summary": "P-track blind rubric scoring: Mythos (fable) raters score scrubbed advisory deliverables + guess the arm",
+  "agentCount": 2,
+  "logs": [],
+  "result": {
+    "count": 2,
+    "results": [
+      {
+        "label": "E",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "All arithmetic checks against the reference (50×1.4KB≈70KB, 11/28ms p95, 0.3ms/item→15/60ms CPU); claims qualified, prefetch speculation explicitly tagged [ASSUMPTION]; only nit is '200 quadruples that' which is 2.5x for DB (the parenthetical gives the true numbers, so harmless)."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All four required sections substantively covered, plus implicit concerns engaged: explicitly rules out 20 via viewport math, confirms the max-200 clamp stays, and anticipates the eager-prefetch edge case."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "Several non-obvious, problem-specific findings: the eager-prefetch failure mode ('a frontend prefetch issue wearing a page-size costume — diagnose the trigger before changing the default'), the 'fetch seam in the hot path' UX point, and reversal thresholds calibrated against the stated 1-in-5 baseline; closes with 'ship 50, don't overthink it', showing it knows the question is small."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "One committed number shippable today, costs honestly stated, and the Reversal condition section is literally explicit decision points with numeric triggers and direction ('page-2 rate past ~1-in-3 → bump toward 100', 'p95 > ~100ms → reconsider downward') — what-would-change-my-mind made concrete."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the four required sections, well under a page, answer in the first word ('**50.**'), every section earns its place; between-anchor only because the risk section is slightly dense and the stylistic flourishes are a touch showy for a standup memo, keeping it just shy of forward-unedited certainty."
+          }
+        },
+        "quality_sum": 21.5,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No extra sections, no options/decision matrix, no stakeholder or risk register, no visible deliberation structure, no growth/TCO modeling — it is the four required sections in well under a page and even tells the reader not to overthink it.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single consistent authorial voice with tightly compressed second-order reasoning (eager-prefetch misdiagnosis, thresholds calibrated to the 1-in-5 baseline) and a writerly flourish ('page-size costume') — zero persona seams, breadth-padding, or committee residue that A3/A4 syntheses typically leak, but more pre-computed edge-case depth than a plain one-shot usually lands.",
+        "overall_note": "A near-ideal example of right-sizing: commits to 50 in the first word, defends it with the brief's own numbers used correctly, names one real risk (with a sharp prefetch-misattribution insight), and gives numeric reversal triggers. Loses points only at the margins — slight imprecision ('quadruples'), insight that is excellent but not reframing, and prose a notch flashier than a standup memo needs."
+      },
+      {
+        "label": "E",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every figure checks out against reference (50 rows = ~11ms DB, 0.3ms x 50 = ~15ms CPU, 1.4KB x 50 = ~70KB wire; 200-row quadruple all correct); the one speculative claim (eager prefetch) is explicitly tagged [ASSUMPTION] and correctly diagnosed as a frontend issue, not a page-size issue — handles the subtle point, hence between 4 and 5."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All four required sections substantively covered, plus implicit edge concerns the brief only gestured at: why 20 fails (fetch seam inside one viewport scroll), prefetch behavior, and UI-density/filter changes as reversal triggers."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "Several non-obvious, problem-specific findings: 'a frontend prefetch issue wearing a page-size costume' (second-order misdiagnosis risk), the viewport-seam argument that rules out 20, and 'paying for unseen rows dulls first-page snappiness' — all within right-sized scope, no manufactured depth."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "One committed number, costs honestly stated, and explicit numeric what-would-change-my-mind triggers with direction ('page-2 rate past ~1-in-3 → bump toward 100', 'p95 crosses ~100ms → profile') — meets the 5 anchor of decision points + success measures."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the four required sections, well under a page, number stated in the first word of the body, closes with 'ship 50, don't overthink it' — tight and forwardable; a half-step short of 5 only because the Key risk bullet on prefetch is slightly dense for a 30-second standup read."
+          }
+        },
+        "quality_sum": 22,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No extra sections, no options matrix, no stakeholder/risk register, no traffic-growth or TCO modeling, no visible deliberation residue — it treats the question as exactly as small as it is and says so ('don't overthink it').",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single coherent authorial voice with zero multi-perspective or roundtable residue, combined with quietly verified arithmetic (all derived numbers — 15ms, 70KB, 280KB — are exact computations from the reference) and a second-order anticipation (eager-prefetch misdiagnosis) that reads like the product of deliberate private reasoning compressed into a clean memo, not a synthesis of personas (no hedged 'on the other hand' seams) and tighter than a typical plain one-shot.",
+        "overall_note": "A near-ideal execution of a right-sized decision memo: committed number up front, every quantitative claim traceable to the reference, the speculative claim tagged, concrete numeric reversal triggers with direction, and genuine insight (the prefetch-costume point, the viewport-seam case against 20) achieved without any ceremony. Loses only fractional points for slight density in the risk section and for not quite reaching the reframing bar on insight. This is the deliverable the task's guidance describes as the target."
+      }
+    ]
+  }
+}

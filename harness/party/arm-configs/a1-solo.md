@@ -18,5 +18,18 @@
    <filename> as specified in the brief."
 6. Capture `/status` cost + time; fill logbook per run protocol.
 
+## Headless execution (pv0.2 default — blindness-required)
+A1–A3 run **blind headless** via `claude -p`, NOT as ultracode Workflow subagents (a
+Workflow cell inherits the harness `CLAUDE.md` and unblinds itself — see PARTY-TRACK-BRIEF
+§ Known threats). Command:
+```
+harness/scripts/cell-headless.sh party <task> a1 <run> decision.md <prompt-file>
+```
+where `<prompt-file>` = the brief verbatim (out-of-repo cache). The brief+`reference/` are
+the only inputs; the cell runs in a throwaway `mktemp` dir with no eval framing. Cost comes
+from the result JSON (`total_cost_usd` + per-model `modelUsage`); the JSON `modelUsage` key
+is the headless equivalent of the `/status` model check. The interactive procedure above is
+the fallback / fidelity reference.
+
 ## Logging
-- Log every operator message verbatim in session-log.md (there should be ≤2).
+- Log every operator message verbatim in session-log.md (there should be ≤2; headless = 0).

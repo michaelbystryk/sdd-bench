@@ -1,0 +1,142 @@
+{
+  "summary": "P-track blind rubric scoring: Mythos (fable) raters score scrubbed advisory deliverables + guess the arm",
+  "agentCount": 4,
+  "logs": [],
+  "result": {
+    "count": 4,
+    "results": [
+      {
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "All numbers check out against reference (70 KB = 50×1.4 KB, ~15 ms serialization, ~80% first-page-only), but 'agents commonly scan 20–40 rows before spotting the order' is presented as fact when it appears nowhere in the reference and isn't tagged [ASSUMPTION] — the one claim a careful reviewer would flag."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All four required sections substantively done, plus it engages an implicit concern the brief only gestures at — how infinite-scroll fetch behavior interacts with how support agents actually search the table."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "The Ctrl-F/find-in-page risk ('only matches rows already loaded into the DOM... reads as the order isn't here when it is') is a genuinely non-obvious second-order interaction; 'cost is negligible, so we pick for UX, not load' is a clean problem-shrinking move — and crucially it adds depth without manufacturing it."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "One committed number, two concrete measurable reversal triggers (second-page fetch rate vs ~1-in-5 baseline; 'can't find' reports), a named fallback value (100), and 'revisit on the first credible signal rather than scheduling a review' — explicit what-would-change-my-mind; only the unmeasured baseline instrumentation keeps it shy of 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the four required sections, well under a page, the number bolded in the first line, every paragraph earns its place — very close to forward-unedited, held back only slightly by the dense multi-clause sentences in the reasons."
+          }
+        },
+        "quality_sum": 20.5,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No extra sections, no options matrix, no stakeholder/risk register, no visible deliberation structure, no growth modeling — it is exactly the four asked-for sections at under a page and explicitly leans on reversibility ('one-line PR, revisit on first credible signal') rather than committee framing.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single coherent voice with one deep, second-order insight (Ctrl-F only matches DOM-loaded rows under infinite scroll) woven seamlessly into a perfectly right-sized doc, with zero multi-perspective residue or balancing language — the signature of one model thinking long and then writing clean, not of persona synthesis (A3/A4, which typically leak 'options considered' or balanced-viewpoint structure) and sharper than a typical plain one-shot (A1).",
+        "overall_note": "A near-model answer for this task: commits to 50 up front, defends it with reference-grounded arithmetic, surfaces one genuinely non-obvious risk (find-in-page vs lazy-loaded rows) with a tagged assumption, and gives measurable reversal triggers with a named fallback. Its only real blemish is one unsourced behavioral stat (20–40 rows scanned) stated as fact. It deliberately resists every over-ceremony trap the task hunts for."
+      },
+      {
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "Arithmetic checks out (50 x 1.4KB = ~70KB, 50 x 0.3ms = ~15ms; 1-in-5 = ~80% first-page); only soft spot is the untagged 'agents commonly scan 20-40 rows' figure, which is invented rather than from the reference."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All four required sections substantively filled, plus implicit concerns engaged (find-in-page behavior with infinite scroll, second-page fetch-rate baseline as a monitorable signal)."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "Ctrl-F only matching DOM-loaded rows under infinite scroll ('reads as the order isn't here when it is') is a genuinely non-obvious, problem-specific failure mode; 'no capacity reason, so pick for UX' is a clean second framing — and it right-sizes by saying revisit on first signal, not on a schedule."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "One committed number, costs honestly stated, two concrete reversal triggers tied to a measured baseline (~1-in-5) with the replacement value (100) pre-named — explicit what-would-change-my-mind; just short of 5 since the load-bearing [ASSUMPTION] about agent search behavior isn't given a cheap verification step."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the four required sections, number stated in the first line, well under a page, no deliberation residue; reason paragraphs are slightly dense (reason 1 packs an unsupported stat) which keeps it just shy of forward-unedited."
+          }
+        },
+        "quality_sum": 21,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No extra sections beyond the required four, no options matrix, no stakeholder/risk register, no visible deliberation structure, no growth/TCO modeling; it explicitly treats the call as a one-line reversible constant.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single unified voice with zero roundtable/persona residue, exact arithmetic reuse of every reference number, and one deeply-worked non-obvious failure mode (Ctrl-F only matches DOM-loaded rows) wired coherently through Key risk AND Reversal condition — that cross-section coherence and depth-without-ceremony reads like one model that thought long, not a synthesis of personas (A3/A4 typically leak extra structure) and richer than a typical plain one-shot.",
+        "overall_note": "A near-ideal execution of a deliberately small task: commits to 50 up front, defends it with the brief's own numbers, surfaces one genuinely non-obvious risk (find-in-page vs lazy-loaded rows) and converts it into a concrete reversal trigger with a pre-named fallback value. Docked lightly for one invented untagged statistic ('agents commonly scan 20-40 rows') and slightly dense reasoning paragraphs; otherwise right-sized, standup-ready, and ceremony-free."
+      },
+      {
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "All derived numbers check out against reference (50×1.4KB≈70KB, ~11ms DB, 0.3ms/item→~15ms serialization, 200 vs 50 ≈ 3–4× CPU); the one inference (infinite-scroll prefetch) is properly tagged [ASSUMPTION]."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All four required sections substantively covered, plus implicit concerns engaged: a quantified telemetry trigger and the asymmetric 'go down, not up' direction for the latency case."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "Several non-obvious, problem-specific points: 'a max-size default burns ~3–4× the CPU to render items the agent never sees', the prefetch observation that an extra round trip is 'a latency blip, not a visible stall' (which defuses the main counterargument), and the asymmetric reversal logic — all without manufacturing depth."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Committed number up front, costs honestly stated, and an explicit what-would-change-my-mind: 'second-page fetch in materially more than ~20% of sessions (e.g. >40%) … bump the constant to 100 in the one-line PR'."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the four required sections, well under a page, answer in the first word ('**50.**'), every paragraph earns its place; standup-ready as asked."
+          }
+        },
+        "quality_sum": 21,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No extra sections, no options matrix, no risk/stakeholder register, no visible deliberation structure, no growth/TCO modeling — the doc is right-sized to the reversible-constant framing.",
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Dense, correct derived arithmetic (70KB, 3–4× CPU waste) and second-order moves (prefetch defusing the round-trip risk, asymmetric reversal signals) packed into a tight four-section doc with zero persona or deliberation residue — reads like reasoning budget spent on analysis, not structure. A plain one-shot (A1) is plausible too, but the consistent quantification and counterargument anticipation tip toward extended thinking; A3/A4 typically leak breadth or roundtable scaffolding, none of which appears.",
+        "overall_note": "A near-ideal execution of a deliberately small task: committed pick (50), every claim traceable to the reference facts, a load-bearing-assumption risk section, and a quantified, bidirectional reversal condition. Falls just short of top marks because it never explicitly names the question as small (the guidance's highest-insight move) and the reason paragraphs run slightly long for a thirty-second standup read."
+      },
+      {
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "All arithmetic checks against the reference: 50×1.4KB=~70KB, ~11ms DB at 50, 0.3ms/item→~15ms serialization, 60/15=~4× CPU at 200 vs 50; the prefetch claim is properly tagged [ASSUMPTION]."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All four required sections substantively filled, plus implicit concerns engaged: telemetry as the reversal instrument, the prefetch mitigation, and a downward reversal signal the brief didn't ask for."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "Identifies the load-bearing assumption (first-page-ends-lookup), notes infinite-scroll prefetch makes an extra round trip a 'minor latency blip, not a visible stall', and gives a bidirectional reversal condition — second-order, problem-specific, without manufactured depth."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "One committed number, an explicit numeric trigger ('second-page fetch in materially more than ~20%... e.g. >40%'), the exact remediation ('bump the constant to 100 in the one-line PR'), and a stated what-would-change-my-mind in both directions."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the four required sections, well under a page, number stated first ('**50.**'); reason paragraphs are slightly dense but every sentence earns its place — near forward-unedited quality."
+          }
+        },
+        "quality_sum": 21.5,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No extra sections, no options matrix or risk register, no visible deliberation structure, no growth/TCO modeling — the doc treats the question as exactly as small as it is.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Dense, precisely computed quantitative reasoning (70KB / 15ms / 3-4x CPU) plus second-order qualifiers (prefetch makes the extra round trip invisible; a downward reversal signal) compressed into the minimal four-section format — depth clearly worked out before writing, with zero roundtable or synthesis residue, which fits an extended-thinking single model rather than a persona pipeline or a plain one-shot.",
+        "overall_note": "This is close to the target deliverable for the task: one committed number up front, exactly three reasons all grounded in the reference numbers, the genuinely load-bearing risk named, and a numeric, bidirectional reversal trigger. Half-point shy of top marks only because reason 1 is a touch dense and the insight, while real, stops short of reframing. Right-sized throughout — no ceremony tax."
+      }
+    ]
+  }
+}

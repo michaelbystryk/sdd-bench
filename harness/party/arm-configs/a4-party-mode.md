@@ -13,10 +13,20 @@ disputing each other).
 - Model: `claude-opus-4-8` (record `/status` model at cell end; void+rerun if it drifted)
 
 ## Setup
-1. Fresh empty cell directory outside the repo.
-2. `npx bmad-method install` (defaults). Confirm `ls .claude/skills | grep bmad` shows
-   `bmad-party-mode`.
+1. Fresh empty cell directory outside the repo (neutral name — no eval marker).
+2. `npx bmad-method install` (defaults: BMad Core + bmm). Confirm `ls .claude/skills | grep
+   party` shows `bmad-party-mode`. (P-track pinned **v6.8.0** at first A4 run, P6.)
 3. Record BMAD version in token-log.
+
+## Model: DEFAULT invocation — mixed-model by design (locked, P6 pilot 2026-06-09)
+Invoke `/bmad-party-mode` with **NO `--model` override.** Party mode's `SKILL.md` then picks
+a faster/cheaper model for "brief" persona rounds and the default for deep ones — on P6 the
+four personas ran on `claude-sonnet-4-6` while the orchestrator stayed `claude-opus-4-8`. We
+keep the default (ecological validity: party mode as a real user runs it), so **A4 is a
+mixed-model cell**, exempt from the Opus pin's subagent-constancy (PARTY-TRACK-BRIEF §
+Decisions locked #4 carve-out). **Record the persona subagent model(s) per cell** (read them
+from the `subagents/agent-*.jsonl` transcripts) and disclose the "personas were <model>"
+caveat on every A4 quality reading. Do NOT pass `--model opus` for the scored cell.
 
 ## Procedure
 1. Invoke `/bmad-party-mode`.
@@ -41,8 +51,20 @@ disputing each other).
   and what triggered it go in observations.md — a roundtable that can't land a document
   is a finding.
 
+## Capture (in addition to decision.md + /status)
+- The main session JSONL → `artifacts/transcript.jsonl` AND the **subagents dir**
+  `<session>/subagents/agent-*.jsonl` → `artifacts/subagents/` — the persona "voices" and
+  their model live there, not in the main transcript. (P6: 4 personas, each one-shot,
+  0 tools, on `claude-sonnet-4-6`; the orchestrator read `situation.md` and hand-fed them
+  the facts.) These ground the disagreement + grounding observations and the per-cell
+  persona-model record.
+
 ## Observation points (log these in observations.md)
 - Which agents BMad Master convened, and per-message participation.
+- **Spawn pattern:** parallel one-shot Agent calls (P6) vs. iterative multi-round debate.
+  P6 A4 was 4 independent parallel monologues → orchestrator synthesis — NO cross-persona
+  back-and-forth, so it produced *less* genuine disagreement than A3's single-prompt
+  simulated roundtable. Worth checking per task: is the "roundtable" actually a debate?
 - Genuine disagreement vs. polite convergence (mirror of the A3 observation).
 - Any fabrication / template-deviation behavior — there is a known upstream report of
   party-mode subagent flows fabricating content

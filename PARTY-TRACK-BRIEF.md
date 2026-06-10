@@ -161,14 +161,27 @@ void.
 - **Persona-prompt authoring bias (A3).** A3's roleplay prompt is authored by us, not by
   BMAD; a weak prompt would unfairly favor A4. Mitigation: A3's prompt names the same
   roster party mode draws from and is locked + hashed before any cell runs.
-- **Run-harness asymmetry (A1–A3 vs A4).** In the planned run engine, A1/A2/A3 execute as
-  ultracode Workflow subagents while A4 must run as a real Claude Code session (BMAD needs
-  the installed skill). Same model, but different harness envelopes — system-prompt
-  wrapper, available tooling, output conventions. For produce-a-markdown-doc tasks the gap
-  is small but real and could flatter or penalize A4. Mitigation: keep the A1–A3 agent
-  wrapper as thin as possible (brief in, document out, no extra tooling), disclose the
-  asymmetry, and run a one-cell calibration of A1 *both* ways (Workflow vs real CC session)
-  to bound the envelope effect before trusting cross-arm deltas.
+- **Run-harness asymmetry (A1–A3 vs A4) — RESOLVED 2026-06-09 (pv0.2 pilot).** The original
+  plan ran A1/A2/A3 as ultracode Workflow subagents. A blindness probe killed that: a
+  Workflow `agent()` executes in the harness repo cwd and **inherits the harness
+  `CLAUDE.md`**, so the cell instantly self-identifies as being inside "the eval harness" on
+  the party-track (and could read the rubric/answer keys) — a full blindness break, not just
+  an envelope difference. **A1/A2/A3 now run blind via headless `claude -p`** through
+  `cell-headless.sh party` (brief+arm-wrapper inline, `reference/` seeded, throwaway
+  `mktemp` dir with no harness `CLAUDE.md`, cost from the result JSON). A4 still runs as a
+  real interactive CC session. The residual asymmetry is now **headless one-shot, no human operator
+  (A1–A3) vs interactive multi-turn, human neutral-operator (A4)** — smaller than the
+  Workflow-envelope gap and disclosed; both are real `claude-opus-4-8` CC, no CLAUDE.md leak.
+  A4 was *deliberately kept human-operated* (operator choice, 2026-06-09): the convergence
+  judgment ("has it converged / begun repeating?") on the flagship machinery cell is made by
+  a human, not by a model that knows the masquerade hypothesis. The trade is that A4 carries
+  a human operator while A1–A3 do not — report A4's operator-intervention count alongside the
+  cost triple so the asymmetry is visible, not hidden. (A4 *can* be run headless-automated
+  with an agent operator if cross-arm operator-parity is later preferred — same path as the
+  main-track automated arm, with the "agent-operated" caveat.) Workflow is retained only for
+  the blind *scoring* pass (fable raters), where being in-repo is acceptable (raters score
+  scrubbed inline text; they don't author cells).
+  See `analysis/party-findings/01-pv0.2-pilot-p6.md`.
 - **Rater-model drift on the security tasks.** The mitigation for LLM-rater circularity is
   cross-model rating — cells on `claude-opus-4-8`, blind raters on Mythos (Fable 5). But
   Fable 5's cybersecurity/bio classifier will likely fire on P1/P8/P9/P10 and silently
@@ -202,6 +215,18 @@ rubric anchors, answer keys, A3 prompt hash) is a deliberate version bump.
    the held-constant variable, not the thing under test; Opus matches BMAD's own target
    and avoids the cybersecurity-classifier auto-switch that affects Fable 5 on the
    security-flavored tasks).
+   **A4 subagent carve-out (added 2026-06-09, P6 pilot):** the Opus-4-8 pin binds the
+   top-level session, NOT BMAD party mode's persona *subagents*. Party mode by design
+   (`bmad-party-mode/SKILL.md`: "use a faster model … for brief or reactive responses, and
+   the default model for deep or complex topics") downgrades persona subagents to a cheaper
+   model when `--model` is omitted — on the P6 pilot the four personas ran on
+   `claude-sonnet-4-6`. **A4 is run with the DEFAULT invocation (no `--model` override)** so
+   it reflects party mode as a real user gets it (ecological validity). Consequence: A4 is a
+   *mixed-model* cell (Opus orchestrator + cheaper personas) and is therefore **not
+   model-constant with A1–A3** — every A4 quality reading carries a disclosed "personas were
+   <model>" caveat, and the persona model is recorded per cell. The model-downgrade is
+   itself a finding, not a defect. (`--model opus` would force constancy but is *not* the
+   default UX, so it's rejected for the scored cell.)
 5. No PM persona interaction in v1; `[ASSUMPTION]` tagging instead.
 6. Track lives inside sdd-bench: `tasks/party/`, `harness/party/`, `runs/party/`,
    findings on a `party-findings-N` track in `analysis/`.

@@ -51,6 +51,18 @@ Same as A1 steps 1–6, with the roleplay prompt + brief as the single pasted me
 The roundtable transcript may appear in the session; only the final deliverable file is
 scored (and it gets scrubbed regardless).
 
+## Headless execution (pv0.2 default)
+Runs blind headless like A1 (NOT a Workflow subagent):
+```
+harness/scripts/cell-headless.sh party <task> a3 <run> decision.md <prompt-file>
+```
+`<prompt-file>` = the locked roleplay prompt (above) + blank line + brief verbatim. The
+roundtable "working" the model produces lives in the session JSONL, NOT in the scored
+`decision.md` — so **copy the cell's session JSONL into `artifacts/transcript.jsonl`** to
+ground the genuine-disagreement observation (P6 pilot: the panel *did* genuinely disagree —
+e.g. the architect pushed back on defaulting to the max — but left zero residue in the
+deliverable, which blind raters then could not distinguish from a solo answer).
+
 ## Logging
 - session-log.md as A1. Note in observations.md whether the panel genuinely disagreed
   anywhere or politely converged — it's the qualitative heart of the masquerade
