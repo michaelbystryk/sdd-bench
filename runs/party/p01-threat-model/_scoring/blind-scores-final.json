@@ -1,0 +1,902 @@
+{
+  "summary": "P-track planted-truth blind scoring: Mythos raters score rubric + recall-floor + decoy-precision against the sealed key",
+  "agentCount": 8,
+  "logs": [],
+  "result": {
+    "count": 8,
+    "results": [
+      {
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every claim traces to a cited section, inferences are tagged [ASSUMPTION] and revisited in residual risk; the subtle points (TOCTOU mechanism in T4, send-vs-mark-sent window in T5, network-trust pivot in T12) are handled with the correct mechanism, no errors found on careful review."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive; all 10 keyed weaknesses covered plus legitimate extras the brief didn't hint at (T13 audit trail, T14 SMS-cost DoS, document-image URL, vendor/DPA obligations) that a senior reviewer would agree belong."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "The systemic 'authenticates but does not authorize' root-cause framing, T5 framed as a live no-attacker reliability defect that moves money, and balance-as-derived-from-ledger design point are genuinely non-obvious second-order findings; just short of a full decision-reframing 5."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Mitigations are concrete, threat-mapped, and sequenced (immediate/near-term/hardening) with specific techniques (SELECT FOR UPDATE, idempotency keys, HMAC verify); effort honestly flagged ('larger architectural lift') and what-would-change-my-mind stated ('confirm against code; if any control exists, severity drops'), but success measures are thin."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Clear structure, within the 2-4 page band, severity scale defined up front, conclusions findable in one pass, every section earns its place; slightly dense in the threat bodies but near forward-unedited quality."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T1: '/admin/* runs behind the same auth middleware as customer routes... any authenticated customer calls POST /admin/wallets/{id}/adjust with a large positive delta' — authentication-only gate, privilege escalation, STRIDE Elevation."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T3 (reads): 'GET /wallets/{walletId}... load by the path id with no ownership check... walk walletId 1…N'; T2 extends the same broken object-level authz to transfers/payouts."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T6: processor webhook 'publicly reachable... No signature/HMAC/shared-secret/source check' with forged top-up/settlement exploit; T7: forged KYC approval self-verification."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T9: 'logs every request with its full body and headers at INFO level' shipped to third-party SaaS, explicitly naming OTP codes, JWT bearer token, and SSN/DOB/national id."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T4: 'fire many concurrent transfers from one wallet; each reads the same pre-debit balance, each passes the available-funds rule, all debits commit' attributed to non-atomic check-then-write with no row lock/isolation — full both-pass mechanism plus overdraw consequence."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T5: no idempotency key + processor treats each call as distinct + 'a processor call that succeeds but times out on Lumen's side is retried and pays the destination twice' — connects redelivery/retry to the non-atomic mark-sent window, irreversible duplicate disbursement."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T11: '30-day lifetime, no revocation, single HS256 secret... stolen token usable for up to a month... all tokens forgeable, including admin-staff tokens'; T1 notes admin staff 'receive the same kind of JWT' — long-lived plus over-broad token, both halves of the bar."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T10: kyc_records 'stored as ordinary columns with only cloud disk-level encryption... Disk encryption defends only against stolen physical media' — plaintext-to-DB-access, names column-level encryption/tokenization gap."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T8: 'brute-force the ~10⁶ code space against POST /auth/otp/verify within the validity window' plus SMS-bombing/cost abuse of /auth/otp/request, tied to missing throttling."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T12: 'an internal caller is whoever can reach the endpoint... a single compromised internal workload (vulnerable dependency, SSRF from the Customer API, leaked internal credential) can instruct the ledger to post arbitrary debits/credits' — exceeds the bar via the SSRF/compromised-workload pivot with explicit money-movement consequence; also notes no dedupe across retries."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "T4 gives the full TOCTOU derivation: independent per-request check-then-write on a mutable balance column, concurrent transfers all passing the funds rule, overdraw plus Redis/ledger divergence — clears the strict bar, not a vague 'consider concurrency.'"
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "T5 explicitly compounds the visibility-window redelivery, the up-to-five retries, the missing idempotency key, and the success-but-timeout window between processor call and the 'sent' status write — exactly the inference chain the key demands, plus framing it as a no-attacker live defect."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "T12 goes beyond 'trust the network': names the SSRF/compromised-workload pivot into the ledger's identity-free interface with arbitrary debit/credit consequence, and notes the no-dedupe-across-retries property; residual-risk section honestly flags this as the lift that survives the point fixes."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless analytical voice with a dense, consistent cross-reference graph (T9 feeds T11, T7 amplifies T2, T12 named as root cause of T5) and a synthesized systemic root-cause framing up front — no persona residue, no aggregation seams or redundancy that roundtable/multi-agent outputs typically leave; the depth on all three subtle derivation items with zero false positives reads like one model spending a large deliberation budget rather than breadth-first agent fan-out.",
+        "overall_note": "Exceptional deliverable: perfect recall (10/10 found, including all three subtle derivation items at full credit), zero decoys taken and zero hallucinations — it conspicuously avoids SQLi/TLS/JWT-signature/patching traps and even cites the parameterization and HTTPS facts correctly where relevant. Extras (admin audit gap, SMS-pumping DoS, guessable document-image URL, vendor management) are all key-sanctioned valid non-keyed findings. Within length band, properly structured, assumptions tagged and revisited. Rubric 23.5/25; the only daylight from a perfect score is thin success measures in mitigations and slight density. This output wins on both the recall floor and the precision discriminator."
+      },
+      {
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every threat is anchored to a quoted section of the substrate, severities are defensible, inferences are tagged [ASSUMPTION] (T1, T2/T3, T10 doc-URL), and the three subtle points (TOCTOU mechanism, retry-window double payout, VPC-trust pivot) are reasoned correctly with no errors found on careful review."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections delivered substantively; all 10 keyed weaknesses plus valid extras (admin audit trail T13, DoS/SMS-cost T14, guessable doc-image URL) and non-hinted material considerations (vendor/DPA sub-processor obligation, ledger-derived-balance reconciliation as ongoing design property)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The systemic 'authenticates but never authorizes; network reachability and webhook bodies as identity' root-cause framing reframes 14 findings into one due-diligence-level pattern; also flags T5 as a live no-attacker reliability defect and T7 as an amplifier of T2 — second-order effects throughout."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Mitigations are concrete, sequenced (immediate/near-term/hardening), ordered by money/PII risk, with effort honestly flagged (T12 'a larger architectural lift... not fully retired in the first pass') and a what-would-change-my-mind clause (confirm assumed-absent controls against code); falls just short of explicit success measures per fix."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Clear severity scale, table of assets, numbered trust boundaries, threats findable in one pass, within the ~2-4 page band; very dense with heavy inline quoting which slightly slows an executive read, but every section earns its place."
+          }
+        },
+        "quality_sum": 24,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T1: '/admin/* runs behind the same auth middleware as customer routes... any authenticated customer calls POST /admin/wallets/{id}/adjust with a large positive delta' — authn-only gate named, privilege-escalation consequence (money creation, PII read, self-verify)."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T3 (reads: 'load by the path id with no ownership check... walk walletId 1…N') and T2 (acts: transfers/payouts 'never checks that req.userId owns fromWalletId' → direct theft) — IDOR with ownership-not-scoped-to-caller mechanism."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T6 ('No signature/HMAC/shared-secret/source check... forges a top-up cleared event') and T7 ('POST {userId: <mine>, decision: approved} to self-verify') — sender-unauthenticated webhooks with forged-event consequences."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T9: full bodies/headers at INFO shipped to third-party SaaS, explicitly naming OTP codes, the JWT bearer header, and SSN/DOB/national id in KYC bodies — credential theft + bulk PII exposure."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T4: 'fire many concurrent transfers from one wallet; each reads the same pre-debit balance, each passes the available-funds rule, all debits commit' — full TOCTOU both-pass-the-check mechanism, attributed to non-atomic check-then-write with no row lock/isolation, overdraw consequence."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T5: connects visibility-window redelivery + 5x retries + no idempotency key + 'a processor call that succeeds but times out on Lumen's side is retried and pays the destination twice' — the exact send-vs-mark-sent gap, funds leave twice."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T11: 30-day lifetime, no refresh/revocation, single HS256 secret forges all tokens including admin-staff tokens; T1 additionally notes admins 'receive the same kind of JWT' — over-broad + long-lived clears the bar."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T10: kyc_records 'stored as ordinary columns with only cloud disk-level encryption... Disk encryption defends only against stolen physical media' — plaintext-to-DB-access mechanism with backup exposure."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T8: 'brute-force the ~10⁶ code space against POST /auth/otp/verify within the validity window' plus SMS-bombing/cost DoS on /auth/otp/request — both abuse paths with the no-throttling cause."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T12: 'a single compromised internal workload (vulnerable dependency, SSRF from the Customer API, leaked internal credential) can instruct the ledger to post arbitrary debits/credits' — explicit SSRF/compromised-workload pivot with money-movement consequence, clearing the beyond-'use mTLS' bar; also notes the no-dedupe-across-retries property."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "Full derivation: infers non-atomicity from 'processed independently as ordinary application logic' + 'updated in place', constructs the concurrent both-pass exploit, and even extends to Redis-cache/ledger divergence."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Full derivation: correctly reads visibility-window prose as at-least-once redelivery, names the success-then-timeout window between processor call and the 'sent' status write, no idempotency key, irreversible duplicate disbursement; does not mistake the retry config for a strength."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "Goes beyond 'trust the network': names the SSRF/compromised-workload pivot to the ledger's identity-free interface with arbitrary-debit consequence, and ties no-dedupe to T5 as root cause. Replay attack per se is not separately constructed, but the key's (ii) path is fully met."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "One uniform analytical voice with dense, consistent cross-referencing (T7 amplifies T2; T12 as root cause of T5; T9 feeds T11) and verbatim substrate quotes woven into every finding — the signature of a single long reasoning pass that held the whole document in mind, not stitched persona perspectives (no voice shifts, no redundant near-duplicate findings, no synthesis seams typical of A3/A4) and far too complete on the subtle derivation items for a plain one-shot (A1).",
+        "overall_note": "Exceptional deliverable: 10/10 recall including all three subtle derivation items at full credit, zero decoys taken (no SQLi, no transport, no JWT-signature claims, no patching/ingress phantoms), zero hallucinations, plus key-sanctioned valid extras (admin audit gap, doc-image URL exposure, DoS). The 'authenticate-without-authorize' systemic framing and the no-attacker-needed reading of the payout defect are genuine senior-reviewer insights. Quality 24/25 is earned against absolute anchors — the only soft spots are missing per-fix success measures and density that pushes the upper length band."
+      },
+      {
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "Technically sound throughout incl. subtle points (TOCTOU, idempotency, replay), but T7's bolded claim that 'no ledger debit of the wallet is mentioned anywhere in the payout path' is contradicted by §8 ('the payout worker asking the ledger to record a payout debit') — a flag-able error, though hedged with [ASSUMPTION]; blocks a clean 4."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive, all 10 keyed items hit, plus material extras a senior reviewer would endorse (cache/ledger divergence T17, maker/checker T14, doc-image URL access, automated reconciliation, unmodeled-surfaces list)."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Multiple genuinely non-obvious derivations (T9 both-pass-the-check overdraft, T8 succeed-then-timeout duplicate payout, T10 replay/double-apply, T11 framed as simultaneous credential-theft + PII-breach vector) with second-order chaining (T1→mint→cash out, T6 raising limits feeding T2/T7); the 'B2 is the weakest boundary / no authorization layer exists at all' framing approaches a reframe but stops short of a clean 5."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Mitigations are concrete, mapped to threat ids, with an explicit fix ordering (T1 → T2/T3/T7 → T11 → ...) and an honest residual-risk section; lacks effort/cost estimates and explicit success measures that a 5 requires."
+          },
+          "communication": {
+            "score": 3.5,
+            "evidence": "Clear required structure, findable conclusions, tight per-section prose with cross-referenced threat ids — but 18 threats plus boundaries/mitigations/residual runs ~5-6 pages against the stated ~2-4 page band, so scored down per the length-band rule."
+          }
+        },
+        "quality_sum": 20.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T1: '/admin/* sits behind the same middleware... only verifies the JWT signature/expiry... No role/claim check is described' — any user can call adjust/verify/users; Elevation, Critical."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T3: 'GET /wallets/{walletId}... load by the path id with no ownership check, and ids are sequential' (read IDOR); T2 extends to acting on others' wallets via fromWalletId."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T5/T6: webhooks 'public and, as described, performs no signature/HMAC verification' — forged top-up/settled events and forged KYC 'approved' raising limits; Spoofing/Tampering."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T11: full bodies+headers at INFO shipped to third-party SaaS containing 'OTP codes, Authorization bearer JWTs... and KYC bodies with SSN/DOB/name'."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T9: 'Two concurrent transfers from the same wallet can both pass the \"≤ available funds\" check before either debit lands → overdraft / spend-twice', attributed to no row lock/atomic transaction — meets the full both-pass-the-check + non-atomic mechanism bar."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T8: redelivery on worker death/visibility lapse + 5x retries, processor 'treats each... as a distinct instruction', no idempotency key, 'a timeout where the processor actually succeeded — or a redelivery — produces a duplicate real-world payout' — connects redelivery/retry with the non-atomic mark-sent window."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T13: 30-day token, no refresh/revocation, 'no role/audience claim', indistinguishable admin tokens feeding T1; over-broad + long-lived per the bar."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T12: kyc_records PII 'with only cloud disk-level encryption — no column/field encryption', explicitly noting disk encryption doesn't cover SQL-level compromise, leaked backups, or over-broad credentials."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T4: 6-digit code, 10-min window, retries allowed, no rate limiting → brute-force takeover; T16: SMS-bombing/toll abuse and enumeration on otp/request."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T10: 'an internal caller is whoever can reach the endpoint... does not track which requests it has already applied' — names SSRF foothold / compromised-workload pivot instructing the ledger directly AND no-dedupe double-apply of debits/credits, with money-movement consequence; clears the beyond-'use mTLS' bar."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [
+            {
+              "claim": "T7: 'no ledger debit of the wallet is mentioned anywhere in the payout path' — false; §8 of the substrate explicitly gives 'the payout worker asking the ledger to record a payout debit' as an example internal call. The repeated-cash-out scenario built on it is hedged [ASSUMPTION], but the underlying 'not mentioned anywhere' assertion is confident and wrong, and inflates T7 to Critical partly on a bad premise."
+            }
+          ],
+          "false_positive_count": 1
+        },
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "T9 supplies the full TOCTOU mechanism (both concurrent transfers pass the funds check before either debit lands) and the overdraft consequence, attributed to non-atomic per-request application logic with no lock/transaction; even adds the in-place balance column (not ledger-derived) as a durability amplifier."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "T8 infers at-least-once semantics from the visibility-window prose, names the succeed-but-timeout window before mark-sent, the redelivery path, and the missing idempotency key — duplicate real-world payout; does not praise the retry config as a strength."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "T10 goes beyond 'trust the network': names SSRF/compromised-workload pivot issuing ledger instructions AND the no-dedupe property causing benign retries to double-apply (replay-equivalent), with money-movement consequence. Mitigation adds caller identity + per-operation idempotency token."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single perfectly uniform analytical voice with dense, consistent cross-referencing (every threat id reused across mitigations, chains like 'compounding T1' / 'amplifies T8/T9', one integrated fix ordering) and full recall on all three subtle derivation items — exhaustive depth with zero synthesis seams, persona residue, or redundant restating that roundtable (A3) or real multi-agent (A4) outputs typically leave; reads like one model thinking long and writing once.\"",
+        "overall_note": "Output B is a near-ceiling deliverable: 10/10 keyed-item recall including all three subtle derivation items at full credit, zero decoys taken (correctly silent on SQLi, transport, JWT verification, patching, and public-ingress phantoms), and strong valid extras (T14 maker/checker, T15 audit log, T17 cache divergence, reconciliation job, doc-image URL exposure). Its two real costs: one confident misreading (T7's 'no payout debit mentioned anywhere', contradicted by §8) counted as the sole false positive, and exceeding the ~2-4 page band (~18 threats over ~5-6 pages), which the length rule charges to Communication. Rubric sum 20.5/25."
+      },
+      {
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "No errors on careful review; subtle points (TOCTOU race T9, idempotency window T8, replay/no-dedupe T10, HS256 shared-secret implication T13) handled correctly and all speculative claims are [ASSUMPTION]-tagged."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive, all 10 keyed surfaces covered, plus material un-hinted findings (payout path never debits the wallet T7, doc-image URL access T12, reconciliation gap, unmodeled surfaces list)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "All three subtle derivation items found with mechanism; the T1 mint-balance-then-cash-out chain and the never-debited payout observation reframe priorities and would change the buyer's decision; second-order compounding (T4→T1, T17+T9) engaged."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Mitigations concrete and mapped per threat with explicit fix ordering (T1 → T2/T3/T7 → T11 → ...) and an unusually honest residual-risk section, but no effort/cost estimates, success measures, or decision points."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Tight, cross-referenced threat IDs, conclusions findable in one pass, but 18 threats pushes the document to the top of / slightly past the 2–4 page band."
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T1: '/admin/* sits behind the same middleware... No role/claim check is described' — any customer JWT can call POST /admin/wallets/{id}/adjust to mint balance; Elevation, Critical."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T3: GET /wallets/{walletId} and /transactions 'load by the path id with no ownership check, and ids are sequential' — walk 1..N to harvest balances/history; also T2 extends to transfers."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T5/T6: webhooks public with 'no signature/HMAC verification' — forge top-up cleared / payout settled (T5) and forge {decision: approved} to self-verify KYC (T6)."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T11: full bodies+headers at INFO shipped to third-party SaaS contain 'OTP codes, Authorization bearer JWTs... and KYC bodies with SSN/DOB/name' — credential theft + PII breach."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T9: 'Two concurrent transfers from the same wallet can both pass the \"≤ available funds\" check before either debit lands → overdraft / spend-twice', attributed to non-atomic per-request check-then-write with no row lock."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T8: redelivery on worker death/visibility lapse + 5x retries + 'no idempotency key is sent' + processor treats each POST as distinct; 'a timeout where the processor actually succeeded... produces a duplicate real-world payout'."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T13: 30-day JWT, no refresh/revocation, 'no role/audience claim', no way to distinguish admin tokens (feeds T1), HS256 shared-secret leak forges any identity."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T12: kyc_records PII with 'only cloud disk-level encryption — no column/field encryption'; correctly notes disk encryption doesn't protect against SQL-level compromise, backups, or over-broad credentials."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T4: 6-digit OTP, 10-min validity, retries allowed, no rate limiting → brute-force account takeover; T16 adds SMS-bombing/toll abuse and enumeration on otp/request."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T10: 'Any compromised workload, SSRF foothold, or lateral movement can instruct the ledger directly; and benign retries on these hops double-apply debits/credits' — both exploitation paths (SSRF pivot and no-dedupe replay) with money-movement consequence; clears the beyond-partial bar."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "T9 gives the full both-pass-the-check mechanism and overdraft consequence, attributes it to non-atomic read-validate-write with no lock, and adds the in-place balance column (not ledger-derived) as durability of the divergence."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "T8 infers at-least-once semantics from visibility-window prose, names the succeeded-call-but-status-write-missed window plus no idempotency key, and quantifies (recurring loss at low-thousands/day). Did not praise retries as a strength."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "T10 exceeds the minimum bar: names both the SSRF/compromised-workload pivot to the ledger AND the no-dedupe retry double-apply, with the money-movement consequence and cross-links to T8/T9."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless analytical voice with dense global cross-referencing (T4 compounds T1, T17+T9 combo, T10 amplifies T8/T9, mitigations mapped back to threat IDs, residual risk that anticipates the post-fix state) and zero redundancy or perspective seams. That whole-document coherence plus deep derivation of all three subtle items reads like one model with a large thinking budget rather than a synthesized roundtable (which tends to leave persona/section seams or repeated findings) or a plain one-shot (which rarely lands all three derivations with zero false positives).",
+        "overall_note": "Near-ceiling deliverable: 10/10 keyed items found including all three subtle derivation items at full credit, zero decoys taken, zero hallucinations (all speculative extensions are [ASSUMPTION]-tagged and grounded in real substrate silences, e.g. the payout path never debiting the wallet — a legitimate extra the key class permits). Rubric 23/25; only deductions are missing effort/cost/success-measure framing in mitigations and length at/over the top of the 2–4 page band. Whatever arm produced this, it won on both recall floor and precision discriminator."
+      },
+      {
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every claim sound and precise; correctly handles all three subtle derivations (TOCTOU overdraft, payout non-idempotency, network-only internal trust) and explicitly rules out the decoys (SQLi, TLS, JWT signature, patching) instead of flagging them."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantively covered; surfaces material beyond the brief — KYC self-verify→AML, repudiation/SOC2, SIM-swap/SS7 residual, third-party trust envelope, PII retention minimization."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Strong second-order chaining (OTP brute force unlocks T1/T2/T4; KYC self-approve raises limits before payout abuse; ledger double-debit via internal dedup gap) and a decision-changing 'gating items' bottom line; reframe is good but not transformative."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Mitigations prioritized in immediate/then/then tiers, scoped to specific handlers, with honest residual statements and explicit gating decision points; 'what would change my mind' only lightly present."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Clear structure, defined severity scale, findings findable in one pass; tight single voice, but 16 enumerated threats push the upper edge of the 2-4 page band."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T4 (lines 451-462): '/admin/* runs under the same middleware ... only confirms JWT valid ... any logged-in attacker' can call adjust — names authn-not-authz privilege escalation."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T3 (445-449): 'GET /wallets/{walletId} ... load by path id with no described ownership check ... enumerate all ~180k wallets' — IDOR named with consequence."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T6/T7 (474-487): public webhooks, no signature/HMAC, attacker forges top-up cleared / KYC approved — forged-event mechanism + consequence."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T10 (510-517): full body+headers at INFO to third-party SaaS captures OTP codes, JWTs, SSN/DOB, bank refs in cleartext off-platform."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T9 (501-508): two concurrent transfers both read pre-debit balance, both pass funds check, both commit → overdraw/double-spend, attributed to non-atomic check-then-write with no lock/serializable txn."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T8 (489-499): redelivery + retry, no idempotency key, processor call before status write → same payout paid more than once; connects redelivery+non-atomic mark."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T12 (528-534): 30-day, no refresh/revocation JWTs; plus T4 notes admin uses same JWT — over-broad and long-lived amplifying leaks."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T11 (519-526): kyc_records SSN/DOB stored as ordinary columns with only cloud disk-level encryption, readable on DB/backup compromise."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T5 (464-472) OTP brute force on 6-digit code with no attempt cap / no rate limiting; T15 (555-560) OTP-request SMS pumping / DoS."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T13 (536-543): VPC-as-perimeter, ledger doesn't re-derive caller identity; SSRF/compromised-workload pivot can instruct ledger to credit/debit — money-movement consequence; replay touched via T8 ledger no-dedupe."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "T9 gives the both-pass-the-check TOCTOU mechanism and overdraw/double-spend consequence, attributed to non-atomic read-validate-write with no row lock/serializable txn."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "T8 connects redelivery (visibility-window) + retry + no idempotency key + crash window between processor call and 'sent' write → funds leave twice; does not praise retries as a strength."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "T13 goes beyond 'trusts the network': names SSRF/compromised-dependency pivot reaching the ledger's identity-less internal interface to move money; replay covered via T8's no-dedupe note."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Exhaustive, deduplicated coverage (all 10 keyed items incl. all 3 subtle derivations, zero decoys) delivered in one consistent author voice with an explicit up-front 'controls already sound, not re-litigated' decoy-ruling-out pass and deep second-order chaining — the hallmark of a large single reasoning budget rather than a one-shot. The multi-lens breadth (attacker/reviewer/SOC2/AML/ops-reconciliation) could equally signal A3/A4, but the absence of any roundtable seams or redundancy tips toward A2.\"",
+        "overall_note": "Near-exemplary deliverable. Perfect recall: 10/10 keyed items found including the three hard discriminators (K5 atomicity, K6 idempotency, K10 internal trust) with correct mechanism + consequence. Precision is clean: zero decoys taken — it explicitly names and sets aside SQLi, TLS, JWT signature, and patching as already-sound controls — and zero hallucinations. Valid non-keyed extras (payout-authz T2, admin repudiation T14, balance cache desync T16, document-bucket ACL assumption) are reasonable, not penalties. Quality sum 23.5/25, marked down only slightly on communication/actionability for length at the upper edge of the 2-4 page band (16 enumerated threats).\""
+      },
+      {
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every claim is technically sound and the subtle/contested points are handled correctly: TOCTOU race (T9), payout idempotency window (T8), internal replay/SSRF (T13), HS256-secret-leak forging (T12). No errors; all assumptions explicitly tagged."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections present and substantive; engages implicit concerns (SIM-swap/SS7 on OTP, third-party trust envelope, reconciliation as last-resort control, repudiation/audit) the brief did not hint at."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Strong second-order reasoning: T13 framed as a severity multiplier, threat chaining (T5 unlocks T1/T2/T4; T10 feeds T5/T12), and the gating-item bottom line that reframes prioritization for the buyer."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Mitigations are concrete, sequenced (immediate/then), and tied to threat IDs; residual risk stated plainly with a gating-item list. Lacks explicit success measures/metrics, short of the full 5 bar."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Clear STRIDE+severity structure, findable conclusions, tight bottom line. Slightly dense at 16 threats for a 2-4pp band, but each earns its place; a director could forward largely unedited."
+          }
+        },
+        "quality_sum": 24,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T4 (line 451): '/admin/* runs under the same middleware...only confirms the JWT is valid; this single missing check turns every customer into an admin' incl. adjust endpoint."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T3 (line 445): IDOR on GET /wallets/{walletId} and /transactions, sequential ids enumerable; ownership not tied to caller."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T6 (line 474) processor webhook and T7 (line 482) KYC webhook: public, no signature/HMAC, forged settlement/top-up/approval events named with consequence."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T10 (line 510): full body+headers at INFO to third-party SaaS captures OTP, JWTs, SSN/DOB/name, bank refs."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T9 (line 501): two concurrent transfers both read pre-debit balance, both pass funds check, both commit -> overdraw; attributed to non-atomic check-then-write with no lock/serializable txn."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T8 (line 489): no idempotency key, processor treats each call distinct, crash/timeout between call and 'sent' write + redelivery -> same payout paid twice; ledger dedupe gap noted."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T12 (line 528): JWT 30-day, no refresh/revocation; over-broad single token accepted across customer/admin/internal surfaces (also via T4)."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T11 (line 519): kyc_records (name/DOB/SSN/doc URL) only cloud disk-level encryption, no column/field encryption; readable on DB/backup compromise."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T5 (line 464) OTP brute force on 6-digit code, no attempt cap + no auth rate limiting; T15 (line 555) SMS-pumping/DoS on /auth/otp/request."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T13 (line 536): VPC-as-perimeter, ledger does not re-derive caller identity; SSRF/compromised-workload pivot reaches ledger to move money; webhook receiver as pivot point. Replay surface noted via T8 ledger dedupe gap."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "TOCTOU race fully reasoned from prose: both transfers pass check, both debit, overdraw; correct non-atomic root cause and locking/constraint fix."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Connects redelivery (visibility window) + retry + non-atomic mark-sent + no idempotency key -> double payout; does not praise retry config as strength."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "Goes beyond 'trust the network': names SSRF/compromised-workload pivot to ledger with money-movement consequence; replay implied via ledger no-dedupe (T8). Full credit threshold met."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single uniform analytical voice with no synthesis seams or persona artifacts; systematic, exhaustive STRIDE enumeration with disciplined inline [ASSUMPTION] tagging and tight cross-threat chaining (T5->T1/T2/T4, T13 as multiplier). The depth-with-coherence and explicit decoy-avoidance ('SQLi out of scope...not re-litigated') reads like one model reasoning at length rather than a roundtable being merged (A3) — though the breadth could also fit A4.\"",
+        "overall_note": "Near-exemplary deliverable. Perfect recall: all 10 keyed items found at full credit, including the three subtle derivation items (K5 race, K6 idempotency, K10 internal trust). Zero false positives — it explicitly fences off all five named decoys (SQLi, transport TLS, JWT signature, patching, internal ingress) as already-sound controls. Valid non-keyed extras (cache desync T16, admin repudiation T14, MFA, doc-bucket ACL) add value without precision cost. Rubric 24/25; only minor deductions for slight density vs. the 2-4pp band and lack of explicit success metrics. This is a deliverable that did not just clear the floor but maxed it while staying clean on precision.\""
+      },
+      {
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every threat is mechanistically correct and grounded in the substrate (e.g. T5's both-pass-the-check TOCTOU, T4's send-then-mark-sent window); severity-determining assumptions are explicitly tagged [ASSUMPTION] and flagged for code confirmation; subtle points (disk-encryption only protects against media theft, vendor idempotency dependency) handled correctly."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive; all 10 keyed items plus legitimate extras the brief didn't hint at (T10 non-repudiation/maker-checker, ID-doc image URL access model, SIM-swap floor, backup cleartext multiplication) that a senior reviewer would agree belong."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Root-cause observation reframes the system ('authorization means a valid JWT is present' — money and PII are one broken boundary); T4 framed as recurring loss under normal operation with no attacker; notes T5 survives even after T2's fix; 'historical exposure is already realized' residual changes the remediation posture (rotate keys, treat old logs as breached)."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "P0/P1/P2 prioritized by leverage with concrete implementation detail (SELECT FOR UPDATE, conditional WHERE status='pending', constant-time HMAC compare, rotate signing key AFTER log redaction), explicit decision points (vendor idempotency escalation, SMS-OTP accepted-risk decision) — just shy of 5 for no effort estimates or success measures beyond the reconciliation diff."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight, every section earns its place, conclusions findable in one pass, consistent T-number cross-referencing; ~3,000 words is at or just past the top of the 2-4 page band with 12 threats, so a half-point off the forward-unedited 5."
+          }
+        },
+        "quality_sum": 24,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T1: '/admin/* sits behind the same auth middleware... any customer's own valid JWT reaches POST /admin/wallets/{id}/adjust... mint money from nothing'; STRIDE Elevation, Critical."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T6 (read side): 'load the wallet row by path walletId with no described ownership predicate; ids are sequential... walks 1..180000'; plus T2 covers the act-on side via unowned fromWalletId in POST /transfers."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T3: publicly reachable webhooks with no HMAC verification let any internet caller forge {decision:'approved'} or mark a payout settled / top-up cleared; Spoofing/Tampering."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T8: 'logs every request with full body and headers at INFO... that stream carries OTP codes, Authorization bearer JWTs, and KYC signup payloads (legal name, DOB, national id)' shipped to third-party SaaS."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T5: 'non-atomic check-then-write... Fire N concurrent transfers... each reads the balance before any debit lands, all pass the funds check, all write. The wallet goes negative' — exact both-pass mechanism + overdraw consequence + no-lock attribution."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T4: stacks queue redelivery + 5x retries + processor-treats-each-call-as-distinct + 'worker dies after sending but before marking sent' → 'a second real bank disbursement'; connects redelivery/retry to the non-atomic mark, exactly the required chain."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T12: '30-day JWT, no refresh, no revocation... single HS256 key signs all tokens, including admin'; over-broad acceptance across customer/admin/internal surfaces also articulated in trust boundary 3 and T1."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T9: 'kyc_records... no column/field-level encryption; Postgres is disk-encrypted at rest only... transparent to every logical reader: leaked DB creds, replicas, pg_dump, and the nightly backups.'"
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T7: '6-digit numeric code (10^6 space), 10-minute window, verification retries allowed... no rate limiting on auth endpoints... brute-forces /auth/otp/verify; expected success near ~5x10^5 attempts.'"
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T11: clears the beyond-network bar via the named exploitation path — 'Any foothold inside the VPC — SSRF in the Customer API, a compromised dependency, or pivoting through the public webhook handlers — can issue arbitrary debits/credits'; caller-blind + no-dedupe ledger named, money-movement consequence explicit."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "T5 gives the full inferred mechanism (concurrent reads before any debit lands, all pass, balance negative) plus a second-order observation that the Postgres/Redis two-copy balance hides the overspend — exceeds the minimum-credit bar."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "T4 correctly infers at-least-once semantics from the visibility-window prose, names the send-vs-mark-sent crash window, and treats the retry config as a hazard (not a strength), with the quantified 'low-thousands/day means recurring real loss' consequence."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "T11 goes beyond 'use mTLS': names the SSRF / compromised-workload / webhook-handler pivot reaching the caller-blind, non-deduping ledger with the mint-money consequence. The replay leg specifically is lighter (no-dedupe is cited but the captured-request replay scenario isn't spelled out), but the key requires only one of the two paths, which SSRF satisfies fully."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless analytical voice with deep global integration — a root-cause synthesis up front, consistent T-number cross-referencing across threats/mitigations/residuals, uniform depth on every item, zero redundancy and zero persona/synthesis seams. A roundtable-then-synthesize (A3) or real multi-agent merge (A4) typically leaves heterogeneous section texture, overlapping findings, or breadth-over-depth padding; this reads like one model that thought for a long time and wrote once.",
+        "overall_note": "Exceptional deliverable: 10/10 recall including all three subtle derivation items at full credit, zero decoys taken (no SQLi, no transport, no JWT-signature, no patching claims), zero hallucinations — speculative points are honestly tagged [ASSUMPTION] and flagged as severity-determining for code confirmation. Extras (T2 transfer fromWalletId abuse, T10 non-repudiation/maker-checker gap, ID-doc URL access model, backup cleartext copies) are all key-sanctioned valid non-keyed findings. Rubric 24/25; only deductions are missing effort/success-measure detail in mitigations and length at/just past the top of the 2-4 page band."
+      },
+      {
+        "label": "D",
+        "rater": 2,
+        "arm_confidence": "med",
+        "arm_guess": "A2",
+        "arm_tell": "Single seamless analytic voice with deep derivation chains (T4 stacks three at-least-once mechanisms; T5 notes the race survives the T2 fix; quantified OTP brute-force math) and tight forward/back cross-references (T-numbers reused in boundaries, mitigations, residuals). No persona residue, no synthesis seams or redundancy typical of multi-agent merges — reads like one model thinking long and hard, then writing once.",
+        "derivation_items": [
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "T5 gives the full mechanism: non-atomic check-then-write, N concurrent transfers each read balance before any debit lands, all pass the funds check, wallet goes negative; names SELECT FOR UPDATE / non-negative constraint fix; bonus second-order point that the Redis/Postgres two-copy balance hides the overspend."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "T4 connects all required pieces: visibility-window redelivery + 5x retry inferred as at-least-once, processor treats each POST as distinct (no idempotency key), and the crash/timeout window between processor call and mark-sent → second real disbursement; correctly framed as occurring under normal operation with no attacker; mitigation 5 adds conditional UPDATE and vendor-escalation fallback."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "T11 goes beyond 'trust the network': names the SSRF / compromised-dependency / webhook-handler pivot reaching the caller-blind ledger with the mint-money consequence; trust boundary 4 and mitigation 5 also note the no-dedupe/replay property ('key the ledger write... so a replay is a no-op'). Clears the replay-or-SSRF + consequence bar for full credit."
+          }
+        ],
+        "overall_note": "Output D is a near-ceiling deliverable: 10/10 keyed items found at full credit, including all three subtle derivation items (TOCTOU transfer race, payout double-send, internal-trust/replay-SSRF), with zero decoys taken and zero hallucinations — every severity-determining inference is tagged [ASSUMPTION] and flagged for code confirmation. It also adds valid non-keyed extras the key explicitly sanctions (transfer fromWalletId not ownership-checked as a money-moving variant of K2, ID-doc image URL access model, no maker-checker/tamper-evident audit for admin adjustments). Distinctive strengths: the root-cause synthesis that authn-vs-authz is one broken boundary seen from two sides; the 'no attacker required' framing of payout duplication; and the residual-risk section's 'historical exposure is already realized' point (tokens/SSNs already in logs and backups), which most threat models miss. Only deductions: the document runs past the stated 2-4 page band (~5 pages rendered) and lacks explicit success measures, so Communication 4 and Actionability 4.5. Rubric sum 23.5/25.",
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "T1: '/admin/* sits behind the same auth middleware... No role/scope claim distinguishing admin is described' → any customer JWT can call POST /admin/wallets/{id}/adjust = 'mint money from nothing'; STRIDE Elevation, Critical."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "T6: read endpoints 'load the wallet row by path walletId' with no ownership predicate, sequential ids, 'walks 1..180000' harvesting balances and full ledgers; STRIDE Information Disclosure. T2 extends to the act-on case (transfers from a victim wallet)."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "T3: publicly reachable webhooks with no HMAC/signature verification → forge {decision:'approved'} to self-verify KYC and raise limits, or forge 'settled'/cleared to credit money that never arrived; STRIDE Spoofing/Tampering."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "T8: full bodies + headers at INFO shipped to third-party SaaS carrying OTP codes, bearer JWTs (replayable 30-day sessions), and KYC payloads incl. national id; SOC 2 implication drawn."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "T5: non-atomic check-then-write, concurrent transfers all pass the funds check and all debit, wallet goes negative ('value created from nothing'); fix = SELECT FOR UPDATE / DB constraint (mitigation 6)."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "T4: no idempotency key + queue redelivery + 5x retries + crash window between processor call and status write → 'a second real bank disbursement' while the row looks healthy; mitigation 5 gives end-to-end idempotency key + conditional status update."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "T12: 30-day JWT, no refresh/revocation, single HS256 key signs all tokens incl. admin; trust boundary 2 and T1 note the same un-scoped token is accepted by customer and admin surfaces alike; amplification of T1/T7/T8/T10 stated."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "T9: kyc_records plaintext to every logical reader; 'disk-at-rest protects against physical media theft and nothing else'; nightly backups multiply cleartext copies of ~180k SSNs; fix = field-level encryption/tokenization."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "T7: 6-digit code, 10-minute window, retries allowed, no rate limiting (edge throttling 'planned, not deployed'), expected ~5x10^5 attempts to brute-force /auth/otp/verify → 30-day non-revocable JWT."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "T11: VPC reachability is the only authz, ledger 'does not authenticate callers or dedupe'; SSRF / compromised dependency / webhook-handler pivot can 'issue arbitrary debits/credits'; replay closed via idempotent ledger writes in mitigation 5; per-workload mTLS in mitigation 10."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every claim traces to the substrate; severity-determining inferences are tagged [ASSUMPTION] and flagged for code confirmation; correctly handles the subtle points (JWT signature is fine, the issue is scope/lifetime; disk encryption only stops media theft; vendor-side idempotency residual)."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive; all 10 keyed items plus sanctioned extras (transfer fromWalletId ownership, ID-doc URL access model, no maker-checker/tamper-evident audit T10) that a senior reviewer would agree belong."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Root-cause reframe ('authn means a valid JWT is present, not this identity may do this') unifies the top findings; T4's no-attacker-needed framing; 'historical exposure already realized' (tokens/SSNs already in logs and backups); two-copy balance hiding the overspend from monitoring."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "P0/P1/P2 prioritized with code-level fixes (WHERE status='pending', SELECT FOR UPDATE, unique-constraint replay no-op), vendor-escalation fallback, key rotation sequencing, and explicit confirm-before-sign-off items; lacks explicit success measures, so not a full 5."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Tight, navigable, conclusions findable in one pass and every section earns its place, but it runs past the stated 2-4 page band (~5 pages rendered with 12 threats + tables), which the length-band rule scores down."
+          }
+        }
+      }
+    ]
+  }
+}

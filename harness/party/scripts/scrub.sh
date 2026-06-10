@@ -24,8 +24,12 @@
 set -euo pipefail
 HARNESS="${SDD_BENCH_HARNESS:-$HOME/dev/sdd-bench}"
 
-# The tell-list (rubric § Scrub grep list v1 — keep in sync; additions are logged).
-TELLS='Mary|John|Sally|Winston|James|Linus|Amelia|Bob|Paige|BMad|bmad|party.?mode|panel|roundtable|facilitator|analyst agent|architect agent|Claude Code|claude-(fable|opus|sonnet)|_bmad-output|\.claude/'
+# The tell-list (rubric § Scrub grep list — keep in sync; additions are logged).
+# v2 (P-track P1/P5/P8 scoring): word-boundary the persona/role names so common
+# substrings don't false-positive (e.g. Mary inside "primary"/"summary", which the
+# P5 materials use heavily). Unambiguous tells (bmad, party-mode, claude-*, paths)
+# stay as substrings.
+TELLS='\b(Mary|John|Sally|Winston|James|Linus|Amelia|Bob|Paige|BMad)\b|bmad|party.?mode|\b(panel|roundtable|facilitator)\b|analyst agent|architect agent|Claude Code|claude-(fable|opus|sonnet)|_bmad-output|\.claude/'
 
 die() { echo "ERROR: $*" >&2; exit 2; }
 
@@ -56,13 +60,19 @@ case "$cmd" in
     TASK="${1:-}"; ARM="${2:-}"; RUN="${3:-}"; LABEL="${4:-}"; FORCE="${5:-}"
     [ -n "$TASK" ] && [ -n "$ARM" ] && [ -n "$RUN" ] && [ -n "$LABEL" ] \
       || die "usage: scrub.sh seal <task> <arm> <run> <label> [--force]"
-    SRC="$HARNESS/runs/party/$TASK/$ARM/run-$RUN/artifacts/decision.md"
-    [ -f "$SRC" ] || die "deliverable not found: $SRC"
+    # Deliverable = the single top-level .md in artifacts/ (decision.md / threat-model.md /
+    # roadmap.md / root-cause.md …) — auto-detected so this works across tasks.
+    SRC=$(ls "$HARNESS/runs/party/$TASK/$ARM/run-$RUN/artifacts/"*.md 2>/dev/null | head -1)
+    [ -n "$SRC" ] && [ -f "$SRC" ] || die "deliverable .md not found in runs/party/$TASK/$ARM/run-$RUN/artifacts/"
     SCDIR="$HARNESS/runs/party/$TASK/_scoring"
     mkdir -p "$SCDIR/scrubbed"
     DST="$SCDIR/scrubbed/output-$LABEL.md"
-    cp "$SRC" "$DST"
-    safe_strip "$DST"
+    if [ "$FORCE" = "--force" ] && [ -f "$DST" ]; then
+      echo "(--force: keeping hand-scrubbed $DST, not re-copying from source)"
+    else
+      cp "$SRC" "$DST"
+      safe_strip "$DST"
+    fi
     echo "=== post-strip scan of output-$LABEL.md ==="
     if ! scan "$DST"; then
       if [ "$FORCE" != "--force" ]; then

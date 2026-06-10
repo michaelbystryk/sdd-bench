@@ -168,6 +168,13 @@ point rescore together with anchor discussion.
 
 ---
 
-## Scrub grep list (v1 — grows by logged addition)
+## Scrub grep list (v2 — grows by logged addition)
 
-`Mary|John|Sally|Winston|James|Linus|Amelia|Bob|Paige|BMad|bmad|party.mode|panel|roundtable|facilitator|analyst agent|architect agent|Claude Code|claude-(fable|opus|sonnet)|_bmad-output|\.claude/`
+`\b(Mary|John|Sally|Winston|James|Linus|Amelia|Bob|Paige|BMad)\b|bmad|party.?mode|\b(panel|roundtable|facilitator)\b|analyst agent|architect agent|Claude Code|claude-(fable|opus|sonnet)|_bmad-output|\.claude/`
+
+- **v2 (2026-06-10, P-track P1/P5/P8 scoring):** word-boundaried the persona/role names —
+  v1's bare `Mary` false-matched "pri**mary**"/"sum**mary**" (which P5's materials use
+  heavily), aborting clean cells. Names + panel/roundtable/facilitator now require `\b`
+  boundaries; unambiguous tells (bmad, party-mode, claude-*, paths) stay as substrings.
+  Implemented in `harness/party/scripts/scrub.sh`. Real tells still caught — P8 A4's
+  "the roundtable (Amelia, Winston)…" was flagged and hand-scrubbed under this list.
