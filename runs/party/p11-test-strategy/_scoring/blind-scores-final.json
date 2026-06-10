@@ -1,0 +1,778 @@
+{
+  "summary": "P-track rubric-only blind scoring across multiple tasks (Mythos raters; 5 dims + arm guess)",
+  "agentCount": 24,
+  "logs": [],
+  "result": {
+    "count": 24,
+    "results": [
+      {
+        "task": "p02",
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound throughout and handles the contested points well — notes 'processed in the EU' is indefensible with the app in us-east, turns legal's in-scope posture into an asset, tags both real assumptions; only quibbles are the unexamined staleness risk of an 'edge/read cache for availability' and a hand-waved billing roll-up."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All five required sections substantive, plus unprompted material (cross-region reporting/admin breakage, schema drift, EU-resident customers of US businesses, cell-count scaling limit), but misses migration of the existing ~15% EU tenants already living in us-east — a gap a senior reviewer would flag."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Multiple non-obvious moves: the central reframe that the 4-month deadline must not 'smuggle in speculative work,' decoupling APAC behind a measured front-end-compounding hypothesis (avoiding a region build many would default to), and whole-tenant cells dissolving the PII-classification long pole."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Concrete sequencing (EU cell now, APAC latency spike gated by measurement, split parked), honest costs, and explicit decision points — a dated midpoint escalation checkpoint, the p95<1.2s gate, and revisit triggers that function as what-would-change-my-mind; light only on milestones inside the 4-month build."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, every section earns its place, decision findable in one pass, and the closing close-call note is exactly what a CEO reader needs; slightly rhetorical in spots ('serves a résumé and a belief')."
+          }
+        },
+        "quality_sum": 22,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "One unified argumentative voice with a tight through-line ('passengers riding in the same quarter') and a meta close-call footnote — no persona seams, no stakeholder-by-stakeholder residue, but depth of second-order reasoning (dated midpoint checkpoint, measurement-gated APAC, legal-posture-as-asset) that reads like a long private deliberation distilled rather than a one-shot.",
+        "overall_note": "A genuinely strong ADR: picks the defensible cell architecture, kills the carve-out and the split for the right stated reasons, decouples APAC behind measurement, and states the painful costs (two regions on one pager, broken cross-DB tooling) plainly. Main deduction is the unaddressed migration of existing EU tenants already in us-east and thin intra-4-month milestone planning; otherwise this is near the ceiling of what the brief asked for."
+      },
+      {
+        "task": "p02",
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound throughout — correctly nails the contested points ('processed in the EU' undermining a PII-only carve-out, the unscoped PII-tagging audit as Option B's critical-path killer) and even flags the genuinely subtle edge case (EU-resident end-customers of US businesses) as revisit trigger 1 rather than ignoring it; midpoint date math checks out."
+          },
+          "coverage": {
+            "score": 4,
+            "evidence": "All five required sections substantively covered plus unsignalled material concerns (cross-region reporting/admin breakage, control-plane SPOF, schema drift, on-call load); the one real gap is the existing ~15% EU signups already sitting in us-east — 'migration not a v1 capability' gestures at it but never decides their fate."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Multiple genuinely non-obvious findings: legal's 'when in doubt, in-scope' posture inverted into an asset under whole-tenant cells; the reframe that residency is the only forcing function and the core risk is 'a real deadline smuggling in speculative work'; APAC decoupled behind a measurement gate (front-end call compounding vs. data distance) — each would change the buyer's decision."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Committed path with sequencing (EU cell → APAC latency spike → split parked), explicit costs, a dated midpoint escalation checkpoint, and revisit triggers that function as what-would-change-my-mind criteria; falls just short of 5 for lack of scoped first-month workstreams/effort estimates."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, every section earns its place, decision findable in one pass, closing note resolves the close call crisply — near forward-unedited quality, held back fractionally by heavy bold/em-dash density."
+          }
+        },
+        "quality_sum": 22.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single, uniform authorial voice with densely compressed, em-dash-driven argumentation and zero multi-perspective seams or committee padding; the closing 'the close call was…' note reads like residue of one long private deliberation written out once — characteristic of a single model with a large thinking budget rather than persona simulation (which usually leaks role flavor) or real multi-agent output (which usually shows redundancy and stitching).",
+        "overall_note": "An unusually strong ADR: it makes the right architectural call for this team (regional cells), defends it against the two seductive alternatives with problem-specific reasoning rather than platitudes, and converts the brief's ambiguities into explicit accepted/deferred items and dated triggers. Main weaknesses: the fate of existing EU tenants in us-east is left implicit, and there is no first-sprint work breakdown — both minor for an ADR-level document. 22.5/25 reflects genuinely excellent, not merely competent, work scored against absolute anchors."
+      },
+      {
+        "task": "p02",
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound and well-qualified throughout (fail-closed routing rationale, distributed-transaction risk of Option C, payment tokens out of scope); handles the contested tenant-vs-end-customer residency point explicitly, but leaves one subtle gap implicit — whether requests carrying EU PII transiting/being proxied through the us-east control plane counts as 'processing' outside the EU."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantive, three real options, latency and split each dispositioned; surfaces material concerns the brief never hinted at — cross-cell analytics/replica breakage, tenant region-migration pain, third-region scaling cost, first-write routing correctness — that a senior reviewer would agree belong."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious findings: Option A puts a cross-region hop inside the booking transaction (worsening the latency it coexists with), tenant-pinning's per-end-customer gap, day-one analytics degradation; the 'three forces are three different problems' decoupling is a strong frame, though the brief partially gestures at it, so it stops just short of a decision-changing reframe."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Month-by-month sequencing against the 4-month clock, costs stated (~$22k/mo ceiling), named top risks with mitigations, measure-then-escalate latency ladder with the 1.2s success bar, and seven concrete revisit triggers that are an explicit what-would-change-my-mind list."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, clear ADR structure, conclusions findable in one pass, every section earns its place; option paragraphs are dense enough that a CEO skims rather than reads, keeping it a notch below forward-unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Single argumentative through-line ('the trap is treating these as one program') that every later section serves, with triggers mapping 1:1 back to assumptions/deferrals — globally integrated, single-voice prose with zero persona residue or stitching seams, which reads like one model reasoning deeply rather than a synthesized roundtable or stitched multi-agent output. A well-synthesized A3/A4 could look like this, hence low confidence.",
+        "overall_note": "Near-excellent ADR: correctly identifies residency as the only externally-forced problem, picks the lowest-risk compliant architecture (tenant-pinned cells), and is unusually honest about costs (doubled ops surface on a 6-person team, day-one analytics gap) and about what tenant-pinning does NOT cover. The few deductions are at the margin: the us-east control plane's 'processing' exposure is asserted safe by assumption rather than argued, and the prose density slightly exceeds CEO-skim altitude. Among the strongest deliverables this rubric would plausibly see; scored against absolute anchors, not a curve."
+      },
+      {
+        "task": "p02",
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound throughout with qualified, tagged assumptions (tenant-pinning vs per-end-customer explicitly handled); the one contested point not fully closed is whether routing EU booking requests through a us-east control plane still counts as US 'processing' of PII in transit."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantive, plus material considerations the brief never hinted at: cross-cell analytics/replica breakage, fail-closed routing as a correctness-critical component, migration rehearsal/audit evidence, third-region scaling cost, the US-tenant-with-EU-end-customer gap."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The 'three forces are three different problem types — data-location vs read-path vs decomposition' framing genuinely reframes the decision; second-order effects engaged (Option A's cross-region hop inside the booking transaction worsening the latency problem; APAC needs no residency cell)."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Month-by-month 4-month plan, costs honest (~$22k/mo ceiling, doubled on-call surface), explicit measure-then-decide gates on latency, and seven concrete revisit triggers that are textbook what-would-change-my-mind."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the 2–3 page band, standard ADR structure, decision and accepted costs findable in one pass, every section earns its place — forwardable to a CEO unedited."
+          }
+        },
+        "quality_sum": 24.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Single, uniform authorial voice with a tightly interlocked argument and zero perspective seams or persona residue; the dense 'residency = data-location, latency = read-path, split = decomposition want' triad reads like a distilled long chain of private reasoning rather than a synthesis of competing voices — characteristic of one model with a large thinking budget. Could also be a very good one-shot, hence low confidence.",
+        "overall_note": "An exceptionally strong ADR: it correctly identifies the trap of conflating residency, latency, and decomposition; picks the lowest-risk compliant architecture (tenant-pinned regional cells); states the accepted costs (doubled ops surface, broken cross-cell analytics) without flinching; and its revisit triggers are specific and falsifiable. The only soft spot is the unexamined question of whether request transit through the us-east control plane satisfies 'processed inside the EU,' which an auditor or opposing counsel could press on."
+      },
+      {
+        "task": "p02",
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound throughout and explicitly handles the contested points (tenant-granularity residency edge case, what counts as global); only gloss is asserting the routing directory stays PII-free while also routing login traffic, which may need email-to-tenant lookup — tagged as [ASSUMPTION] but unexamined."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantive, plus unprompted material a senior reviewer would endorse (rejected snowflake sub-option, cross-cell analytics rollup, fan-out CI/CD, redirecting the split-keen engineers); misses US-staff access to EU data and per-cell backup/DR."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Reframes the problem twice in ways that change the decision: cells make the unscoped PII-classification work unnecessary ('residency by construction'), and 'two different decisions wearing one trench coat' cleanly severs the compliance clock from the architecture bet; the geography-independent round-trip-collapse fix is a genuine extra finding."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Week-by-week 16-week sequence, budget ceiling, named new components, honestly-priced fleet-operations tax, and a Revisit Triggers section that is literally what-would-change-my-mind; success measures beyond the SLA/deadline are implicit rather than stated."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, tight ADR structure, decision findable in one pass, memorable phrasing; slightly dense/parenthetical-heavy in the Context and Option A sections, just shy of forward-unedited."
+          }
+        },
+        "quality_sum": 23,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "One seamless argumentative spine in a single consistent voice — every section re-invokes the same few load-bearing constraints (team of 6, hiring freeze, boring deploys, the one fixed clock) with identical framing, and there are zero perspective seams, committee hedges, or coverage padding. That deep cross-section integration and compression reads like one model thinking long and hard, not a synthesis of multiple voices (A3/A4 typically leave flatter, broader, slightly uneven sections) and is too load-ordered and self-consistent for a plain one-shot.\"}",
+        "overall_note": "An excellent ADR by absolute standards: it correctly identifies the EU clock as the only load-bearing force, picks regional cells, and — the standout move — shows the cell model dissolves the unscoped PII-classification problem entirely. Trade-offs are priced honestly (fleet-operations tax named as 'the line item to watch'), the sequencing fits the 4-month window with stated buffer, and the revisit triggers are specific and testable. Deductions are marginal: the 'PII-free' routing directory's login-lookup problem is waved through under an [ASSUMPTION] tag, US-based staff access to EU data and per-cell DR go unmentioned, and success metrics beyond the contractual SLA are implicit. 23/25."
+      },
+      {
+        "task": "p02",
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound throughout — in-cell hot-path transaction, processor-side tokens, distributed-transaction risk of Option B all correct; residency-granularity assumption properly qualified and flagged to legal; only soft spot is the hand-waved 'PII-free' routing of login traffic (a business-email→tenant lookup arguably puts personal data in the global plane)."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required ADR sections substantive, plus unprompted material a senior reviewer would want: rejected single-tenant sub-option, loss of single-DB analytics, cross-region tenant moves, audit evidence for procurement, team-morale handling of the two split-keen engineers; light only on migration mechanics for existing EU tenants and DR/backup posture."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The reframe that cells make the unscoped PII-classification work unnecessary 'by construction' is a genuinely decision-changing finding; 'two decisions wearing one trench coat,' the geography-independent round-trip collapse, and redirecting the split-keen engineers into router work are all non-obvious and specific to this problem."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Week-by-week 16-week sequence with buffer, costs/risks stated bluntly ('we are now a fleet operator... this is the line item to watch'), and six concrete revisit triggers serve as explicit what-would-change-my-mind; success measures (beyond deadline/SLA) only lightly defined."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the 2–3 page band, every section earns its place, the decision is findable in one pass, and the prose ('only one of them is load-bearing on a clock we don't control') is forwardable to a CEO unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Single seamless authorial voice with densely cross-referenced trade-offs and zero committee residue — no perspective seams, no redundancy, every argument pre-reconciled (e.g., the PII-classification reframe threads through Options, Decision, and Consequences identically). That uniform deliberated tightness reads like one model thinking long, not a persona roundtable or real multi-agent synthesis, though a very clean A3/A4 synthesis pass could mimic it.",
+        "overall_note": "An excellent deliverable against absolute anchors: it identifies the one load-bearing constraint, kills the PII-tagging problem structurally rather than scoping it, sequences EU before APAC with the contention stated plainly, and gives the CEO honest costs plus real reopen conditions. The marginal deductions are the glossed login-routing/PII tension in the global directory, thin treatment of migrating existing EU tenants' data, and lightly specified success measures — none of which would misdirect the team."
+      },
+      {
+        "task": "p02",
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Sound throughout and well-qualified (tenant-level granularity, global tables, sticky home region all handled); only nit is the slight tension between 'no new distributed failure modes in the request path' and the admitted directory-on-the-login-path SPOF, plus short-TTL caching of availability glossing staleness."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five sections substantive, three real options, and it surfaces unbidden material (cross-region analytics rebuild, global-table homing, per-cell migration drift); misses migrating *existing* EU tenants already in us-east and any intra-4-month milestone scoping, which a senior reviewer would flag."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The load-bearing reframe — 'residency is a tenant-routing problem, not a decomposition problem' — plus the realization that whole-tenant locality makes the unscoped PII-classification project unnecessary, and the APAC fix being app-level round-trip collapse rather than a region, would each change the buyer's decision."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Sequenced, has a start-Monday first-week list, honest cost/risk statements, and revisit triggers that double as explicit decision points with thresholds (p95 in test, ~30-35% EU signups); lacks effort estimates/owners and milestones inside the 4-month window."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "~2.5 pages, inside the stated band; tight, every section earns its place, the decision and its rationale findable in one pass — a director could forward it unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single, unwavering authorial voice carrying one load-bearing reframe ('locality, not decomposition') consistently through every section, with confident editorial punchlines ('a hack that looks cheap and isn't', 'wrong tool, wrong time') and deep second-order chains (analytics replica break, sticky home region) — no persona residue, no perspective-by-perspective seams, no synthesis hedging that roundtable or multi-agent outputs tend to leave. Reads like one model thinking long and writing once.",
+        "overall_note": "A genuinely excellent ADR — near the ceiling of what the brief allows. It makes the 4-month deadline credible, defuses the microservices pressure with gated triggers instead of dismissal, and converts the unscoped PII-classification project into a non-problem via whole-tenant locality. Held off a perfect score by the unaddressed migration of existing EU tenants already resident in us-east, the absence of milestone/effort scoping within the compliance window, and a minor internal tension on the routing layer's failure-mode claim. Scored against absolute anchors, not a curve: 23.5/25 reflects work I would expect from a strong staff-level architect."
+      },
+      {
+        "task": "p02",
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound throughout and faithful to the context (budget math, global-table homes, SLA clocks); explicitly handles the contested tenant-vs-end-customer granularity point, but the short-TTL edge-caching of availability risks stale-slot/double-booking and goes unflagged."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantive (3 real options, explicit accept/defer lists, specific triggers) plus unsurfaced material concerns — cross-region analytics breakage, sticky home region, directory SPOF; misses GDPR transfer-mechanism nuance and any migration plan for existing EU-domiciled tenants in the US cell."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "The governing reframe — 'residency is a data-locality and tenant-routing problem, not a decomposition problem' — plus the non-obvious move that whole-tenant locality deletes the unscoped PII-classification project, and an APAC fix decoupled to app-level round-trip collapse; strong second-order effects (cell drift, on-call surface)."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Sequenced plan with a literal first-week task list, conditional decision points (APAC cell only if app fix misses), costs/risks honestly priced, and revisit triggers that function as what-would-change-my-mind; lacks month-by-month milestones against the 4-month clock and success measures beyond the SLA number."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, tight, conclusions findable in one pass, every section earns its place; punchy verdict lines ('Wrong tool, wrong time') make it forwardable, though the bolding density is slightly heavy for an unedited CEO send."
+          }
+        },
+        "quality_sum": 22.5,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single authorial voice carrying one governing reframe consistently through every section, with epigrammatic verdict lines and zero perspective seams or redundancy — reads like deep pre-deliberation compressed into one coherent argument, not a synthesized roundtable (no residual 'the ops view / the compliance view' texture) and tighter than a typical one-shot.",
+        "overall_note": "A genuinely excellent ADR: it names the trap (conflating residency with decomposition), picks the cell architecture for the right team-shaped reasons, sidesteps the unscoped PII-tagging project via whole-tenant locality, and decouples the APAC SLA onto its own cheaper fix. Honest costs (routing SPOF, per-cell ops tax, analytics rebuild) and specific, falsifiable revisit triggers. Held back from top marks only by an unflagged stale-availability caching risk, no migration story or transfer-mechanism nuance, and no milestone plan against the 4-month deadline. 22.5/25."
+      },
+      {
+        "task": "p03",
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every figure checks against the pack (98 tickets, 81% CSV, ~6% real growth, ~$160k cluster) and it nails the contested points (vanity 34%, enterprise mirage, Copilot decoy); only tiny rhetorical overstatements ('best predictor we have', counting at-risk Tindall in the churn three, though clarified inline) keep it off 5."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantively delivered, plus material considerations the brief never hinted at: build-vs-partner gate, idempotency/close-window reliability substrate, connector abstraction, design-partner motion to hold Tindall, Slack-native architecture constraint."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Goes well beyond the pack's own annotations: the three-tier decomposition of 'two-way sync' (reliability-at-close IS the product, derived from Greenfield), the propose-rules activation play as the root cause of the NRR slide, and 'ERP sync done wrong is worse than done late' as the sequencing principle — each would change the buyer's decision."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Two scoped bets with quarter-level sequencing, four explicit gates, an instrumented success metric (routing rule in 14 days), a week-1 build-vs-buy decision spike, a shippable floor (Phase 2a), and explicit what-would-change-my-mind conditions (enterprise only if a finance champion pulls)."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, conclusions findable in one pass, every section earns its place, closes with a board-ready one-liner; a few stylistic flourishes ('a third bet wearing a trenchcoat') a director might trim before forwarding, so just shy of forward-unedited."
+          }
+        },
+        "quality_sum": 24,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single, seamless authorial voice with zero committee residue — no persona attributions, no section-level register shifts, no redundant re-arguing — combined with long single-threaded reasoning chains (Greenfield → reliability tiers → sequencing principle) and aphoristic compression ('Loud ≠ real') that reads like one mind thinking long, not a synthesis of voices. The multi-lens depth (data skepticism + GTM + engineering reliability) leaves A3 plausible, hence low confidence; a real party-mode system would more likely show templated role artifacts and length bloat.",
+        "overall_note": "Genuinely excellent against absolute anchors, not a curve: it synthesizes rather than summarizes, discounts the planted decoys (vanity metric, enterprise cluster, Copilot) with explicit reasoning, holds the two-bet budget honestly (Intacct as gated fast-follow rather than scope creep), and adds original engineering-grade substance (idempotency, reconciliation ledger, build-vs-buy spike) the reference pack never supplied. Deductions are confined to minor rhetorical overstatement and slight stylistic excess. 24/25."
+      },
+      {
+        "task": "p03",
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every load-bearing claim traces cleanly to the pack (98-ticket theme, ~6% deflated growth, 9 tickets/2 prospects, CSV-churn correlation) and Tindall is correctly qualified as at-risk rather than churned; only tiny overreaches ('half our approvers never log in' generalized from one ticket, '14-day rule is the best predictor we have') keep it off a clean 5."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections are substantive, and it surfaces material considerations the brief never hinted at: build-vs-partner spike for connector plumbing, idempotency/close-window reliability as the real deliverable, Tindall design-partner hold with committed Intacct date, and board-messaging advice on the vanity 34%."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Decomposing 'two-way sync' into three cost tiers and reframing Greenfield's churn as a reliability-under-close-day failure (hence 'sync done wrong is worse than sync done late') would genuinely change how a buyer scopes and sequences the bet; CSV-as-pain-surface, mirror-image competitive framing, and the activation play attacking the NRR root cause are additional non-obvious findings."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Quarter-by-quarter plan with named gates (Gate 0 build-vs-buy spike, Gate 1 GA + instrumented 14-day activation metric, Gate 3 validated through a real month-end close), explicit shippable floor if 2b slips, honest cost framing (maintenance surface, 'blows the two-bet budget'), and stated what-would-change-my-mind conditions (enterprise only if a finance champion pulls)."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2-3 page band, every section earns its place, conclusions findable in one pass, and the board one-liner is forwardable; held just under 5 because the prose is occasionally over-stylized ('a third bet wearing a trenchcoat', 'That convergence is the finding') in a way some directors would lightly edit."
+          }
+        },
+        "quality_sum": 24,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single, completely unified authorial voice with thematic callbacks woven end-to-end (the Greenfield reliability motif recurs from Situation through Bet 2 to Sequencing) and deep second-order engineering reasoning (idempotency tiers, replayable posts) — no perspective seams or coverage-by-committee texture that persona-roundtable or real multi-agent outputs usually leave, but more layered deliberation than a typical one-shot.",
+        "overall_note": "An unusually strong strategy memo: it correctly triangulates five noisy sources to one diagnosis (lose on the back end, retain on routing), discounts exactly the right inputs (vanity volume, enterprise mirage, Copilot buzz) with quantified reasons, holds the two-bet constraint honestly, and adds genuine senior-operator value the brief didn't ask for (build-vs-buy gate, close-day reliability as the acceptance test). Near the ceiling of what this brief can elicit; only minor evidence overgeneralizations and slightly showy prose separate it from a perfect score."
+      },
+      {
+        "task": "p03",
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "Nearly every figure checks against the pack (38%/22%/~6%, $3k/mo, ~$155k enterprise sum, Orsino beta) with caveats properly carried — but one checkable claim is false: 98 ERP tickets is NOT 'more than routing (61) and OCR (44) combined' (105), an overstatement a careful reviewer flags."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantive, plus implicit concerns the brief only gestured at: Slack-approval non-regression constraint, SOC 2 as a deferred compliance track distinct from 'going enterprise', two-way-sync financial-correctness risk, Tindall design-partner-with-gate."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious moves: scoping Bet 2 around first-14-day authoring/maintainability rather than feature count, 'two-way sync makes us part of month-end close so the risk is correctness not connectivity' leading to a close-survival GA gate, and CSV usage read as a churn-warning pain surface."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Two scoped bets with named ERPs in order, explicit hard gates (zero mis-posts through a real close), a north-star success measure (NRR back through 100%), and what-would-change-my-mind triggers (Copilot re-evaluated only on lost-deal debriefs; SOC 2 triggered by ICP deal blocks)."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, bold-led claims findable in one pass, every section earns its place; slightly dense bolding and a few overloaded sentences keep it just shy of forward-unedited."
+          }
+        },
+        "quality_sum": 22,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single uniform high-compression authorial voice with deep cross-source reconciliation (exact ticket IDs, summed ARR figures, beta-feature provenance) and second-order gate design, with zero persona residue or stitched-perspective seams — the signature of one model deliberating long rather than a synthesized roundtable or multi-agent assembly.",
+        "overall_note": "A genuinely strong strategy memo: it correctly identifies the reconciliation leak as the corroborated signal, discounts the vanity metric, enterprise pipeline, and Copilot buzz with reasoning, commits to exactly two bets, and sequences them with real gates and kill-criteria. The lone blemish is a false arithmetic flourish (98 tickets claimed to exceed 61+44 combined) that doesn't change the conclusion but caps Correctness below 4."
+      },
+      {
+        "task": "p03",
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every figure checks out against the pack (38%/22% skew, ~6% real growth, 98/61/44 ticket themes, ~$160k mid-market cluster arithmetic, Orsino beta detail), and it correctly handles the subtle points — vanity metric, CSV negative correlation, Copilot wrong-buyer, two-way-sync-as-financial-risk; the only nit is repeating the source's loose '3 of 5 churns' framing for not-yet-churned Tindall, which it parenthetically clarifies."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantive, plus implicit concerns (Slack must-not-regress, Tindall renewal timing, SOC2-deferred-not-killed) and unhinted additions (idempotency harness, close-survival gate); misses the per-seat pricing tension Bet 2 creates (Bellweather's Slack-only approvers shrank seats), keeping it just short of 5."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious moves with second-order reasoning: reframing Bet 2 around authoring/activation (14-day signal) rather than feature count, 'the risk is correctness not connectivity' on two-way sync, CSV high-usage-as-churn-warning, and decision-trigger framing for the Copilot ('lost-deal debriefs, not demo curiosity')."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Two scoped bets, explicit sequencing with hard gates (zero mis-posts through a real month-end close), success measure (NRR back through 100%), regression guardrail (Slack suite), and what-would-change-my-mind triggers for both Copilot and SOC2 — hits the full 5 anchor."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, tight, conclusions findable in one pass, every section earns its place; dense bolding and parenthetical stacking are the only friction keeping it from clean 'forward unedited.'"
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless analytical voice with exhaustive quantitative cross-triangulation (three independent inputs corroborating one thesis, exact pipeline arithmetic, engineered gates) and zero perspective-diversity residue — no GTM/pricing angle a real or simulated roundtable would likely have injected. Reads like one very deep pass over the evidence, characteristic of a large extended-thinking budget rather than multi-agent synthesis.",
+        "overall_note": "An exceptionally strong deliverable: it correctly discounts every planted trap (vanity 34% metric, enterprise mirage, Copilot buzz), commits to exactly two bets as instructed, and adds genuinely original execution machinery (close-survival gate, reconciliation test harness, re-evaluation triggers). The main substantive gap is silence on pricing/packaging despite the per-seat model interacting badly with the Slack-approval strategy it doubles down on. Scored against absolute anchors this still lands near the top of the scale at 23.5/25."
+      },
+      {
+        "task": "p03",
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every figure traces cleanly to the pack (98/61/44 tickets, ~$160k cluster sums to $159k, ~6% real growth, 38% Vantage skew) and contested points like the SOC 2 carve-out are handled well; only blemishes are calling correlation a 'proven moat' and lumping the Tindall renewal into 'unblocked pipeline.'"
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantive, plus material items the brief never hinted at: Vantage single-logo concentration as a named renewal risk, the compliance-vs-product SOC 2 split, the early-pay-discount cost of delegation gaps, and a Greenfield-derived month-end-close GA gate."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious moves — heavy CSV export reread as a pain surface to convert into a retention surface, 'mirror images' (sync neutralizes / routing extends), ship-Bet-2-first sequencing while sync cooks, ERP #1 chosen by measuring CSV destinations — though the annotated pack hands much of the core thesis to any careful reader."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Hits the top anchor squarely: week-by-week sequencing with explicit decision gates (Step 0 measurement, design-partner close test, standing enterprise gate), honest effort calls (Bet 2 cheaper, partly beta), success measures (NRR >100%, $160k closed), and revisit triggers for every kill."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, conclusions findable in one pass, every section earns its place; bolding is heavy and the Situation bullets dense enough that 'forward unedited' is arguable rather than certain."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Single unified analytical voice with exhaustive cross-source triangulation (ticket IDs, exact ARRs, gate logic all interlocked) and zero synthesis seams — no persona residue or per-viewpoint structure you'd expect from A3/A4, and far too tightly integrated for a one-shot; reads like one mind that held the entire pack in working memory and iterated.",
+        "overall_note": "An unusually strong strategy memo: the diagnosis (win at the front, leak at the back), the discounted inputs, the two-builds-plus-one-process-lever structure, and the gated sequencing are all correct, specific, and executable. It honors the hard constraints (two eng bets, explicit kill-list with reasons, [ASSUMPTION] tagging) rather than gaming them. Score of 23.5/25 reflects two minor overstatements (correlation called 'proven,' renewal counted as pipeline) and density that slightly strains readability — nothing a domain reviewer would call a real error."
+      },
+      {
+        "task": "p03",
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every figure checks against the pack (98/61/44 tickets, ~6% real growth, ~$160k cluster = 44+38+33+26+18, Orsino beta expansion) and it handles subtle points (Tindall as 'heading the same way' not churned, SOC 2 carve-out, correlation caveats preserved); only nit is attributing the full ~$160k unblock to Bet 1 while naming three deals summing to ~$115k."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantively done (discounted inputs named with reasons, kill-list with revisit gates), plus material items the brief never hinted at: Vantage 38% concentration risk, the 14-day routing-activation lever, SOC 2 as a separate compliance track."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Genuinely non-obvious moves beyond the telegraphed back-end-leak thesis: CSV-export as 'pain surface converted to retention surface,' Synthesis as mirror-image so sync-neutralizes/routing-extends, gating ERP GA on a design-partner month-end close because that's exactly how Greenfield died, Bet 3 monetizing Bet 2; headline finding itself was handed by the CS/VP notes, keeping it shy of a full reframe."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Sequenced with explicit gates and decision points (Step 0: measure CSV-export destinations to pick ERP #1), effort honestly differentiated (Bet 2 cheaper/partly-built ships first), success measures (NRR >100%, Tindall renewal as proof), and what-would-change-my-mind triggers (enterprise deal with finance champion; Copilot appearing in lost-deal decisions)."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, conclusions findable in one pass, every section earns its place with quotable lines ('Loudness ≠ relevance'); slightly bold-heavy and dense in spots, but near forward-unedited quality."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single seamless editorial voice with dense, exact cross-file reconciliation (ticket IDs, ARR sums, cohort caveats all woven into one argument) and zero perspective seams or stakeholder-balancing residue — reads like one model that thought long and hard, not a synthesized roundtable (A3) which usually leaves trace framing like 'from a sales lens...' or a real multi-agent system (A4) which tends to show section-level voice shifts and redundancy.",
+        "overall_note": "Exceptionally strong strategy memo scored against absolute anchors: it correctly discounts the three trap inputs (34% vanity volume, enterprise pipeline theater, Copilot buzz), commits to exactly two eng bets plus one cheap process lever, gives a real kill-list with revisit gates, and sequences with failure-mode-aware gates (month-end close test echoing Greenfield's churn). The only blemishes are one loose pipeline-ARR attribution and slight density. 23.5/25."
+      },
+      {
+        "task": "p03",
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "Nearly every figure checks out against the pack (NRR 108→97, 38%/22% volume skew, ~$160k mid-market cluster sum, Bellweather 40→18), assumptions tagged and qualified — but 'ERP at 98 tickets, more than routing (61) and OCR (44) combined' is arithmetically false (61+44=105), a small overclaim a careful reviewer flags."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantively delivered including the discounted-inputs analysis, plus un-hinted material a senior reviewer would endorse: SOC 2/SSO as mid-market table stakes run as a non-eng track, the Slack-approvals protect line, routing-as-pricing-lever, and board-metric hygiene."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "Several genuine second-order moves — 'sync that isn't close-proof is worse than no sync' (derived from Greenfield's close-day churn), CSV-export usage as a churn-predicting pain surface to convert, 'Bet 1 first-among-equals but Bet 2 ships sooner' — though the core two-bet conclusion is heavily telegraphed by the pack's own annotations."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Named design partners tied to a 90-day renewal clock, explicit GA gates (two partners through a real month-end close), a verify-before-locking assumption on NetSuite-vs-Intacct order, and an explicit tiebreak rule ('if forced to either/or, ERP sync wins') — a team could start Monday."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "BLUF one-sentence bet, ~3 pages inside the stated band, every section earns its place, conclusions findable in one pass; this is the rare advisory doc a director would forward unedited."
+          }
+        },
+        "quality_sum": 22.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Uniform single voice with dense cross-section callbacks (the CSV pain-surface thread recurs coherently in Situation, Bet 1, and the kill-list) and no persona residue or roundtable seams — reads like one mind that planned the whole argument before writing, which fits a large thinking budget; though the uncaught 98-vs-105 arithmetic slip slightly argues against exhaustive verification, so A4-with-strong-synthesizer is the runner-up.\"",
+        "overall_note": "An excellent deliverable: it does exactly what the brief begged for — two bets, a real kill-list with reasoning, an opinionated takedown of the vanity metric and the enterprise mirage — and adds execution-grade gates (close-proof GA, Tindall as design partner against the renewal clock). Held off perfect marks by one numeric overclaim and by the fact that much of its synthesis rides on conclusions the signal pack's own annotators had already drawn; its best original contributions are the close-proof gate, the protect-line for Slack approvals, and the SOC 2 background-track carve-out. 22.5/25."
+      },
+      {
+        "task": "p03",
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "Nearly every claim traces cleanly to the reference (38%/22% volume skew, ~$160k cluster math, Bellweather 40→18, assumptions tagged), but 'ERP at 98 tickets, more than routing (61) and OCR (44) combined' is arithmetically false (61+44=105), a slip a careful reviewer flags — otherwise 4-to-5 level precision incl. the subtle SOC2-creep and CSV-usage-inversion points."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantively done, plus material additions the brief never hinted at — Slack approvals as a protect surface, SOC2/SSO as a background track outside the two bets, the close-cycle reliability GA gate, self-serve repricing, and fixing the board-deck vanity metric."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious moves beyond the pre-chewed annotations: 'sync that isn't close-proof is worse than no sync' (tied to Greenfield's close-day churn), 'sync without routing makes us a worse Competitor A', routing-led onboarding to attack dabbler lapse, and the explicit either/or tiebreak; stops just short of a full problem reframe since the mirror-image read was seeded by product marketing."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Quarter-by-quarter sequencing with explicit gates, named design partners (Tindall's 90-day renewal as a live deadline), a stated tiebreak rule if capacity forces either/or, and tagged verify-before-locking assumptions; loses half a point because success measures beyond 'NRR back above 100%' and relative effort claims are thin."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "BLUF one-sentence bet plus the two-bet summary on page one, within the 2–3 page band, every section earns its place, conclusions findable in one pass, and memorable forwardable lines ('you can't expand a bucket that's draining out the back')."
+          }
+        },
+        "quality_sum": 22.5,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "One seamless authorial voice with aphoristic compression and dense cross-file ledger work (ticket IDs, exact ARR sums, churn names woven into gates) but zero committee seams — no perspective-tagged residue, no redundant section overlap, no 'on one hand' hedging you'd expect from a simulated roundtable or real multi-agent merge. The depth of pre-planned structure (bets/protect distinction, gate logic, either/or tiebreak) smells like a long private thinking budget rather than a plain one-shot.",
+        "overall_note": "A genuinely strong advisory deliverable: it does the job the brief actually asked for (synthesis with a spine, explicit kill-list, willingness to discount loud inputs) rather than summarizing. The single deduction of substance is the 98-vs-105 'combined' arithmetic error in the Situation section; the conclusion survives it, but it's the one claim that fails careful review. 22.5/25."
+      },
+      {
+        "task": "p11",
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every technical claim checks out against the spec (visibility-timeout-vs-3-6-min generation, at-least-once semantics, delivery_id retry contract), assumptions tagged, and it correctly handles the genuinely subtle points — ingestion-lag freshness as a design/ops choice rather than a testable property, and tz-data version drift as a regression source."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive, all major planted risks (dup delivery, DST/month-end math, late-landing data, partial-status semantics) plus unhinted material items (tz-data pinning, canary schedule, prod reconciliation detectors); only the spec's third open question, internal artifact retention, goes unaddressed."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several non-obvious, problem-specific connections — visibility timeout shorter than worst-case generation, same-delivery_id as the customer's dedup contract worth an explicit assertion, risk #7 interacting with #1 — and the 'freshness is operated, not tested' move genuinely reframes a top-3 risk out of the QA budget."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "A squad could start tomorrow: named tools (localstack, fake-gcs-server, httptest), per-PR vs nightly vs prod gates with timing budgets, canary-gated ramp, named alerts, and honest deferrals — falls just short of a crisp consolidated list of decisions-needed-by-when (e.g. §5 status semantics, freshness policy are flagged but scattered)."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the requested structure, within the ~800-1,200-word band, ranked tables as invited, a tight 'Net' closer; the risk-table cells are dense enough to slow one-pass scanning, keeping it just under forward-unedited territory."
+          }
+        },
+        "quality_sum": 23,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "One uninterrupted authorial voice with a single guiding principle ('cheapest level that can exercise the failure mode') threaded consistently from intro to the closing 'Net' line, plus tightly cross-referenced second-order interactions (risk #7 'interacts with #1', visibility timeout as 'early warning for #1') — the kind of deep, globally coherent risk web that extended solo reasoning produces, with none of the perspective seams, redundant restatements, or breadth-over-cohesion residue that persona-roundtable (A3) or real multi-agent (A4) synthesis tends to leave, and more compression and trap-spotting than a typical one-shot (A1).",
+        "overall_note": "An excellent advisory deliverable: it finds all the spec's planted traps (visibility timeout vs generation time, DST/month-end math, ingestion lag, undecided partial-status semantics), assigns each to the cheapest layer that can actually exercise it, and is unusually honest about what is operated rather than tested. The only real gaps are the unaddressed artifact-retention open question and slightly dense table prose. 23/25 is earned against absolute anchors, not curved."
+      },
+      {
+        "task": "p11",
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound throughout — visibility-timeout-vs-3-6-min-generation redelivery, DST/day-31/last-day edge cases, 4xx-as-destination-failure all match the spec; assumptions tagged; only the idempotency mechanism itself is deferred rather than resolved, keeping it just shy of a clean 5."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive, plus unrequested material a senior reviewer would endorse (cross-tenant signed-URL authz, tz-data version pinning, canary schedule, prod duplicate/missed-run detectors); minor gaps: artifact-retention open question and email-path testing barely touched."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several non-obvious, spec-specific findings — duplicates 'happen by default' from the timeout/replica interaction, ingestion-lag truncation framed as 'cannot be tested away, it's a design choice', delivery_id-on-retry identified as the customer's dedup contract, herd-interacts-with-#1 second-order effect."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Named tooling (localstack, fake-gcs-server, httptest), concrete test cases, merge/nightly/pre-release/prod gate placement, explicit decision points (§5 status semantics, freshness policy) and prod success signals; effort stated qualitatively rather than costed."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the ~800–1,200 word band, mirrors the requested section structure exactly, two welcomed tables, consistent risk numbering cross-referenced end-to-end, tight 'Net' closer; density of the layer table is the only friction."
+          }
+        },
+        "quality_sum": 22.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Single seamless authorial voice with globally consistent cross-referenced risk numbering and zero persona/section seams — no roundtable residue (no 'the QA view / the security view' framing) — but a trap-catching density (visibility timeout, tz-data pinning, delivery_id contract) that feels like extended deliberation rather than a plain one-shot.",
+        "overall_note": "A genuinely strong deliverable: it finds every trap the spec plants (at-least-once queue + too-short visibility timeout, DST/month-end time math, ingestion-lag truncation, undecided partial-status semantics), assigns each risk to the cheapest layer that can actually exercise it, and is honest that data freshness and herd behavior are operated rather than tested. Deductions are at the margins — idempotency strategy deferred rather than proposed, artifact retention and email path thin, effort uncosted. 22.5/25."
+      },
+      {
+        "task": "p11",
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Visibility-timeout (5m) vs 3-6m runtime arithmetic correct and rightly framed as redelivery-by-design; only blemish is presenting DST fall-back fire-twice semantics ('two distinct correct keys') as settled when it's a contestable product call."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive, the three open spec questions resolved with tagged assumptions, plus material additions the brief didn't hint at: cross-tenant leak risk via assume-role/signed URLs, freshness watermark, no-flaky-skip policy."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "'Risks 1-2 are structural — expected behavior of the system as drawn' plus the timeout<runtime catch reframe duplicates from a test target into a design defect; 'you cannot test away ingestion lag' correctly converts Risk 3 to product rule + monitor."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Gate table (PR/merge-queue/nightly/staging/prod), assumptions as explicit decision points with 'if they change, the tests change', effort honesty ('the one expensive test we insist on') — just short of full what-would-change-my-mind treatment."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight ~1,100-1,200 words at top of band, risk numbers threaded through every layer, one-sentence closer; risk-table cells are heavily compressed, keeping it just under forward-unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Single uniform, extremely compressed authorial voice with zero redundancy — risk numbers cross-referenced consistently through every later section and derived numerical findings (timeout arithmetic, DST key edges) reading as one continuous reasoning chain; no persona residue or committee seams that a roundtable or real multi-agent merge usually leaves.",
+        "overall_note": "Genuinely excellent risk-weighted strategy: it finds the spec's embedded design defect (visibility timeout shorter than worst-case runtime), treats duplicates and calendar math as structural rather than incidental risks, resolves the spec's open questions with tagged assumptions, and is honest about what production monitoring replaces. Only soft spots are one contestable DST semantics claim and density at the top of the length band. 23.5/25."
+      },
+      {
+        "task": "p11",
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "No errors found on careful review; correctly handles the subtle planted traps — visibility timeout (5 min) < worst-case runtime (3–6 min) means redelivery 'by design', DST fall-back's repeated wall-clock time yielding two distinct idempotency keys, and converting the spec's three open questions into tagged [ASSUMPTION]s rather than silently guessing."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantively covered, plus material considerations the brief never hinted at: data-leak/wrong-destination risk from assume-role + 7-day signed links, the flaky-skip hard line, and the data-freshness buffer as a missing product decision a senior reviewer would agree belongs."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Multiple non-obvious findings with a genuine reframe: duplicates are the system's *expected* behavior as drawn ('structural' risks), and Risk 3 (stale data) 'is a product rule plus a production monitor, not an offline correctness test — you cannot test away someone else's ingestion lag'."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Start-tomorrow concrete (table-driven DST cases, fake-clock year sim, forced-redelivery test, gate placement per CI stage) with costs honestly stated (merge-queue if slow) and decision points via assumptions; falls just short of 5 — success measures are alert-shaped but no explicit effort sizing or what-would-change-my-mind beyond assumption invalidation."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight, every section earns its place, conclusions findable in one pass with a one-sentence closer; sits at/marginally over the top of the 800–1,200 word band and the risk-table cells are dense, keeping it shy of unedited-forward 5."
+          }
+        },
+        "quality_sum": 24,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single ruthless through-line in one unified voice: risks are numbered once and cross-referenced everywhere (unit bullets tagged 'Risk 1/2/3...'), the whole document compresses into one closing sentence, and there is zero perspective-stitching residue (no QA-voice vs SRE-voice seams, no redundant restatement across sections). That tightly integrated, derivation-heavy precision — e.g., connecting two far-apart spec facts (visibility timeout vs report runtime) into the #1 risk — reads like one mind iterating deeply, not a synthesis of parallel personas or agents, and is above typical one-shot polish.",
+        "overall_note": "An exceptionally strong test strategy: it found every trap deliberately planted in the spec (timeout/runtime mismatch, DST/calendar math, ingestion lag, partial-vs-failed ambiguity, lease race), resolved the spec's open questions into explicit tagged assumptions, allocated effort by the brief's stated risk philosophy, and made its non-coverage genuinely defensible decisions. Docked half-points only for borderline length-band overage/table density and for lacking explicit effort sizing and success thresholds. 24/25 is earned against absolute anchors, not curved."
+      },
+      {
+        "task": "p11",
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Technically sound on the subtle points (DST nonexistent/ambiguous times, dedup enforced at delivery commit not generation start, occurrence-based idempotency key, why two runs get different delivery_ids); only flaw is a minor mislabel mapping the missed-run alert to risk #5 (delivery exhaustion) when it really catches scheduler/lease failure."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive, every out-of-scope cut paired with a 'monitor instead' compensator, and it surfaces material items the brief didn't hint at: the three open spec questions reframed as preconditions ('design seams'), a data-as-of freshness contract, and the staged ramp as the load-bearing integration test."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Derives from the spec's own numbers that duplicates are the steady state, not a rare race (5-min visibility vs 3–6-min generation), and the reframe that the idempotency-key decision neutralizes two risks at once — making the lease defense-in-depth — would genuinely change how the squad sequences the work."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Concrete gates (PR <5 min zero-network, nightly, ramp gate on clean duplicate/missed-run signal), six day-one alerts tied to ranked risks, explicit decision points to pin at sign-off, and tagged-reversible assumptions — a squad could start tomorrow."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Tight, matches the brief's section structure exactly, conclusions findable in one pass; estimated ~1,300–1,400 words runs modestly over the 1,200 cap and the prose density occasionally crowds the page, keeping it just short of forward-unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single seamless authorial voice with tightly chained quantitative reasoning (visibility timeout vs generation time → 'steady state', idempotency-at-commit derivation) and aphoristic compression ('gating on it is theater', 'we are our own first customer') — depth without any perspective-stitching seams, hedged multi-viewpoint residue, or the breadth-with-redundancy texture of multi-agent synthesis.",
+        "overall_note": "Genuinely excellent deliverable: it does what the brief asked (risk-ranked, honest about cuts, level-of-test reasoning) and adds defensible second-order moves — treating the spec's open questions as correctness preconditions, monitoring as the substitute for untestable surfaces, and the rollout ramp as part of the test strategy. Only deductions: one minor alert-to-risk mismatch and a modest overrun of the stated length band."
+      },
+      {
+        "task": "p11",
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Handles the genuinely subtle points correctly (DST nonexistent/ambiguous times, occurrence-based idempotency key with dedup enforced at delivery commit not generation start, 5-min visibility vs 3-6-min generation making duplicates steady-state); only nit is mapping the missed-run alert to risk #5, which is delivery-retry exhaustion rather than a scheduler no-fire."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantively covered, every spec §5 open question is engaged as a 'design seam', and out-of-scope items each name a production monitor as compensation; small gap is that 'missing file because the scheduler never fired' appears only as an alert, not as a ranked risk row."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Multiple reframing findings derived (not restated) from the spec: duplicates are the steady state for big reports, the lease is defense-in-depth once the idempotency key is right, the customer is the backstop for self-announcing failures, the internal ramp is the real integration test, and rowcount anomaly is the only available signal for the silently-wrong-file top risk."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Concrete and sequenced (blocks-merge vs nightly vs production, day-one alerts numbered against the risk ranking, green-nightly and clean-duplicate-signal ramp gates, three decisions explicitly pinned before coding); assumptions tagged reversible but no full 'what would change my mind' treatment."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Tight, navigable, every section earns its place and conclusions land in one pass, but the document runs an estimated ~1,300-1,400 words, modestly over the 800-1,200 band, and the bold/em-dash density is heavy."
+          }
+        },
+        "quality_sum": 22.5,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single, unwavering argumentative voice with deeply integrated cross-references (risk numbers reused verbatim in the alert list, the idempotency decision threaded through three sections) and dense second-order reasoning derived from the spec's numbers — the signature of one long private deliberation compressed into one pass, with none of the perspective seams, coverage redundancy, or tonal stitching that persona-roundtable (A3) or real multi-agent (A4) outputs tend to leave.",
+        "overall_note": "A genuinely excellent strategy document: it converts the spec's raw facts into ranked, mechanism-level risks, makes the load-bearing design decisions explicit preconditions of the test plan, and calibrates effort per layer with honest reasoning for every cut. Its only real demerits are a modest overshoot of the stated length band and one minor risk-numbering mismap; otherwise this is near the ceiling of what the brief asked for."
+      },
+      {
+        "task": "p11",
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every technical claim checks out against the spec (5-min visibility vs 3-6 min generation correctly read as re-delivery-by-design, stable delivery_id on webhook retries, 4xx-per-destination semantics), and it correctly handles the contested points by flagging the §5 open questions as design gates rather than guessing."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive, plus material concerns the brief never hinted at that clearly belong: SSRF on webhook AND cloud-storage targets, CSV formula injection, signed-URL scope/TTL, production reconciliation, synthetic canary, ingestion-lag freshness monitoring."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious findings — occurrence-id (schedule_id + scheduled_instant) as the dedup spine reused from integration tests through prod detection, module-specific coverage floor over a global percentage, read-delay as a product (not test) mitigation for lag — though no single finding fully reframes the problem."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Layer-by-risk mapping, merge/nightly/pre-release/prod gate tiers, a concrete dedup-key recommendation, tagged assumption on load, and success measures (canary, reconciliation, dup-detector); only an explicit what-would-change-my-mind is missing."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight, within or barely over the 800-1,200 word band, ranked table up front, every section earns its place with a one-line through-line close; slightly dense bolding is the only quibble."
+          }
+        },
+        "quality_sum": 23.5,
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single argumentative spine in one consistent voice — 'the ordering reflects one judgment', 'the through-line' — with concepts like the occurrence id introduced once and reused coherently across risk, coverage, CI, and production sections. That cross-section consistency and density without any perspective seams, redundancy, or persona residue reads like one model reasoning deeply (extended thinking), not a synthesis of a roundtable or a one-shot.",
+        "overall_note": "An exceptional deliverable: it catches every trap planted in the spec (visibility-timeout vs generation time, dual-replica double-enqueue, DST/calendar math, ingestion lag, fire-and-forget email) and converts each into a test-at-the-cheapest-layer decision rather than a checklist. The opening move — declaring the §5 open questions design gates that block testing — is exactly the eng-lead-level judgment the brief asked for. Held just under perfect only because no finding outright reframes the problem and the explicit reversal criteria are implied rather than stated."
+      },
+      {
+        "task": "p11",
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every load-bearing claim checks out against the spec — visibility timeout (5m) vs generation time (3-6m) correctly identified as duplicates-by-design, occurrence-id idempotency recommendation sound, DST/last-day calendar math, stable delivery_id on webhook retries, ingestion-lag window risk all handled correctly, including the spec's contested open questions, with no errors found on careful review."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantively covered plus material the brief never hinted at (SSRF on customer URLs, CSV formula injection, cross-tenant authz, production reconciliation/canary); only gap is the schedule-edit/pause-after-enqueue lifecycle semantics, which get no explicit test."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious moves — the opening reframe that §5 open questions are design blockers gating the test plan, the module-scoped (not global) coverage floor, the read-delay product mitigation for ingestion lag, and the synthetic canary — with second-order effects engaged throughout; the strongest find (timeout vs generation time) is handed by the spec, keeping it just shy of a full reframe."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "A squad could start tomorrow: per-risk layer assignments with named tooling (LocalStack, frozen/virtual clocks), explicit merge/nightly/pre-release/production gate tiers, a recommended dedup key, success measures (reconciliation, duplicate-detector alert, canary) and a tagged [ASSUMPTION]; lacks only an explicit what-would-change-my-mind/effort-sizing pass for a clean 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the requested sections, within the 800-1,200 word band, ranked table, conclusions findable in one pass, every section earns its place and a closing through-line; prose is dense and heavily bolded, which a few directors would lightly edit before forwarding."
+          }
+        },
+        "quality_sum": 23,
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single tightly-planned through-line — the risk numbering (1-7) is threaded consistently from the table through every layer section into the monitoring plan, and the doc opens with a meta-judgment ('these are design problems, not test problems') that reads like global pre-planning. No multi-voice seams, no synthesis residue, no breadth-over-depth flattening typical of roundtable or party-mode outputs; the compression-to-insight ratio suggests one model that thought long before writing rather than a plain one-shot.",
+        "overall_note": "Genuinely excellent deliverable, near the ceiling of the rubric. It does exactly what the eng lead asked — honest risk ranking with reasoning, cheapest-layer-that-catches-it test placement, explicit out-of-scope decisions, and proportionate CI gates — and adds defensible material the brief didn't request (security suite, production reconciliation, canary). The 23/25 reflects absolute anchors: small gaps are the untested schedule-edit/pause-mid-flight lifecycle, no explicit what-would-change-my-mind, and prose density. Strongest single feature is that priorities are argued, not asserted: every ranking cell carries a mechanism ('SQS is at-least-once... message re-appears mid-run by design')."
+      }
+    ]
+  }
+}

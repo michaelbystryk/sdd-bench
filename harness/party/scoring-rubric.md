@@ -168,7 +168,7 @@ point rescore together with anchor discussion.
 
 ---
 
-## Scrub grep list (v2 — grows by logged addition)
+## Scrub grep list (v2.1 — grows by logged addition)
 
 `\b(Mary|John|Sally|Winston|James|Linus|Amelia|Bob|Paige|BMad)\b|bmad|party.?mode|\b(panel|roundtable|facilitator)\b|analyst agent|architect agent|Claude Code|claude-(fable|opus|sonnet)|_bmad-output|\.claude/`
 
@@ -178,3 +178,9 @@ point rescore together with anchor discussion.
   boundaries; unambiguous tells (bmad, party-mode, claude-*, paths) stay as substrings.
   Implemented in `harness/party/scripts/scrub.sh`. Real tells still caught — P8 A4's
   "the roundtable (Amelia, Winston)…" was flagged and hand-scrubbed under this list.
+- **v2.1 (2026-06-10):** dropped `panel` — it false-matched legitimate UI/dashboard usage
+  ("pool-health **panel**" in P9 A3, "control panel" etc.). The party tells are persona
+  names + `roundtable`/`facilitator` + `bmad`/`party-mode`; `panel` as a deliberation tell
+  is left to manual review. (A4 process-note leaks caught so far: P8 "the roundtable
+  (Amelia, Winston)…", P2 "produced from a roundtable of independent perspectives
+  (Architect, Senior Engineer, Product…)" — both hand-scrubbed.)

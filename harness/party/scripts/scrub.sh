@@ -29,7 +29,7 @@ HARNESS="${SDD_BENCH_HARNESS:-$HOME/dev/sdd-bench}"
 # substrings don't false-positive (e.g. Mary inside "primary"/"summary", which the
 # P5 materials use heavily). Unambiguous tells (bmad, party-mode, claude-*, paths)
 # stay as substrings.
-TELLS='\b(Mary|John|Sally|Winston|James|Linus|Amelia|Bob|Paige|BMad)\b|bmad|party.?mode|\b(panel|roundtable|facilitator)\b|analyst agent|architect agent|Claude Code|claude-(fable|opus|sonnet)|_bmad-output|\.claude/'
+TELLS='\b(Mary|John|Sally|Winston|James|Linus|Amelia|Bob|Paige|BMad)\b|bmad|party.?mode|\b(roundtable|facilitator)\b|analyst agent|architect agent|Claude Code|claude-(fable|opus|sonnet)|_bmad-output|\.claude/'
 
 die() { echo "ERROR: $*" >&2; exit 2; }
 

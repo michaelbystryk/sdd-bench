@@ -1,0 +1,274 @@
+{
+  "summary": "P-track blind rubric scoring: Mythos (fable) raters score scrubbed advisory deliverables + guess the arm",
+  "agentCount": 8,
+  "logs": [],
+  "result": {
+    "count": 8,
+    "results": [
+      {
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Arithmetic on the two leaks (~70 vs ~18 per 100) is right, every causal claim is hedged appropriately ('inferred from funnel totals, not observed'), and it correctly handles the contested points: templates lift as possible selection bias, power users as survivorship bias, and the can't-vs-won't distinction the brief never names."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive, plus material the brief didn't hint at: the can't/won't capability-vs-value split, the pre-connect-bounce caveat against its own favored theory, a Wizard-of-Oz concierge test, and an explicit decision-logic paragraph sequencing the tests."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The 4-day median read as 'the signature of an off-platform hand-off' (waiting on IT/credentials) rather than UX friction is a genuine reframe — it converts the debate from wizard-vs-editor-vs-power into 'productize assistance, not editor,' which would change the buyer's decision."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Six tests each mapped to a named assumption with validate/invalidate readouts, rough effort (~3 days to instrument, ~1 week diagnostics) and explicit what-would-change-my-mind ('if test 1 shows pre-connect bounce, reopen H3/H4'); only the success thresholds are qualitative ('a meaningful share', 'far higher') rather than numeric."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the length band once tables are excluded, conclusions findable in one pass, every section earns its place; the hypothesis-table rationale cells are compressed to near-telegraphic shorthand, the one thing a director might loosen before forwarding."
+          }
+        },
+        "quality_sum": 24,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No persona theater, process narration, or meta-commentary; no redundant framing or restated brief; tables and decision logic all carry content. Density is uniformly high.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single argumentative spine — the off-platform hand-off insight — is introduced in the framing and then consistently load-bearing through the hypothesis ranking, the A1–A5 ordering, and the test sequencing, with tight cross-referencing (tests cite assumption IDs, decision logic cites test numbers). That kind of globally coherent, pre-planned cross-linked structure reads like one model that worked the whole problem out before writing, not a synthesis of separate persona contributions (no residual multi-voice seams or coverage-by-committee padding) and richer than a typical plain one-shot.",
+        "overall_note": "Excellent discovery doc: it disagrees with all four loud internal voices on evidence, quantifies the two leaks, reframes the problem as a capability gate hitting the majority persona, names the bets that would hurt (including the one that undermines its own favorite theory), and gives a sequenced, falsifiable 1–2 week plan with explicit decision points. Slight softness only in qualitative success thresholds and compressed table prose."
+      },
+      {
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Arithmetic and inferences all check out (65% non-technical, ~30/~12 funnel, survivorship bias on power users correctly called), claims carefully qualified — but 'connecting a data source is the one genuinely engineering-shaped task' overstates: Google Sheets/Airtable connections need no IT/firewall, a nuance a domain reviewer would flag against H1's universality."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive, plus unrequested material a senior reviewer would endorse (can't-vs-won't dichotomy, concierge Wizard-of-Oz, fake-door); misses the cheapest slice of all — funnel by data-source type (Sheet vs Postgres), which directly tests its own central claim."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "'The 4-day median is not a UX-friction number measured in clicks — it is the signature of an off-platform hand-off' plus the 'majority persona hits a minority-skill gate' reframe would genuinely change the buyer's decision away from all three loud internal proposals."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Six tests each with method, rough effort (~3 days to instrument), explicit validate/invalidate readouts, sequencing ('run tests 1–3 first, pure diagnostics, ~1 week'), and a closing decision tree including what-would-change-my-mind ('if test 1 shows pre-connect bounce, reopen H3/H4')."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the length band (tables exempt), every section earns its place, conclusions findable in one pass; prose is dense with heavy bolding and cross-reference labels (H1–H5, A1–A5) that demand close reading — forwardable, but a director might lightly trim."
+          }
+        },
+        "quality_sum": 23.5,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No process narration, no persona theater, no methodology scaffolding; every table and label does analytic work, and length stays inside the brief's band.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single tightly-woven argument chain (leak decomposition → engineer correlation → 4-day handoff signature) with consistent cross-referenced IDs (H1–H5, A1–A5) threaded from framing through decision logic — no synthesis seams, no per-stakeholder balancing residue you'd expect from simulated or real multi-persona production; the precision of derived quantities (~70/~18 per 100, ~65% non-technical) reads like one extended deliberate reasoning pass rather than a plain one-shot.",
+        "overall_note": "A genuinely excellent discovery doc: it correctly refuses all three loud internal theories with evidence-based rankings, names the instrumentation blind spot as the first thing to fix, and ships a sequenced, falsifiable test plan. The one real soft spot is treating 'connect a data source' as uniformly technical when the product explicitly supports Sheets/Airtable — slicing the connect funnel by source type would have been the cheapest and most decisive diagnostic and is absent."
+      },
+      {
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every factual claim traces to the reference and the subtle points are handled well (engineer-as-proxy flagged as [ASSUMPTION], '4-day median is a survivor's clock', templates confound called 'worth ~zero as evidence'); only blemishes are tiny imprecisions like '60% ops/founder' (reference implies ~65%) and 'none requiring a build' while test #4 is an A/B routing change."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantively delivered, plus unhinted material additions: the survivorship bias in the 4-day median, the publish→2nd-person drop as a possibly distinct sharing failure, and the outbound-agent/tunnel architectural option — though the free-tier 1-tool/2-editor constraint on the sharing metric goes unexamined."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The reframe — 'a network-admin task we've handed to someone without the permissions or vocabulary to do it', with the 4-day lag read as cross-team round-trip latency rather than UI friction — reconciles all the conflicting stories at once and directly changes the buyer's decision (fund none of the three teams; resolve the infra-vs-UX fork first)."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Six tests each with explicit validate/invalidate readouts, sequencing ('run #1 and #2 first — together they settle the most expensive fork'), and a decision rule for next week; docked slightly because effort/cost is asserted ('none requiring a build', 1–2 weeks) rather than honestly costed — the A/B in #4 needs build work and likely more than two weeks of traffic for a 'material' activation read."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the length band (tables excluded), sections map exactly to the brief, bolded conclusions findable in one pass, every section earns its place — but a director would strip the self-referential method note and the ✅/❌ emoji headers before forwarding."
+          }
+        },
+        "quality_sum": 23,
+        "ceremony_tax_flag": true,
+        "ceremony_tax_why": "The closing method note ('pressure-tested by four independent perspectives (Product, Analysis, UX, Architecture)... they converged... independently demoted') is pure process narration that adds zero decision value for the reader — the deliverable advertises its own production ritual instead of letting the analysis stand.",
+        "arm_guess": "A4",
+        "arm_confidence": "med",
+        "arm_tell": "The method note names a specific four-role roster — Product, Analysis, UX, Architecture — that matches a real multi-agent persona party (PM/Analyst/UX-expert/Architect), and claims the perspectives 'independently' converged/demoted theories, language that reads like a synthesis step over genuinely separate agent outputs rather than one model role-playing; a single-model simulation prompted to 'synthesize a clean doc' would more often omit the roster entirely.",
+        "overall_note": "A genuinely excellent discovery doc: it reframes the problem (connection step as a cross-functional infrastructure wall, engineer correlation as proxy, 4-day median as survivorship-biased round-trip latency), explicitly demotes all three loud internal voices with stage-of-funnel reasoning, isolates the single most expensive belief (infra unreachability vs UX confusion), and pairs every assumption with a cheap test carrying explicit validate/invalidate criteria plus a one-line decision rule. Deductions are at the margins: slightly overstated cheapness of the A/B test, a couple of numeric imprecisions, and a ceremony-flavored method note a director would delete. Quality 23/25."
+      },
+      {
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Handles the subtle points correctly: flags the 4-day median as 'a survivor's clock' computed only over eventual connectors, treats the engineer correlation as proxy-not-cause with an explicit [ASSUMPTION] tag, and correctly discounts the templates signal as self-selected; no claims misstate the reference."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantively covered, plus implicit concerns the brief only gestured at: separates the publish→2nd-person drop as a possibly distinct collaboration failure, raises the architectural outbound-agent/tunnel option, and adds a de-confounded templates test; just short of a 5 since most threads originate in the reference doc."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Central reframe — the connect step is 'a network-admin task we've handed to someone without the permissions or vocabulary to do it' — unifies all three signals (4-day lag, engineer skew, ticket volume) and would change the buyer's decision; 'a wizard that leads into a closed port is still a wall' and 'editor redesign polishes a room most users never reach' are genuinely non-obvious demotions of the loud voices."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Six tests each with explicit validate/invalidate criteria, sequencing ('run #1 and #2 first — together they settle the most expensive fork'), and a decision rule for next week; slight over-claim that none require a build — test #4 (routing half of signups into a pre-connected demo path) is a real product change, not a 1–2-week no-build check."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight, within the length band (tables excluded per brief), conclusions findable in one pass, every section earns its place — but the trailing method note ('pressure-tested by four independent perspectives...') is process residue a director would delete before forwarding."
+          }
+        },
+        "quality_sum": 23.5,
+        "ceremony_tax_flag": true,
+        "ceremony_tax_why": "The closing 'Method note' explicitly narrates the production process — 'pressure-tested by four independent perspectives (Product, Analysis, UX, Architecture)... they converged... independently demoted...' — which is persona machinery leaking into a deliverable that was supposed to be a standalone discovery doc. The substance carries no other ceremony (no role-attributed sections, no transcript residue), so the tax is small but present.",
+        "arm_guess": "A4",
+        "arm_confidence": "med",
+        "arm_tell": "The method note names four distinct persona perspectives (Product, Analysis, UX, Architecture) and reports actual deliberation dynamics — convergence on the connection wall plus a deliberately-unresolved fork — which reads like a report of a real multi-agent session's outcome rather than a one-model affectation; a roster of PM/Analyst/UX/Architect maps onto a real party-mode agent lineup. A3 is the runner-up (a simulated roundtable could also append such a note), but A3 synthesis prompts tend to strip the personas entirely; keeping a converged-verdict footer over an otherwise clean single-voice doc fits an orchestrated multi-agent compile step.",
+        "overall_note": "A genuinely excellent discovery doc: it sharpens the problem (activation, not retention), produces one decision-changing reframe (the connect step as a cross-functional infrastructure wall, with 'engineer' as proxy), correctly handles survivorship and self-selection traps in the data, and delivers a sequenced, falsifiable test plan with an explicit decision rule. The only blemishes are the persona method-note footer (process leakage) and a mild 'no build required' over-claim for the A/B test. 23.5/25."
+      },
+      {
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Inferences are sound and explicitly tagged ([ASSUMPTION] on the ~12-14 figure); the 4-day-median-as-out-of-app-dependency read and templates selection-bias handling are correct — only nit is '~80% non-technical' folds founders and other/blank into 'non-technical' a bit loosely."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive, plus material additions the brief didn't hint at: the two-leak decomposition (land→connect vs connect→publish), the 'second wall in the editor' risk (A3), and the concierge/sandbox test."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Genuine reframe that would change the buyer's decision: 'a wizard doesn't open a firewall port' — the dominant leak is an access/credentials problem outside the UI, so all three loud-voice proposals target the wrong leak; survivorship bias on power users called out."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Six tests ordered cheapest-first with day-level effort, explicit validate/invalidate criteria each, assumption-to-test mapping, and a closing decision rule ('if Steps 0-2 confirm... the quarter goes to removing or deferring the data gate')."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the ~800-1,200 word band (table excluded), tight, conclusions findable in one pass; only the out-of-numeric-order A1/A3/A2/A4 listing in Riskiest assumptions reads slightly awkwardly."
+          }
+        },
+        "quality_sum": 24,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No process scaffolding, persona residue, redundant restatement, or header bloat; every section does work and the doc stays inside the length band — the hypothesis table is functional, not decorative.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single coherent first-person analytic voice ('I'm deliberately disagreeing with two of the loudest voices') with deeply cross-threaded contingencies — the H4/editor risk recurs consistently in framing, assumption A3, and tests 0 and 4 — which signals one mind doing long pre-planning, with no roundtable seams, no persona attributions, and none of the section-stitching redundancy typical of multi-agent synthesis.",
+        "overall_note": "Near-ceiling deliverable: it converts the brief's four conflicting stakeholder stories into a falsifiable, sequenced discovery plan, correctly identifies that the debate targets the smaller downstream leak, and pre-registers what result would overturn its own top hypothesis. Deductions are limited to a loose 'non-technical' aggregation and minor assumption-ordering awkwardness; a director could forward this with at most cosmetic edits."
+      },
+      {
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "All inferences trace to the reference and are qualified (e.g., '~12-14 reach a tool a second person opens... [ASSUMPTION]'); handles contested points like templates selection bias and power-user survivorship correctly; only nit is the slightly loose '~80% of signups are non-technical (ops/founder)' which folds the 15% other/blank in."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive, plus implicit concerns the brief only gestures at: the tire-kicker ceiling (A4), the second-wall risk (fixing connection may just move the cliff to the editor), and an explicit decision rule for the quarter."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Genuine reframe that would change the buyer's decision: two distinct leaks with the debate aimed at the smaller one, the 4-day median read as the 'signature of an out-of-app dependency', and 'a wizard doesn't open a firewall port' — Sales has the right symptom, wrong cure."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Six tests sequenced cheapest-first with effort estimates ('~1 day, query only'), each mapped to a named assumption with explicit validate/invalidate readings, and a closing decision rule stating exactly what result reallocates the quarter."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Roughly ~1,150-1,200 words ex-table, within band; every section earns its place and conclusions land in one pass; falls just short of forward-unedited due to dense parenthetical/italic formatting in the discovery plan."
+          }
+        },
+        "quality_sum": 23.5,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No persona residue, no process narration, no redundant executive summary or restated-brief padding; structure maps directly to the requested deliverable sections and the document is tight relative to the length band.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Globally-revised structure rather than linear generation: assumptions are deliberately listed out of label order ('A1, A3, A2, A4 — roughly in order of damage'), a Step 0 is inserted before Step 1, and sections cross-reference each other ('H4 matters more than I ranked it') — interlocking planning typical of an extended-thinking pass, with zero roundtable/persona artifacts that would suggest A3/A4.",
+        "overall_note": "A genuinely strong discovery doc: it correctly relocates the problem from the loudly-debated second leak (editor, power features) to the dominant land-to-connect leak, marshals four converging signals into an access-not-usability diagnosis, names the assumptions in order of damage, and pairs each with a cheap falsifiable test plus an explicit quarter-allocation decision rule. Held back from a near-perfect score only by minor numeric looseness (the ~80% non-technical claim) and slightly dense formatting in the plan section."
+      },
+      {
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Claims are precise and well-qualified (4-day lag 'looks like' an IT-ticket chase; template lift flagged as possibly selection; firewall issues 'not fixable by us at all' listed as a risk), and it correctly handles the contested points (H1/H2 confound, power-user survivorship). One unqualified inferential leap keeps it off 5: '~70% never reach the editor at all, because they never connect' — the reference never says connecting gates editor access; users could plausibly open the canvas with no source, so H5's dismissal is slightly over-asserted."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections substantive; every stakeholder theory is explicitly placed ('Whose theory' column), and it surfaces material considerations the brief didn't hint at — H2 (top-of-funnel intent dilution as connect's confounded rival), the 'is the firewall blocker even fixable by us' assumption, and the missing role-cut of the funnel as the cheapest first move."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Reframes the problem in a way that would change the buyer's decision: 'we are asking an ops person to do an engineer's job, alone, in their first session', plus the key second-order finding that H1 and H2 'look identical in the funnel but imply opposite quarters of work' — the whole plan is then built to separate them."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Five checks each scoped with time/effort and explicit validate-vs-invalidate readouts, explicit sequencing (#1/#2 this week, #3 in parallel, #4/#5 conditional on interview results), and a stated decision rule: 'If #1+#3 land on H1, the quarter is about a credential-free first win... not the wizard, the editor redesign, or the power features.'"
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the ~800–1,200 word band, tight, every section earns its place, conclusions findable in one pass (hypotheses table is genuinely compressive). Just short of 'forward unedited' — heavy bold/em-dash density and a couple of compressed asides ('the contest that matters') a director might lightly polish."
+          }
+        },
+        "quality_sum": 24,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No over-ceremony signals: no process narration, no persona/roundtable residue, no redundant scaffolding or filler sections; the single table is load-bearing and the document stays inside the requested length band.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single decisive first-person voice ('I'd push', 'my addition') with one argumentative thread — the H1-vs-H2 confound — woven coherently through all four sections (framing, ranking rationale, riskiest assumption #1, and the test designed to disambiguate). That deep cross-section integration with zero synthesis seams or persona-balancing reads like one long deliberation under a large thinking budget, not a merged roundtable. The 'Whose theory' column maps stakeholders but as targets of a unified argument rather than as voices, which argues against A3/A4; the density and ruthless prioritization exceed a typical plain one-shot (A1).",
+        "overall_note": "An exceptional advisory doc by absolute standards: it relocates the problem from 'onboarding is hard' to a credential/network capability gate, retires two loud-voice distractions with evidence rather than diplomacy, and designs the discovery plan specifically to separate confounded rivals (H1 vs H2) whose remedies point at opposite quarters. The only real flaw is one unhedged inference (connect gates editor access) used to dismiss the designer's theory. 24/25."
+      },
+      {
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "Analysis is sound and well-qualified (4-day lag read as access-chasing is flagged as a bet, not a fact), but the claim '~70% of accounts never reach the editor at all, because they never connect' is an unflagged product assumption — nothing in the reference says the editor requires a connected source, and it's used to dismiss H5."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive, every stakeholder theory mapped ('Whose theory' column), plus material additions the brief didn't hint at: the H2 intent-gate confound, the funnel-not-cut-by-role gap, and assumption 3 (a removed barrier may just move the stall downstream)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Decision-changing reframe: 'we are effectively asking an ops person to do an engineer's job, alone, in their first session,' plus the H1/H2 'identical in the funnel but imply opposite quarters of work' insight and 'a wizard doesn't hand someone DB credentials or open a firewall.'"
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Five timeboxed tests each with validate/invalidate criteria, explicit sequencing ('#1 and #2 first... only commit to #4/#5 once interviews tell you which gate is real') and a named decision point; falls just short of 5 for lacking quantitative success thresholds ('much higher rate' is unspecified)."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 800–1,200-word band (table excluded), tight, conclusions findable in one pass, ends with a forwardable decision sentence; heavy bold/em-dash density is the only thing keeping a director from sending it truly unedited."
+          }
+        },
+        "quality_sum": 22.5,
+        "ceremony_tax_flag": false,
+        "ceremony_tax_why": "No process narration, no persona voices or roundtable residue, no padding; the 'Whose theory' column is reader-serving attribution driven by the brief's four named voices, not ceremony.",
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single first-person analytic voice ('the reframe I'd push', '(none — my addition)') with reasoning threaded consistently across all four sections (the H1/H2 confound set up in framing, ranked in assumptions, and resolved by the plan) plus derived arithmetic ('~70% never reach the editor') — the cross-section coherence and compression suggest one model thinking long, with none of the synthesis seams or stakeholder-balancing residue typical of simulated or real multi-agent roundtables.",
+        "overall_note": "Genuinely strong deliverable: correctly relocates the problem to the connect gate, retires two loud distractions with evidence, invents the live rival hypothesis (H2) the brief's stakeholders missed, and builds the discovery plan specifically to disambiguate it. Main flaw is one load-bearing untagged assumption (editor unreachable without a connection) used to demote the designer's theory; mitigated slightly by test #1's invalidation clause routing back to H5."
+      }
+    ]
+  }
+}
