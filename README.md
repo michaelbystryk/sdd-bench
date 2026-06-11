@@ -48,7 +48,7 @@ See [`PROJECT-BRIEF.md`](PROJECT-BRIEF.md) for full design — thesis, methodolo
 
 ## Second track: Party Track (P-track) — is BMAD party mode a masquerade?
 
-*Status: design locked 2026-06-09; briefs not yet authored.*
+*Status: complete — 11 tasks × 4 arms, 88 blind rater-guesses, full suite scored.*
 
 The main track found methodologies sell planning artifacts, not better programs. The
 P-track tests BMAD's purest artifact-free claim — **party mode**, the multi-persona
@@ -65,13 +65,17 @@ control. Design: [`PARTY-TRACK-BRIEF.md`](PARTY-TRACK-BRIEF.md) · tasks:
 [`tasks/party/README.md`](tasks/party/README.md) · rubric:
 [`harness/party/scoring-rubric.md`](harness/party/scoring-rubric.md).
 
-**Pre-run finding (2026-06-09):** all 11 tasks are authored; the 6 planted-truth tasks
-were calibrated over two cold-pass rounds and **detection saturated** — a single plain
-Opus-4.8 pass (= the control arm) finds essentially everything the tasks plant, even after
-aggressive cue-burying. So party mode has **no recall headroom** to add value; the
-objective axis was re-roled to **precision (engineered decoys) + rubric + cost** as the
-discriminators, with recall as a floor. That's the masquerade thesis arriving on the
-objective axis before a single cell runs:
+**Result:** all four arms land within 0.34 pts/25 — inside rater noise. A4 (party mode)
+exactly ties A2 (extended thinking) at 22.98 and sits *below* A3 (persona prompt) at 23.20,
+while costing 3× more ($1.35 vs $0.44–0.52). 88 blind arm-guesses; party mode was correctly
+identified on 1 of 11 tasks. The multi-agent machinery is fully replicable by a single persona
+prompt at a third of the cost. The quiet winner is A2: same quality as the machinery, same
+cost as plain solo. Full rollup: [`analysis/party-findings/README.md`](analysis/party-findings/README.md).
+
+**Pre-run finding (2026-06-09):** the 6 planted-truth tasks calibrated over two cold-pass
+rounds; detection saturated before any arm ran — a single plain Opus-4.8 pass finds
+essentially everything the tasks plant. Objective axis re-roled to precision (engineered
+decoys) + rubric + cost as discriminators, with recall as a floor:
 [`analysis/party-findings/00-detection-saturation.md`](analysis/party-findings/00-detection-saturation.md).
 
 ## Coverage, cost & rankings
