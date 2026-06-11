@@ -3,10 +3,13 @@ export const meta = {
   description: 'P-track planted-truth blind scoring across P7/P9/P10 (Mythos raters; rubric + recall + decoy-precision)',
   phases: [{ title: 'Rate' }],
 }
+// Invoke with args: {scoreRoot: "/abs/path/to/blind-score-bundles"} (e.g. ~/.cache/sdd-bench/party/score).
+const SCORE = args?.scoreRoot
+if (!SCORE) throw new Error('pass the blind-bundle dir via args: {scoreRoot: "/abs/path/to/score-bundles"}')
 const TASKS = [
-  { key:'p07', dir:'/Users/miby/.cache/sdd-bench/party/score/p07' },
-  { key:'p09', dir:'/Users/miby/.cache/sdd-bench/party/score/p09' },
-  { key:'p10', dir:'/Users/miby/.cache/sdd-bench/party/score/p10' },
+  { key:'p07', dir:`${SCORE}/p07` },
+  { key:'p09', dir:`${SCORE}/p09` },
+  { key:'p10', dir:`${SCORE}/p10` },
 ]
 const labels = ['A','B','C','D']; const N = 2
 const SCHEMA = {

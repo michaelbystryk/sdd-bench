@@ -1,6 +1,6 @@
 # sdd-bench Findings #2 — Cross-task (T1–T4, with the T4-rich hexad×3)
 
-*Draft writeup. Four task domains scored across six SDD methodologies. T1 (postal CLI), T2 (library API extension), T3 (CSV import endpoint), T4 (Expo fitness app) — the last run in two brief variants (vague + PM-quality) and, for the rich brief, three independent runs including a fully-automated arm. ~42 scored cells. Exploratory framing; n=1 per cell except T4-rich (n=3).*
+*Findings report. Four task domains scored across six SDD methodologies. T1 (postal CLI), T2 (library API extension), T3 (CSV import endpoint), T4 (Expo fitness app) — the last run in two brief variants (vague + PM-quality) and, for the rich brief, three independent runs including a fully-automated arm. ~42 scored cells. Exploratory framing; n=1 per cell except T4-rich (n=3).*
 
 **Supersedes:** Findings #1 (`findings-1-t1-to-t4vague.md`) (T1–T4-vague). The substantive change in v0.8: the T4-rich hexad×3 puts the "ambiguous brief differentiates methodology" claim under a blind ≥2-rater microscope it never had in v0.7 — and it does not survive. The core thesis is stronger for it.
 
