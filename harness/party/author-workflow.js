@@ -6,7 +6,9 @@ export const meta = {
   ],
 }
 
-const ROOT = '/Users/miby/dev/sdd-bench'
+// Invoke with args: {root: "/abs/path/to/sdd-bench"} — workflow scripts have no process/env access.
+const ROOT = args?.root
+if (!ROOT) throw new Error('pass the repo checkout path via args: {root: "/abs/path/to/sdd-bench"}')
 const TASKS_DIR = `${ROOT}/tasks/party`
 
 // Shared house-style + rubric context every author agent must obey.

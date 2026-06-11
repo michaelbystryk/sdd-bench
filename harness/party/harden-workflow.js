@@ -6,7 +6,10 @@ export const meta = {
   ],
 }
 
-const TASKS = '/Users/miby/dev/sdd-bench/tasks/party'
+// Invoke with args: {root: "/abs/path/to/sdd-bench"} — workflow scripts have no process/env access.
+const ROOT = args?.root
+if (!ROOT) throw new Error('pass the repo checkout path via args: {root: "/abs/path/to/sdd-bench"}')
+const TASKS = `${ROOT}/tasks/party`
 
 const COMMON = `
 You are HARDENING one planted-truth task in the sdd-bench P-track. A cold solo pass

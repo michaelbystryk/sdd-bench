@@ -1,6 +1,6 @@
 # Party Track (P-track) — BMAD Party Mode vs. Plain Claude on Advisory Tasks
 
-*Status: design locked 2026-06-09. No briefs authored, no cells run.*
+*Status: design locked 2026-06-09 · **pv0.4 complete 2026-06-10** — all 11 tasks run (4 arms each) and blind-scored. Results rollup: `analysis/party-findings/README.md`.*
 
 A second evaluation track inside sdd-bench. Where the main track (T1–T7) asks whether
 SDD methodologies produce better *programs*, the P-track asks a sharper question with
