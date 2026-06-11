@@ -1,0 +1,2490 @@
+{
+  "summary": "P-track planted-truth blind scoring across P7/P9/P10 (Mythos raters; rubric + recall + decoy-precision)",
+  "agentCount": 24,
+  "logs": [],
+  "result": {
+    "count": 24,
+    "results": [
+      {
+        "task": "p07",
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every claim checks out against flow.md, subtle mechanics (per-presentation binding, DELETE /signup/abandon, password-kept-vs-email-dropped contrast) read correctly and unverifiable claims tagged [ASSUMPTION]; only slip is 'Every other forward action in the flow is a filled button' (Screen 5's 'Done' is a nav-bar text action)."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All three required sections, all 10 keyed defects, plus material un-hinted considerations a senior reviewer would endorse: step-level instrumentation before acquisition spend, idempotency/double-submit exposure, deferring verification as a product decision."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The root-cause synthesis ('the build doesn't separate navigating-away from destroying state' unifying Issues 3/4/8), the 422-error-as-misrouted-returning-user read, and the 'don't spend until instrumented' recommendation reframes the buyer's decision."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Severity-tiered, sprint-scoped, effort-estimated (hours/half-day), explicit sequencing ('do this first'), named decision points for the product lead, and concrete success measures (screen_reached, verify_continue_tapped events)."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Excellent structure, one-pass-findable conclusions, tight cross-referencing — but at ~2,400 words it runs past the ~2–3 page band (closer to 4), which the length-band rule scores down."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Issue 1: 'The only two doors are Create account and Sign in... Fix: Add a third path — Take a look first → a read-only sample Home' — gating named, deferral recommended."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Issue 3: 'The email field binds to a fresh per-presentation view-model, so leaving Screen 2 and returning... empties the field'; fix hoists the view-model to flow scope so the email is retained — full data-loss mechanic, not just 'confusing navigation'."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Issue 7: 'nothing marks the two that actually gate submission... Mark required fields (asterisk or Required)' — required/optional indistinguishability named with fix."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Issue 2: 'fires once on entry and is never re-sent; there is no resend control, no way to correct a mistyped address, and the OS Back gesture is disabled' — full recovery dead-end, not a copy critique."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Issue 8: 'POST /profile/complete runs several seconds with all controls left live'; fix is 'disable the control, show a spinner/busy state' — missing progress feedback plus repeat-tap exposure identified."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Issue 9: 'deletes a category on a single tap, no confirm, no undo'; fix is undo snackbar with soft-delete window."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Issue 10: 'centered No data. — no illustration, no guidance, and no hint that the top-right + is the only way back'; fix makes the empty state actionable."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Issue 5: 'the banner prints Error 422: validation_failed (constraint: unique_email). This is a debugging string a human can't act on'; fix maps constraints to human copy with a Sign in? recovery link — matches the key's exemplar fix."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Issue 4: 'the OS/hardware Back gesture... resolves to DELETE /signup/abandon — it tears down the account... with no confirmation'; fix decouples leave-screen from destroy-account — distinct from K2, account-destruction read from endpoint semantics."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "Issues 6+11 together enumerate 3+ variants — underlined text link 'Next' bottom-left vs filled teal pinned 'Continue' vs green 'Finish setup' — and recommend one consistent pinned teal-button pattern; split across two issues rather than one consolidated consistency finding, but the 3-variant bar and across-flow framing ('Every other forward action in the flow is a filled button') are met."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1-screen2-double-submit",
+            "verdict": "found",
+            "note": "Issue 8 extends K5's pattern to Screen 2 ('Next stays tappable and the field editable while POST /signup/email is in flight') — fully grounded in flow.md text, with the race ('which response wins is undefined') flagged as inference."
+          },
+          {
+            "key_id": "D2-instrumentation-gap",
+            "verdict": "found",
+            "note": "Headline recommendation to ship step-level funnel events before acquisition spend, with named events (screen_reached, verify_continue_tapped) — derived from the brief's 'no clean funnel analytics yet', not a keyed item, and arguably the highest-leverage addition."
+          },
+          {
+            "key_id": "D3-state-lifecycle-root-cause",
+            "verdict": "found",
+            "note": "'The pattern underneath' section unifies K2/K9/double-submit under two engineering patterns (flow-level signup session model; uniform in-flight lock) — a legitimate second-order synthesis grounded in the keyed evidence."
+          },
+          {
+            "key_id": "D4-idempotency",
+            "verdict": "found",
+            "note": "Server-side idempotency keys proposed as durable backstop, correctly tagged [ASSUMPTION] that endpoints are non-idempotent and correctly deferred behind client-side stopgaps."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 10/10 recall including all three subtle cross-reference items plus zero decoys signals a top-effort arm; the seamless single voice, dense bidirectional cross-referencing (Issue 3's fix 'also unblocks change email on Screen 4', the password-kept/email-dropped contrast), and total absence of perspective seams or redundancy read as one large deep-reasoning pass rather than stitched multi-agent output — the 'eng read' framing is rhetorical, not a persona section.\"",
+        "overall_note": "An exceptional deliverable: 10/10 keyed recall (all three subtle items — K2's per-presentation binding, K4's sealed dead-end, K9's DELETE /signup/abandon — caught with the exact mechanics), zero decoys taken, disciplined [ASSUMPTION] tagging, and genuine value-adds (instrumentation-before-spend, root-cause state-lifecycle synthesis, idempotency backstop). Quality 23.5/25; only deductions are a minor 'every other forward action is a filled button' imprecision and exceeding the ~2-3 page band by roughly a page. Note for the harness: recall lands above the key's own 3-8 target band, and the key states >=9/10 cold means the prose folding was too thin — either this arm is very strong or the hardening needs re-tuning."
+      },
+      {
+        "task": "p07",
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Claims track flow.md precisely with [ASSUMPTION] tags where inferring (e.g. Issue 4 'abandon is genuinely destructive server-side'); only a slight overgeneralization in Issue 6 ('Every other forward action in the flow is a filled button' glosses Screen 5's top-right Done text action)."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All briefed sections delivered, all 10 planted issues plus unhinted material a senior reviewer would endorse: step-level instrumentation before spend, double-submit/idempotency exposure, the returning-user-misrouted-into-signup angle."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Decision-changing reframe ('do not spend on acquisition until Issues 1–4 are fixed and instrumentation ships'), the password-kept/email-dropped contrast read correctly, and the root-cause synthesis ('the build doesn't separate navigating away from destroying state') unifying Issues 3/4/8."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Severity-tiered, effort-banded ('hours to ~half a day'), sequenced ('Do this first'), explicit decision point flagged for the product lead (verification as hard gate), and named success-measure events (screen_reached, verify_continue_tapped) plus an honest 'what we can and can't see' note."
+          },
+          "communication": {
+            "score": 3.5,
+            "evidence": "Clear hierarchy, conclusions findable in one pass, every section earns its place — but at ~2,200+ words it exceeds the brief's 2–3 page band, scored down per the length-band rule."
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Issue 1: 'The app is fully gated — no value before commitment... The only two doors are Create account and Sign in'; fix adds a 'Take a look first' read-only sample path — meets the guest/explore/deferral bar."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Issue 3: 'email field binds to a fresh per-presentation view-model, so leaving Screen 2 and returning... empties the field'; fix hoists the view-model to flow scope 'the same lifecycle that already retains the password server-side' — the exact data-loss mechanic plus the password/email contrast."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Issue 7: 'Required vs. optional fields are visually indistinguishable... nothing marks the two that actually gate submission'; fix marks required fields and explains the disabled button."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Issue 2: 'sent once, no resend, Back disabled... no way to correct a mistyped address... the user is trapped with no in-app recovery'; fix adds resend with cooldown, shows target address, and a change-email link — full recovery-dead-end bar met."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Issue 8: 'POST /profile/complete runs several seconds with all controls left live; re-tapping Finish setup / Done risks a double-provision'; fix is a uniform in-flight lock with spinner — no-feedback + still-tappable both identified."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Issue 9: 'trash icon deletes a category on a single tap, no confirm, no undo'; recommends an undo snackbar with soft-delete window."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Issue 10: \"body shows centered 'No data.' — no illustration, no guidance, and no hint that the top-right '+' is the only way back\"; fix makes the empty state actionable with an inline add affordance."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Issue 5: 'the banner prints Error 422: validation_failed (constraint: unique_email)... a debugging string a human can't act on'; fix maps constraints to plain copy including 'Sign in?' recovery — matches the key's suggested rewrite."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Issue 4: 'OS/hardware Back gesture is still live and resolves to DELETE /signup/abandon — tears down the account... with no confirmation'; fix intercepts/suppresses or confirms, and decouples leave-screen from destroy-account. Clearly distinguished from K2."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "Issues 6 + 11 jointly enumerate 3+ variants: Screen 2 'Next' as a bottom-left underlined text link vs Screen 3's pinned full-width filled 'Continue' ('every other forward action in the flow is a filled button'), plus the lone green 'Finish setup' vs all-teal; fixes converge both to the consistent teal filled-button pattern. Split across two issues rather than one consolidated finding, but the 3-variant + consistent-pattern bar is met."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "note": "Required cross-referencing Screen 2's per-presentation binding with Screen 3's back prose; deliverable performed the derivation explicitly and even cited the password-retained contrast as the tell."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "note": "Derived no-resend/no-change-address from 'only interactive element' + 'does not re-fire'; deliverable states both inferences and notes the disabled Back seals the dead end."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "note": "Read the DELETE /signup/abandon endpoint semantics and the immediacy ('blank screen in between') to conclude silent account destruction; correctly framed as distinct from field-level loss."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "note": "Inferred missing progress feedback from 'holds its rendered state' + 'accept taps throughout' rather than a literal 'no spinner'; extended to double-submit risk with an idempotency caveat."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "note": "Collated the per-screen primary controls without the removed summary table; the across-flow inconsistency is established but distributed across Issues 6 and 11 rather than stated as one finding."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless authorial voice with deeply interlocked cross-references and one unified root-cause synthesis (state-lifecycle pattern tying Issues 3/4/8) — no persona seams, no aggregation redundancy — plus perfect recall on the long-inference items (view-model binding, endpoint semantics), which reads as one large extended-thinking pass; 'as the eng read below notes' is a self-reference, not a roundtable artifact.",
+        "overall_note": "Exceptional deliverable: 10/10 recall including all three subtle items and the collation item K10, zero decoys taken, zero hallucinations, and genuine value-adds beyond the key (instrumentation-before-spend, idempotency, returning-user misroute). Only material flaw is length — roughly 1.5x the 2–3 page band — which costs Communication per the length-band rule. Quality 23/25. Note for the key author: a 10/10 cold landing sits above the stated 3–8 target band, consistent with the key's own re-tune warning, unless this arm is the heavyweight one."
+      },
+      {
+        "task": "p07",
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "Every claim traces to flow.md verbatim (e.g. Issue #1 quotes DELETE /signup/abandon mechanics exactly); only blemish is Issue #6 asserting a defensible design choice (server-side email validation) as a defect."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All required sections present, all 10 planted issues plus material extras the brief didn't hint at (missing failure path on POST /profile/complete, deferring the verification gate entirely, step-progress indicator)."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Second-order cascade in Issue #4 ('sees nothing happen... swipes Back, hitting issue #1'), the password-kept/email-dropped asymmetry in #7, and the chevron-removed-but-gesture-destructive contradiction in #1; the launch-blocker framing directly addresses the acquisition-spend decision."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Per-issue concrete fixes, severity tiers, quick-wins vs larger split with effort notes ('the resend button is a few hours of work') and explicit launch-blocker calls; lacks success measures/what-would-change-my-mind for a 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "~2.5-3 pages within band, headline conclusions in Summary findable in one pass, tight bottom line; every section earns its place — close to forward-unedited quality."
+          }
+        },
+        "quality_sum": 22,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Issue #5: 'Everything is gated behind sign-up — no value shown first... No Explore, guest, sample workspace, or read-only mode' with deferred-account-creation fix."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Issue #7: 'Email field is wiped on back-navigation (asymmetric with password)... re-presents it empty — while the password is retained server-side'; fix is to persist and re-populate. Names the exact data-loss mechanic and the password contrast."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Issue #8: 'Required vs. optional fields are visually indistinguishable... no required cue'; fix marks gating fields as required and surfaces why submit is blocked."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Issue #2: 'Email verification is a one-shot dead-end... no Resend, no change email, and the Back gesture is disabled... no path forward except force-quitting'; fixes add resend + edit-email."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Issue #4: 'No loading state during the multi-second Finish setup call... enables accidental double-submission'; fix disables controls + spinner + dedupe guard."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Issue #9: 'One-tap category delete with no confirmation or undo... deletes immediately'; fix is undo snackbar or confirm."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Issue #10: empty state 'shows only \"No data.\" — no illustration, no guidance, no way to restore starter categories'; fix adds CTA, illustration, restore option."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Issue #3: raw 'Error 422: validation_failed (constraint: unique_email)' flagged, with plain-language rewrite plus 'Sign in instead' carrying the email over — matches the key's exemplar fix."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Issue #1 (top critical): 'Back gesture on Profile setup silently deletes the account... DELETE /signup/abandon... destroys the account built across Screens 2–4... no confirmation'; explicitly distinct from the field-level loss in #7."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "Issue #11 enumerates 3+ variants — bottom-left text link 'Next', full-width filled 'Continue', top-right 'Done' + bottom 'Finish setup' — covering label, form, and position drift, and recommends one standard pattern; Issue #12 adds the teal-vs-green color drift."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "Inline email validation (Screen 2 validation timing)",
+              "evidence": "Issue #6: 'Email validated only server-side; Next always tappable... Fix: Validate email format inline on the client' — asserted as a confident HIGH-severity defect; the key names this exact claim as a decoy (server-side validation with the toast is defensible design)."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 1
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1-green-terminus-color",
+            "verdict": "found",
+            "note": "Issue #12 flags the one-off green 'Finish setup' as an unestablished color meaning — a legitimate extension of K10's color-drift evidence, grounded in the visual notes."
+          },
+          {
+            "key_id": "D2-step-progress-indicator",
+            "verdict": "found",
+            "note": "Issue #13 notes no visible step progress through sign-up, properly tagged [ASSUMPTION] that 'step 1 of 2' labels are doc annotations not UI — reasonable, grounded, not asserted overconfidently."
+          },
+          {
+            "key_id": "D3-missing-failure-path",
+            "verdict": "found",
+            "note": "Issue #4 fix observes flow.md describes only the success transition for POST /profile/complete and recommends a retry/failure path — a real gap in the spec the key doesn't enumerate."
+          },
+          {
+            "key_id": "D4-defer-verification-gate",
+            "verdict": "found",
+            "note": "Larger-fixes section raises whether verification must hard-gate first run at all, framed as a design discussion (not a confident defect) — correctly stays on the right side of the key's verification-friction caution."
+          },
+          {
+            "key_id": "D5-loading-gap-triggers-destructive-back",
+            "verdict": "found",
+            "note": "Issue #4 connects the missing loading state to the destructive Back gesture ('sees nothing happen and... swipes Back, hitting issue #1') — a second-order interaction between K5 and K9 the key doesn't itself state."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Perfect 10/10 recall including all three folded subtle items (K2's per-presentation binding, K9's endpoint semantics, K10's collated 3+ variants) plus second-order cross-issue chains (#4→#1 cascade, password-kept/email-dropped asymmetry) in one seamless, uniform-voice document with no roundtable residue, no perspective seams, and no redundancy — reads like a single very deep reading pass rather than merged agents or a simulated panel; the lone decoy taken (#6) suggests one mind's blind spot rather than a debate that would likely have challenged it.",
+        "overall_note": "Exceptional deliverable: 10/10 keyed-item recall (above the key's 3-8 cold-solo target band, including all four arm-separating items K2/K4/K9/K10 at full credit), only one false positive (the named inline-validation decoy, Issue #6), zero hallucinations, and disciplined use of [ASSUMPTION] tags. Prioritization is correct per the key's severity intuitions — K9 and K4 lead as launch-blockers tied to the brief's acquisition-spend decision. Quality 22/25; the only deductions are the decoy taken (correctness), missing success measures (actionability), and marginal polish gaps. Note for the harness per the key's calibration line: a 10/10 cold hit may indicate the prose folding is too thin if this arm is a solo pass."
+      },
+      {
+        "task": "p07",
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "Every claim traces accurately to flow.md (e.g. #1 quotes DELETE /signup/abandon mechanics, #4 quotes 'holds its rendered state'); only blemish is asserting the defensible server-side-validation design as a HIGH defect (#6), a judgment error rather than a factual one."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 10 keyed items found plus material extras a senior reviewer would endorse: no failure path on POST /profile/complete, double-submit endpoint guard, missing step indicator, and whether verification should gate first-run at all; all three brief-required sections delivered."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Genuine second-order chains: no-spinner → impatient Back-swipe → account teardown (#4 linking to #1); the password-kept/email-dropped asymmetry in #7; and the reframe 'defer email verification past first value' which would change the launch plan — held back from 5 by the #6 decoy take diluting precision of judgment."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Severity-tiered, launch-blockers named ('fix #1 and #2 before any acquisition spend'), quick-wins vs larger split with effort hints ('a few hours of work'), explicit design decision points; lacks success measures/metrics for the 5 anchor."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight Summary→Issues→Quick-wins structure, within the ~2-3 page band, headline conclusions findable in one pass, every section earns its place; near forward-unedited quality."
+          }
+        },
+        "quality_sum": 22,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Issue #5: 'Everything is gated behind sign-up — no value shown first... No Explore, guest, sample workspace, or read-only mode' with deferred-account-creation fix."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Issue #7: 'Email field is wiped on back-navigation (asymmetric with password)... re-presents it empty — while the password is retained server-side'; fix: persist and re-populate. Names the exact data-loss mechanic and the password contrast."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Issue #8: 'Required vs. optional fields are visually indistinguishable... no required cue'; fix: mark required fields and indicate which field blocks submission."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Issue #2: 'Email verification is a one-shot dead-end... no Resend, no change email, and the Back gesture is disabled... no path forward except force-quitting'; fixes add Resend + Edit email."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Issue #4: 'No loading state during the multi-second Finish setup call... taps again (firing a second provision call)'; fix: disable controls, in-button spinner, duplicate-submit guard."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Issue #9: 'One-tap category delete with no confirmation or undo... deletes immediately on tap'; fix: undo snackbar or confirm."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Issue #10: empty state 'shows only \"No data.\" — no illustration, no guidance, no way to restore starter categories'; fix adds CTA, illustration, restore option."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Issue #3: raw 'Error 422: validation_failed (constraint: unique_email)' flagged; fix translates to plain copy with 'Sign in instead' for the duplicate case."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Issue #1 (top CRITICAL): Back on Screen 5 'resolves to DELETE /signup/abandon, which destroys the account built across Screens 2–4... instantly, with no confirmation'; fix: non-destructive back or confirm dialog. Distinct from #7/K2."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "Issue #11 enumerates 3+ variants — Screen 2 bottom-left text link 'Next', Screen 3 full-width filled 'Continue', Screen 5 top-right 'Done' plus bottom 'Finish setup' — covering label, form, and position drift, with a standardize-to-one-pattern fix (green-color drift handled in #12)."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "DECOY — inline email validation",
+              "evidence": "Issue #6 ('Email validated only server-side; Next always tappable', rated HIGH, violating 'Error prevention #5; efficiency #7', fix: validate format inline) confidently asserts the validation-timing defect the key names as a deliberate decoy."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 1
+        },
+        "derivation_items": [
+          {
+            "key_id": "D-defer-verification",
+            "verdict": "found",
+            "note": "Larger-fixes section questions whether email verification must gate first run at all — removing 'the funnel's most dangerous choke point' — a legitimate reframe beyond the keyed items (the key explicitly says this is a defensible design opinion, not a key hit; B correctly frames it as a design discussion, not a defect)."
+          },
+          {
+            "key_id": "D-no-failure-path",
+            "verdict": "found",
+            "note": "Issue #4 notes flow.md describes only the success transition for POST /profile/complete and recommends adding a failure/retry path — accurate derived observation."
+          },
+          {
+            "key_id": "D-step-indicator",
+            "verdict": "found",
+            "note": "Issue #13 (no visible progress through sign-up) is a plausible derived finding, properly hedged with [ASSUMPTION] that the 'step 1 of 2' labels are doc-only."
+          },
+          {
+            "key_id": "D-second-order-chain",
+            "verdict": "found",
+            "note": "Explicitly chains K5→K9: the unresponsive Finish-setup screen invites a Back-swipe that triggers the account teardown — an interaction-level insight not stated in the key."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 10/10 recall including all three subtle prose-folded items (K2's per-presentation-binding cross-reference, K9's endpoint-semantics read, K10's collated variants) delivered in one tight, uniform analytical voice with dense cross-referenced reasoning (#4→#1 chain) and zero roundtable/persona residue — the single over-eager decoy take on validation timing fits one deep thinker exhaustively mining the spec rather than multiple agents cross-checking each other's severity calls. Could be A4 with a strong synthesis pass, but the seamless single-author cadence points to large extended-thinking.",
+        "overall_note": "Exceptionally strong deliverable: 10/10 keyed recall (exceeding the key's 3-8 cold-solo target band, which the key itself flags as a signal the arm separates here), correct prioritization with the two subtle account-destroying items (K9, K4) elevated to launch-blockers, and genuine second-order insight. Precision is the only blemish: one named decoy taken (inline email validation, asserted at HIGH severity as Issue #6), no hallucinations; the tap-target decoy was navigated correctly (44pt acknowledged as compliant, framed only as accidental-loss risk within K6). Quality 22/25."
+      },
+      {
+        "task": "p07",
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Claims quote flow.md accurately and handle the subtle points (password-retained vs email-dropped asymmetry in H-3, DELETE /signup/abandon semantics in C-2, Back-disabled sealing the Screen 4 dead-end); only imprecision is H-1 listing Screen 3 as an affected screen when the doc never describes Screen 3's in-flight behavior."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All three required sections delivered, all 10 keyed defects covered, plus material extras the brief didn't hint at (M-4's categories-required-for-expenses functional dead end, dropping Display name as a field, 'Sign in instead' recovery on duplicate email, auto-advance polling)."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuinely non-obvious findings: the kept-password/dropped-email asymmetry as the K2 mechanic, attributing the two brief symptoms ('never reach home' → C-1, 'fought them' → C-2/H-1), and the M-4 second-order derivation that deleting all categories may block expense entry entirely; stops just short of a full reframe."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Every issue has a concrete scoped fix (30–60s resend cooldown, undo snackbar preferred over confirm, exact replacement copy for the 422), an honest effort split, an 'if you only do three things' decision point, and [ASSUMPTION] notes stating what would change the verdict (M-4 footnote); lacks success measures/funnel instrumentation."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the ~2–3 page band, severity-coded IDs cross-referenced between Issues and the effort split, headline read in the first paragraph, no bloat — every section earns its place; forwardable unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "M-1: \"'Tallyroo has no functionality available without an account… no demo, sample workspace, or read-only mode'… requiring full sign-up before the user sees a single screen of value is a top-of-funnel leak\" + fix offering a demo/sample workspace before the wall."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "H-3: \"navigating back from Password re-presents Email blank — even though the password the user set *is* retained server-side… forces re-typing\"; fix: persist email in the view-model. Hits the exact data-loss mechanic including the password-kept contrast."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "M-2: required fields gate submission yet \"'nothing in the layout, ordering, or per-field chrome distinguishes' them. Only the *optional* field is labeled\"; fix: mark required fields and highlight what's missing."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "C-1: no Resend, no way to edit the address, Back disabled — \"permanently stuck on this screen with one button\"; fix adds Resend with cooldown + 'Wrong address? Change it'. Full recovery-dead-end identification, not a copy critique."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "H-1: Screen 5 \"holds its rendered state… accept taps throughout\" a multi-second round-trip, \"reads as a frozen, unresponsive app and invites repeat taps (duplicate submits)\"; fix: spinner + disable-on-tap."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "H-4: trash icon \"deletes that category immediately. No confirmation prompt or undo\" with no recovery; fix: Undo snackbar or confirm dialog."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "M-4: \"the body shows only 'No data.' with 'no further guidance, illustration, or action'\"; fix: replace with a first-action prompt wired to the add action."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "H-2: \"'Error 422: validation_failed (constraint: unique_email)'… unreadable to a normal user, leaks implementation detail\"; fix maps to plain language + 'Sign in instead'."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "C-2: Back \"resolves to `DELETE /signup/abandon` — tearing down the account assembled across Screens 2–4… no warning, no confirmation, and no undo\"; fix: intercept Back / confirm dialog. Correctly distinguished from K2 as account destruction."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "M-3 + L-3 enumerate 3+ concrete variants — text-link 'Next' bottom-left vs. full-width pinned filled buttons vs. green 'Finish setup' (shape, placement, and color drift named) — and recommend \"Standardize on one primary-button pattern.\""
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1",
+            "verdict": "found",
+            "note": "M-4 extension: derives (tagged [ASSUMPTION]) that deleting all categories may block expense entry entirely, upgrading the empty state from cosmetic to a functional dead end — legitimate second-order finding beyond the key."
+          },
+          {
+            "key_id": "D2",
+            "verdict": "found",
+            "note": "H-2 extension: duplicate email almost always means a returning user, so the fix carries the email into a 'Sign in instead' path — recovery design beyond the key's plain-language bar."
+          },
+          {
+            "key_id": "D3",
+            "verdict": "found",
+            "note": "C-1 extension: background polling / deep-link auto-advance so verified users skip the manual tap; correctly classed as the larger-effort half of the fix."
+          },
+          {
+            "key_id": "D4",
+            "verdict": "found",
+            "note": "L-2: spots the duplicate Done/Finish-setup submission affordances on Screen 5 — true per flow.md, not keyed, correctly triaged as low."
+          },
+          {
+            "key_id": "D5",
+            "verdict": "found",
+            "note": "M-2 extension: questions whether Display name is needed at all for a single-user tracker, with the caveat to check downstream dependence — honest scoping."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 10/10 recall including all three folded subtle items (it even articulates the key's exact 'tell' — password kept server-side vs. email dropped) is well above the 3–8 cold-solo band, ruling out A1; yet the document has a single seamless authorial voice, zero roundtable/persona seams or synthesis redundancy, and tight cross-issue ID referencing that reads like one very deep reader rather than merged agents — most consistent with a large extended-thinking pass.\"",
+        "overall_note": "Exceptional deliverable: 10/10 keyed recall with every subtle item (K2, K4, K9) caught at full credit via genuine cross-referencing, zero decoys taken (it sidesteps the inline-validation, verify-copy, and tap-target traps — H-4 cites the 44pt size only as an accidental-tap risk factor, not an accessibility defect), and zero hallucinations. Quality 23.5/25; only dings are H-1's unsupported inclusion of Screen 3 and absence of success metrics/funnel instrumentation. Per the key's own calibration note, a 10/10 cold recall suggests the prose folding may be too thin — worth flagging to the harness, though it does not change this score."
+      },
+      {
+        "task": "p07",
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Every claim traces to quoted flow.md text and the subtle mechanics are read correctly (per-presentation binding -> email loss vs password retained, H-3; DELETE /signup/abandon semantics, C-2); only minor extrapolations (lumping Screen 3 into H-1's live-controls claim, the L-1 toast-latency read) keep it off 5."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 10 keyed problems substantively covered plus material extras the brief didn't hint at: the M-4 functional dead-end (delete all categories may block expense entry), questioning Display name as a required field, background-poll auto-advance, duplicate Done/Finish affordances."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Maps findings to the brief's symptoms ('never reach home screen' -> C-1; 'fought them' -> C-2/H-1), spots the password-kept/email-dropped asymmetry, and the M-4 category-deletion second-order dead-end; strong second-order work, just short of a full problem reframe."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Severity-tiered, concrete fixes with parameters (30-60s resend cooldown, undo snackbar preferred, confirm-dialog copy), explicit 'if you only do three things' decision point, honest effort splits and what-would-change-my-mind on M-4 — but no success measures/metrics, so not the full 5 anchor."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Exactly the required Summary/Issues/Quick-wins structure, within the 2-3 page band, headline read in the first paragraph, severity codes make it scannable in one pass; forwardable unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "M-1: 'no functionality available without an account… no demo, sample workspace, or read-only mode' — flags the sign-up wall as a top-of-funnel leak and recommends a demo/preview path."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "H-3: 'navigating back from Password re-presents Email blank — even though the password the user set is retained server-side'; fix is to persist/re-populate the email. Meets the data-loss-mechanic bar exactly, including the asymmetry tell."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "M-2: 'nothing in the layout… distinguishes' required from optional; only the optional field is labeled; fix is required markers + highlight-missing-on-tap."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "C-1: no Resend, no change-address, Back disabled — 'permanently stuck… sole escape is to kill and reinstall the app'; fixes include resend with cooldown and change-email. Full recovery-dead-end identification."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "H-1: Screen 5 'holds its rendered state… accept taps throughout' a multi-second call — 'reads as a frozen, unresponsive app and invites repeat taps'; fix is spinner + disable-on-tap."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "H-4: one-tap immediate category delete, 'No confirmation prompt or undo'; recommends Undo snackbar or confirm dialog."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "M-4: bare 'No data.' empty state with 'no further guidance, illustration, or action'; fix is a first-action prompt wired to add expense/category."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "H-2: 'Error 422: validation_failed (constraint: unique_email)' flagged as unreadable jargon leaking implementation detail; fix is plain-language copy + 'Sign in instead'."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "C-2: Back on Screen 5 'resolves to DELETE /signup/abandon — tearing down the account… no warning, no confirmation, and no undo'; fix is intercept Back / confirm dialog. Clearly distinguished from K2's field-level loss."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "found",
+            "evidence": "M-3 + L-3: enumerates 3+ variant axes across the flow — form (text link 'Next' vs filled buttons), placement (bottom-left vs full-width pinned vs top-right 'Done' in L-2), color (teal vs green 'Finish setup') — and recommends standardizing on one primary-button pattern. Meets the 3-variant bar, though placed at Low priority."
+          }
+        ],
+        "recall_summary": {
+          "found": 10,
+          "partial": 0,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1-category-expense-dead-end",
+            "verdict": "found",
+            "note": "M-4 derives that deleting all categories may make expense entry impossible (category picker dependency) — properly tagged [ASSUMPTION] with a stated fallback if wrong; legitimate second-order extension of K7, not a hallucination."
+          },
+          {
+            "key_id": "D2-duplicate-submit-affordances",
+            "verdict": "found",
+            "note": "L-2 notes 'Done' and 'Finish setup' fire the same submission — true per flow.md Screen 5, a valid un-keyed observation that also feeds K10."
+          },
+          {
+            "key_id": "D3-display-name-necessity",
+            "verdict": "found",
+            "note": "M-2 questions whether Display name should be required at all for a single-user tracker, with an honest downstream-dependency caveat — sound un-keyed product insight."
+          },
+          {
+            "key_id": "D4-borderline-toast-critique",
+            "verdict": "partial",
+            "note": "L-1 ('Looks good' toast adds latency) is a mild stretch beyond the doc's 'shown briefly' wording, but it is hedged, Low-priority, and does not assert the inline-validation decoy (M-3's client-side format check appears only as part of a fix, not as a claimed defect) — not counted as a false positive."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 10/10 recall including all three subtle cross-reference items (K2 asymmetry, K4 once-only dispatch, K9 endpoint semantics) with zero decoys taken, delivered in a single, tightly synthesized authorial voice with no persona/debate residue, no redundancy seams, and brief-symptom mapping woven through — the signature of one strong model thinking long, not aggregated agents or a one-shot pass (the key's cold-solo band is 3-8/10).",
+        "overall_note": "An exceptional deliverable: full recall (10/10 found, including all hardened subtle items), zero false positives, every fix concrete and severity-sequenced, within the length band, and it explicitly ties the two critical dead-ends to the brief's observed drop-off before acquisition spend. The only soft spots are minor: no success metrics, a slight over-generalization of the no-loading-state claim to Screen 3, and K10 landing at Low priority despite being keyed moderate. Note for the harness: a 10/10 cold recall hits the key's own 're-tune' tripwire — either this arm is very strong or the prose folding is still too thin."
+      },
+      {
+        "task": "p07",
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Claims precise and well-cited (e.g., Issue 2 quotes DELETE /signup/abandon semantics correctly; Issue 8 nails the password-kept/email-dropped asymmetry); only overreach is extending the no-loading-state gap to Screen 4, whose button per flow.md does appear to disable in flight ('re-enables')."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All three brief sections delivered, 9 of 10 keyed items fully found plus unhinted-at extras (audit other calls for leaked error codes, background-poll auto-advance, #1-depends-on-#8 dependency); only the across-flow primary-control inconsistency (K10) is covered incompletely (two variants, not the full drift)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Multiple second-order findings: the frozen Finish-setup screen funneling users into the back-gesture account-deletion trap (Issue 4 -> Issue 2 interaction), #8 as the keystone enabling the verify-screen change-address fix, and the gmial.com typo chain showing K4 is a literal dead end — the headline 'leak is concentrated at verification + the gate' would change the buyer's spend decision."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Every fix is concrete with effort estimates (hours, ~1/2 day), an explicit sprint sequence, dependencies, and a decision point (guest mode = roadmap bet, with an [ASSUMPTION] that states what would change the call); lacks only explicit success measures/funnel metrics for a 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2-3 page band, defined severity scale, headline read findable in one pass, quick-wins/larger split exactly as asked; tight throughout, though 10 issues + a strategic callout runs slightly dense and the 'Critical (trivial to fix)' severity tag mixes axes."
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Strategic note (line 598): 'entire app is gated behind sign-up... no demo, sample workspace, or read-only mode'; flagged as largest top-of-funnel leak, deferred as roadmap bet — meets the bar (gating identified + deferrable)."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Issue 8 (lines 580-584): 'popping back from Password to Email shows a blank field — the user retypes their email. The password, by contrast, is retained' — exact data-loss mechanic plus the password/email contrast the key calls the tell; fix is persisting the value."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Issue 5 (lines 562-566): required Display name/Currency unlabeled while the only marked field is the optional one; fix adds required indicators / disabled-button reason."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Issue 1 (lines 538-542): verification email 'sent exactly once... never re-sent,' back disabled, no resend/change-address — 'permanent dead end'; fixes are Resend + 'Wrong address? Change it.' Full recovery-path identification."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Issue 4 (lines 556-560): multi-second POST /profile/complete with 'controls still live and no spinner,' double-submit risk; fix = disable + inline spinner. Inferred correctly from 'holds its rendered state.'"
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Issue 6 (lines 568-572): trash icon 'deletes immediately — no confirmation, no undo'; recommends delete-with-undo snackbar."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Issue 9 (lines 586-590): bare 'No data.' with no guidance or pointer to '+'; fix is a CTA 'Add your first expense.'"
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Issue 3 (lines 550-554): verbatim 'Error 422: validation_failed (constraint: unique_email)' flagged as meaningless/alarming; fix maps to plain copy with a Sign in link — matches the key's example fix exactly."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Issue 2 (lines 544-548): back gesture on Screen 5 'resolves to DELETE /signup/abandon, tearing down the account... instantly... no confirmation'; explicitly distinguished from field-level loss and the Back-means-go-back consistency violation is named; fix = confirm sheet."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "partial",
+            "evidence": "Issue 7 (lines 574-578) names only two variants (Screen 2 text-link 'Next' bottom-left vs Screen 3 filled 'Continue') and scopes the fix to 'across sign-up'; never collates Done / green Finish setup / position-color drift, so the 3+-variant across-flow bar for 'found' is not met."
+          }
+        ],
+        "recall_summary": {
+          "found": 9,
+          "partial": 1,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "Inline email validation (Screen 2 validation timing)",
+              "evidence": "Issue 7 asserts the always-tappable 'Next' as part of a confident Medium defect ('over-permissive... invites a wasted server round-trip on empty/garbage input') and prescribes a client-side format gate — the key rules validation timing a defensible design, not a planted issue. Mitigating: it explicitly reserves uniqueness for the server and the issue's primary claim is the legitimate consistency point, so this is a soft hit."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 1
+        },
+        "derivation_items": [
+          {
+            "key_id": "D-progress-indicator",
+            "verdict": "found",
+            "note": "Issue 10 (no visible step indicator across sign-up) is a grounded extension (screens titled only 'Create account' despite being step 1/2 of N), not keyed and not a decoy; treated as a legitimate derivation, not a false positive."
+          },
+          {
+            "key_id": "D-issue-interactions",
+            "verdict": "found",
+            "note": "Cross-issue derivations the key doesn't require: frozen Finish-setup screen channeling users into the K9 back-deletion trap; #8 (email persistence) as the prerequisite for the K4 change-address fix; error-code-leak audit extended to Screens 4-5."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single coherent authorial voice with deeply integrated cross-references (#8 as keystone for #1, #4 de-risking #2) and all three subtle items (K2/K4/K9) nailed via careful close-reading — the signature of one long deliberate pass rather than ensemble breadth. No persona/roundtable seams or perspective-sectioning (against A3/A4), and the lone gap is K10, a breadth/enumeration item that multi-agent redundancy usually catches — consistent with a depth-over-breadth extended-thinking solo.",
+        "overall_note": "Output D is an exceptionally strong deliverable: 9 found + 1 partial on a key whose target cold-solo band is 3-8/10, including all three subtle second-order items, with zero hallucinations and only one soft decoy graze (the Screen 2 validation-timing component inside an otherwise-legitimate consistency finding). Quality 23/25 — precise, prioritized, sequenced, within length band, and rich in second-order interactions. The only recall debit is K10, where it establishes inconsistency between two screens but never collates the 3+ control variants across the whole flow. Note for the harness: this output landing 9.5/10 sits above the key's own re-tune threshold ('a solver that lands >=9/10 cold means the prose folding was too thin')."
+      },
+      {
+        "task": "p07",
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "Claims grounded and precisely cited (verbatim error string, DELETE /signup/abandon semantics, password-kept/email-dropped contrast all read correctly); docked from 5 for the Issue-7 lean into the inline-validation decoy and a slight extrapolation that Screen 4's call shares the no-loading gap (the doc implies the button disables there)."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 10 keyed areas addressed (9 found, 1 partial) plus unkeyed-but-grounded extras (step indicator, audit of other calls for leaked codes) and material considerations the brief didn't hint at, e.g. the guest-mode engineering cost (server-provisioned workspace at POST /profile/complete)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Multiple second-order findings: frozen no-spinner screen inviting a reflexive back-swipe into the account-deletion trap (Issue 4 de-risks Issue 2); typo'd email + no resend + disabled back = literal permanent dead end; the strategic-gate reframe ties directly to acquisition-spend efficiency and could change the buyer's launch decision."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Fixes are concrete with effort tags (hours, ~half day), dependency-sequenced (#8 keystone for #1), an explicit sprint sequence, decision points (roadmap bet vs launch blocker) and a what-would-change-my-mind [ASSUMPTION]; lacks explicit success measures/metrics, keeping it off 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2-3 page band, follows the brief's required sections exactly, defines its severity scale, conclusions findable in one pass, cross-references tight; very close to forward-unedited but the dual numbering (issue # vs quick-win ordering #2-#6) takes a beat to track."
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Strategic note: 'The entire app is gated behind sign-up (Screen 1): no demo, sample workspace, or read-only mode before authentication... largest top-of-funnel leak... scope as a fast-follow' — gating identified and explicitly framed as deferrable."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Issue 8: 'Email is forgotten on back-navigation; password is remembered... popping back from Password to Email shows a blank field — the user retypes their email'; fix is to persist the email in the view-model. Nails the data-loss mechanic and even the password/email asymmetry the key calls the tell."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Issue 5: 'Required fields aren't marked — the optional one is'; notes the two required fields look identical and unlabeled while only Monthly budget carries helper text; fix adds required indicators / disabled-button reason."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Issue 1: 'Verify-email can become a permanent dead end' — no resend, no change-address, back disabled, button only re-checks status; fix adds Resend + 'Wrong address? Change it'. Full recovery-path framing, not a copy critique."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Issue 4: 'No loading state on multi-second network calls' — POST /profile/complete 'can run for several seconds' with controls live and no spinner, inviting double-submit; fix disables control + shows spinner."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Issue 6: 'Category delete is instant and irreversible... no confirmation, no undo'; recommends delete-with-undo snackbar."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Issue 9: 'First-run empty state is a dead end' — bare 'No data.' with no pointer to '+'; fix replaces it with a prompt + 'Add your first expense' button."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Issue 3: quotes the verbatim 'Error 422: validation_failed (constraint: unique_email)' banner and rewrites it to plain copy with a Sign in next-step; also recommends auditing other calls for leaked codes."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Issue 2: 'Back gesture on Profile setup silently deletes the whole account' — reads DELETE /signup/abandon as account teardown with no confirmation, distinct from K2 field loss; fix is a confirm sheet defaulting to Cancel."
+          },
+          {
+            "key_id": "K10",
+            "verdict": "partial",
+            "evidence": "Issue 7 contrasts only two variants (Screen 2 text-link 'Next' bottom-left vs Screen 3 filled 'Continue' button); never collates the Done nav action, the green 'Finish setup', or the position/color drift, so it fails the key's 3+ variant bar for found."
+          }
+        ],
+        "recall_summary": {
+          "found": 9,
+          "partial": 1,
+          "missed": 0,
+          "total": 10
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "Inline email validation (Screen 2 validation timing)",
+              "evidence": "Issue 7 asserts the always-tappable 'Next' 'invites a wasted server round-trip on empty/garbage input' and prescribes 'a lightweight client-side email-format check that keeps it disabled' — contesting the validation timing the key rules defensible. Mitigating: it is bundled inside a legitimate affordance critique and the solver separately found the real Screen-2 plant (K8)."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 1
+        },
+        "derivation_items": [
+          {
+            "key_id": "D-progress-indicator",
+            "verdict": "found",
+            "note": "Issue 10 (no step indicator across sign-up) is unkeyed but grounded in the doc's internal 'step 1 of 2' labels vs the user-facing 'Create account' titles — a legitimate extra finding, not counted against precision."
+          },
+          {
+            "key_id": "D-interaction-K5xK9",
+            "verdict": "found",
+            "note": "Derived second-order interaction: the frozen no-feedback screen (K5) makes a reflexive back-swipe into the destructive teardown (K9) more likely — a cross-item connection the key does not itself state."
+          },
+          {
+            "key_id": "D-guest-mode-cost",
+            "verdict": "found",
+            "note": "Derives why ungating is expensive (workspace is server-provisioned at POST /profile/complete, so guest mode needs a client-side workspace + migration path) — engineering grounding beyond the K1 minimum bar."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless authorial voice with a tightly woven cross-issue dependency graph (Issue 4 de-risks Issue 2; #8 is the 'keystone' for #1) and near-perfect recall on all three subtle items — that integrated, second-order reasoning with zero committee seams, redundancy, or persona residue reads like one large extended-thinking pass, not aggregation of parallel agents.",
+        "overall_note": "Exceptional deliverable: 9 found + 1 partial against a key calibrated for 3-8 cold recall, including all three subtle interaction items (K2, K4, K9) at full credit, with zero hallucinations and only one mild, bundled decoy lean (inline validation inside Issue 7). The only recall gap is K10, where it never collates the 3+ control variants across the flow. Quality 23/25; the recall pattern (subtle items nailed, the collation-across-screens item the one weakness) suggests deep sequential reasoning rather than breadth-by-committee."
+      },
+      {
+        "task": "p09",
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "All central claims sound and evidence-cited (20/20 pinning at 13:58, flat db_cpu/db_query_p99, two-lever recovery); hold-time math is tagged [ASSUMPTION]; only nit is internal tension where its own table puts pool-cut-only ceiling (~950 rps) below sale peak (~1,050 rps) while the text says 'neither change alone would likely have caused it' — hedged as 'borderline' but slightly imprecise."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantively covered plus implicit concerns (async_receipts cleared, deploy-into-ramp timing, flag-change visibility, marketing comms to #general); stops just short of 5 since most extra ground was hinted at by the materials."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Quantified throughput-ceiling table (pool_size ÷ hold_time, four configurations) proving the conjunction mechanism, the second-order observation that the pool was 'right-sized' against steady-state measured under the OLD hold time the same release was about to lengthen, and 'two-lever recovery confirms the mechanism' — findings that go beyond the materials and would shape remediation priorities."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "11 remediations, each with owner role, Today/This-week/This-quarter sequencing, and explicit 'Maps to' gap traceability, with concrete thresholds (85% pool alert, ~500 ms shed budget, enrichment.timeoutMs); falls short of 5 for lacking explicit success measures/decision points on most items."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the ~2-3 page band, tight table-driven structure, conclusions findable in the Summary in one pass, blameless throughout — a director could forward it unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Root cause names pool exhaustion from the COMBINATION: 'db.pool.maxSize was reduced from 50 to 20' + 'inline_enrichment... synchronous customer-profile lookup... on the same pooled connection' under sale traffic; explicitly correlates config diff to metrics ('Pool immediately reads 20/20 with 40 ms acquire waits' at 13:58, 'pool pinned at 20/20', flat db_query_p99/db_cpu) and confirms via the two-lever recovery (drain to 9/20 with pool still at 20). Exceeds the minimum bar."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Contributing factor 'No detection for pool health... The first signal was the 5xx symptom alert; the cause was found by hand ~17 minutes in', plus timeline row 14:22-14:23 'No pool dashboard or alert exists — oncall opens the pool view manually' — framed as a diagnosis-delaying gap, and remediation #3 quantifies the time it cost."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Contributing factor 'No timeout, fallback, or load-shedding on the authorize path... no dedicated timeout (no enrichment.timeoutMs / db.query.timeoutMs in the manifest) and no fail-open. A request that couldn't acquire a connection sat until the 10 s ceiling instead of shedding early — turning a tight pool into 10-second hangs' — articulates the hold-vs-fail-fast amplifier as a mechanism distinct from K1."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "'What we ruled out' actively dismisses BOTH decoys with cited disproof: Redis — 'redis_reset_per_min is flat at 1/min across baseline and peak... Cache fails open... A constant cannot explain a discontinuity'; DB capacity — 'db_cpu_pct flat ~30% and db_query_p99_ms flat ~12 ms throughout... the DB was never modified and the service recovered anyway.' Full credit per the active-dismissal-with-evidence bar."
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1-throughput-ceiling",
+            "verdict": "found",
+            "note": "Original derivation not in the key: throughput ceiling = pool_size ÷ hold_time, with hold times (~21 ms → ~40 ms) back-computed from pool occupancy vs rps and tagged [ASSUMPTION]; quantifies why the conjunction (and only the conjunction, ~500 rps ceiling vs ~1,050 rps peak) collapsed the service. Arithmetic checks out against the metrics table."
+          },
+          {
+            "key_id": "D2-stale-baseline-sizing",
+            "verdict": "found",
+            "note": "Second-order observation: PR #4471 'right-sized' the pool against steady-state usage measured under the OLD, shorter hold time that the same release was about to lengthen — a sharpened version of the bundling factor, not stated anywhere in the materials."
+          },
+          {
+            "key_id": "D3-async-receipts-cleared",
+            "verdict": "found",
+            "note": "Proactively rules out the clean decoy async_receipts with correct reasoning (moves work OFF the request path, would shorten hold time), 'noted only to prevent re-litigation' — exactly the precision behavior the hardening note tries to break."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single, uniform analytic voice with one tightly integrated quantitative thread (the hold-time/throughput-ceiling derivation reappears coherently in Summary, Root cause, ruled-out table, and remediations) — that cross-section consistency and depth reads like one large extended-thinking pass, not stitched personas (no perspective seams, no roundtable residue) and more original derivation than a typical one-shot.\"\n",
+        "overall_note": "Output A is a near-ceiling deliverable: 4/4 keyed items found at or above their minimum-credit bars, zero decoys taken, zero hallucinations, and both named decoys actively dismissed with the exact disproving evidence the key requires (flat 1/min Redis cadence + fail-open; flat DB CPU/query-p99 + DB-untouched recovery). It also dodges the hardened clean decoys (async_receipts, LB pod ejection) explicitly. The quality sum of 23.5/25 reflects genuine excellence, not curve inflation: the throughput-ceiling table is an original, checkable derivation that proves the conjunction mechanism rather than asserting it, and remediations are gap-traceable with owners and sequencing. The only deductions are a minor internal tension (its own table implies pool-cut-alone was already under peak capacity while the prose says neither change alone would likely have sufficed — hedged but imprecise) and the absence of explicit success measures on most remediations."
+      },
+      {
+        "task": "p09",
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Mechanism correct (pool 50→20 + synchronous inline_enrichment under sale load); subtle points handled — conjunction table, trigger-vs-cause for traffic, two-lever recovery confirmation; speculative hold-time math is explicitly tagged [ASSUMPTION] and consistent with the metrics (pool 12/50 @610rps ≈ ~20ms hold)."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantive; engages implicit concerns (coupled-change bundling, deploy-into-ramp, flag notes, marketing comms) and adds material the brief didn't hint at (pin pool config in source, isolate enrichment pool, async_receipts pre-rebuttal) — just shy of 5 since several of these were seeded in chat."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Throughput-ceiling table (pool ÷ hold time across 4 configurations) reframes the incident quantitatively; second-order finding that the pool was 'right-sized' to a mean measured under the old, shorter hold time the same release lengthened; 'a constant cannot explain a discontinuity' as the Redis disproof."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "11 remediations each with owner role, Today/Week/Quarter sequencing, concrete thresholds (≥85% pool, ~500ms shed budget), and explicit mapping to the exposed gap; lacks explicit success measures/decision points and effort costs for a 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, tight tables, conclusions in the Summary in one pass, every section earns its place; a director could forward it nearly unedited — kept at 4.5 only because the root-cause section's math density slightly exceeds the stated audience need."
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Summary + Root cause: 'capacity collapse in the application's database connection pool, caused by the interaction of two configuration changes... db.pool.maxSize reduced from 50 to 20... inline_enrichment... synchronous customer-profile lookup... on the same pooled connection'; correlates config diff with metrics ('Pool immediately reads 20/20 with 40ms acquire waits' at 13:58, drains to 9/20 after flag kill, db_cpu/query flat) and frames the outage as requiring the conjunction under the 13:55 traffic ramp — full bar met, not a restated log line."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "'No detection for pool health... The first signal was the 5xx symptom alert; the cause was found by hand ~17 minutes in'; timeline 14:22–14:23 'No pool dashboard or alert exists — oncall opens the pool view manually'; remediation #3 quantifies the cost ('the single change that would have cut ~17 minutes of diagnosis') — framed as a time-costing gap, not just 'an alert fired'."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Contributing factor: 'No timeout, fallback, or load-shedding on the authorize path... no dedicated timeout (no enrichment.timeoutMs / db.query.timeoutMs in the manifest) and no fail-open. A request that couldn't acquire a connection sat until the 10s ceiling instead of shedding early — turning a tight pool into 10-second hangs' — the hold-vs-fail-fast amplifier is articulated as a mechanism distinct from the pool-config root cause, with remediations 5–6 mapped to it."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "'What we ruled out' table actively dismisses BOTH decoys with cited disproof: Redis — 'redis_reset_per_min flat at 1/min across baseline and peak... cache fails open... cache owner confirmed (14:36)'; DB capacity — 'db_cpu_pct flat ~30% and db_query_p99_ms flat ~12ms throughout... the DB was never modified and the service recovered anyway', plus the acquire-wait-vs-query-time distinction — exceeds the active-dismissal-with-evidence bar."
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D-throughput-model",
+            "verdict": "found",
+            "note": "Derived hold-time (~21ms → ~40ms) and throughput-ceiling table (~2,400 → ~500 rps) from pool occupancy and rps; not in any source artifact, internally consistent with the metrics, and explicitly tagged [ASSUMPTION] — a legitimate derivation, not a hallucination."
+          },
+          {
+            "key_id": "D-two-lever-confirmation",
+            "verdict": "found",
+            "note": "Uses the staged recovery (flag kill alone → 9/20 and 22%→6% with pool still at 20; pool restore finishes recovery) as independent confirmation of the conjunctive mechanism — assembled from the 14:31/14:34/14:38–14:46 data, not stated anywhere in the references."
+          },
+          {
+            "key_id": "D-sizing-under-old-holdtime",
+            "verdict": "found",
+            "note": "Second-order observation that PR #4471 'right-sized' the pool to a steady-state mean measured under the old, shorter hold time that the same release was about to lengthen — a non-obvious derived connection between the two coupled changes."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless analytical voice with a deep quantitative spine (the hold-time/throughput-ceiling derivation woven through Summary, Root cause, and Remediations) and zero committee artifacts — no redundant restatements, no coverage-by-enumeration, no persona seams or 'multiple perspectives' framing that roundtable/party outputs tend to leave; the 4/4 recall with 0 false positives plus tightly integrated cross-references reads like one strong model given long deliberate reasoning time rather than merged agents.",
+        "overall_note": "An excellent deliverable: full recall on all four keyed items at the full-credit bar (including active, evidence-cited dismissal of both K4 decoys and even the clean decoys async_receipts and pod ejection), zero false positives, and a genuinely insightful quantitative reframing (pool ÷ hold-time capacity model) that is properly assumption-tagged. Rubric sum 23/25; only deductions are missing success measures/effort costs in remediations and slightly chat-seeded coverage extras. If anything, the postmortem out-argues the answer key by quantifying why the conjunction was necessary."
+      },
+      {
+        "task": "p09",
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Mechanism stated precisely (acquire-timeout vs query execution, 14ms lookup vs 10s upstream wait), claims qualified ([ASSUMPTION] tags on the 2-2.5x hold-time inference), and it correctly handles the subtle point that the pool cut set the threshold while the un-isolated hot-path dependency is the mechanism."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantive; also rules out the clean decoys (async_receipts, LB ejection) unprompted and surfaces material items the brief didn't hint at (deploy-freeze around marketing events, bulkhead isolation, Redis WARN noise as alarm-fatigue debt)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The 14:31 flag-flip-alone draining the pool to 9/20 is used to isolate enrichment as the dominant demand driver, and the reframe — 'even at pool 50, a genuinely slow customer-profile would now be able to starve checkout' — changes what the team should fix first."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Concrete, role-owned, Today/Week/Quarter sequenced, each item mapped to a specific exposed gap; lacks explicit success measures, decision points, or effort/cost estimates that a 5 requires."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the 2-3 page band, conclusions findable in one pass (bolded evidence chain, tight tables), every section earns its place; a director could forward it unedited."
+          }
+        },
+        "quality_sum": 24,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Root cause section: 'added a synchronous, un-isolated customer-profile enrichment query... at the same time it halved-plus the DB connection pool (50 → 20)' with the correlated evidence chain ('the pool moves from 17/50 to 20/20 in the same snapshot', acquire-timeout 500s, flat db_query_p99) — names the COMBINATION under elevated load and shows the config-diff-to-metrics join the key requires."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Contributing factors: 'Observability gap on pool health. No alert or dashboard existed for db_pool_in_use / acquire-wait. Oncall found the real signal by hand at 14:23, ~15 min into impact' — framed explicitly as detection lag that cost time, plus a Today remediation for a pool-health alert."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Contributing factors: 'No per-call timeout / load-shedding on the authorize path... a request with no connection sits for the full 10 s acquire timeout... nothing sheds it early or skips enrichment'; reinforced in root cause ('no per-call timeout and no fallback... no db.query.timeoutMs or enrichment.timeoutMs') — the hold-vs-fail-fast amplifier is named as a distinct mechanism, not just a remediation bullet."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "What we ruled out: Redis dismissed with 'redis_reset_per_min is flat at ~1/min before, during, and after — identical to the pre-deploy baseline' plus fail-open; DB capacity dismissed with 'db_cpu_pct held ~29–32% and db_query_p99_ms held ~11–13 ms throughout' plus 'recovery happened without touching the DB' — both decoys actively ruled out with the exact disproving evidence the key demands."
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D-hold-time-multiple",
+            "verdict": "found",
+            "note": "Derives a ~2–2.5x per-request connection-hold increase from the 20/20-pinned → 9/20 shift at roughly constant rps, properly tagged [ASSUMPTION] as inferred not measured — a legitimate quantitative derivation beyond any single source line."
+          },
+          {
+            "key_id": "D-clean-decoy-dismissals",
+            "verdict": "found",
+            "note": "Explicitly distinguishes async_receipts (off-path, reduces hot-path work) and the LB pod ejection (downstream symptom of queue backup) from causal factors — exactly the precision behavior the hardening note added the clean decoys to test."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single coherent analytical voice with one deep, internally consistent evidence chain (the 9/20 drain inference, the threshold-vs-mechanism reframe) woven through every section — no synthesis seams, persona residue, or redundancy that roundtable/party outputs typically leave; the disciplined [ASSUMPTION] tagging and dense correlation across all three artifacts reads like one large extended-thinking pass rather than a one-shot or a stitched multi-agent merge.",
+        "overall_note": "Near-ceiling deliverable: 4/4 keyed items found at full credit including the hardened K4 decoy (both Redis and DB-capacity actively dismissed with the exact cited disproof), zero false positives, and it additionally dismisses both planted clean decoys. The only rubric daylight is Actionability (no success measures or decision points). Quality 24/25, recall 4/4 found, precision clean."
+      },
+      {
+        "task": "p09",
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "All central claims check out against the data (pool 17/50→20/20 at 13:58; acquire-vs-query split via the 14ms/10s line); the one quantitative inference (2–2.5x hold time) is explicitly tagged [ASSUMPTION], and the subtle threshold-vs-mechanism distinction is handled correctly."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantive, plus implicit concerns (comms gap, flag-default visibility, deploy-freeze around marketing events, alarm fatigue) and some genuinely unhinted items (bulkhead isolation, re-derive pool from hold-time x concurrency) — though several 'extras' were chat-seeded, so not a clean 5."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "'The pool size set the threshold; the un-isolated hot-path dependency is the mechanism — even at pool 50 a slow customer-profile could starve checkout' reframes the problem and changes the remediation priority; flag-flip-alone isolation logic (pool drains to 9/20 with max still 20) is a second non-obvious deduction."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Every remediation is concrete, owner-role'd, Today/week/quarter sequenced, and mapped to a specific exposed gap; effort hints (flag flip instant vs restart) present, but no systematic success measures or explicit decision points, so not a 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Within the 2–3 page band, exact section structure requested, conclusions findable in one pass, every section earns its place; dense bolding is the only thing keeping it shy of 'forward unedited.'"
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Root cause section names the COMBINATION explicitly ('added a synchronous... enrichment query to the authorize hot path at the same time it halved-plus the DB connection pool (50 → 20)') and shows the correlation work: 'pool moves from 17/50 to 20/20 in the same snapshot' at the 13:58 deploy minute, acquire-timeout 500s, under sale load — exceeds the minimum bar."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Contributing factor 'Observability gap on pool health. No alert or dashboard existed for db_pool_in_use / acquire-wait. Oncall found the real signal by hand at 14:23, ~15 min into impact' — framed as a gap that cost time, distinct from the lagging 5xx page, plus a Today remediation."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Named as a distinct amplifier with the hold-vs-fail-fast mechanism: 'a request with no connection sits for the full 10 s acquire timeout... nothing sheds it early or skips enrichment'; root-cause section also infers absence from the manifest ('no db.query.timeoutMs or enrichment.timeoutMs and no skip-on-slow path')."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Both decoys ACTIVELY dismissed with the cited disproof: Redis — 'redis_reset_per_min is flat at ~1/min before, during, and after... identical to the pre-deploy baseline. The cache fails open'; DB capacity — 'db_cpu_pct held ~29–32% and db_query_p99_ms held ~11–13 ms throughout... Recovery happened without touching the DB.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1",
+            "verdict": "found",
+            "note": "Latent-risk reframe beyond the key: even at pool 50, the un-isolated enrichment dependency could starve checkout — pool size only sets the threshold. A genuine extension the key does not require."
+          },
+          {
+            "key_id": "D2",
+            "verdict": "found",
+            "note": "Quantitative hold-time inference (~2–2.5x per-request connection-hold increase) derived from the 20/20-pinned → 9/20 shift at constant rps, properly tagged [ASSUMPTION]."
+          },
+          {
+            "key_id": "D3",
+            "verdict": "found",
+            "note": "Explicitly clears both hardening-pass clean decoys (async_receipts as off-path/beneficial; LB pod ejection as downstream symptom of queue backup) rather than silently omitting or fingering them."
+          },
+          {
+            "key_id": "D4",
+            "verdict": "found",
+            "note": "Process-level findings beyond the technical key: capacity+behavior changes coupled in one release, flag default flip absent from deploy notes, marketing heads-up to #general — all sourced to chat 14:51–14:53 and converted into specific remediations."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single coherent analytical voice throughout with zero persona/consensus seams; the 'evidence chain that fixes this as the cause' section reads like serialized extended chain-of-thought (cross-artifact joins, a derived 2–2.5x estimate, an explicit threshold-vs-mechanism reframe), and the document is uniformly tight rather than showing the stitched sections or redundant coverage typical of multi-agent or roundtable outputs.",
+        "overall_note": "A near-ceiling deliverable: 4/4 keyed items found at or above the minimum-credit bar, zero decoys taken (both named decoys plus both clean hardening decoys actively dismissed with the exact disproving evidence the key demands), zero hallucinations — the lone speculative number is tagged [ASSUMPTION]. Quality 23/25; the half-point and full-point deductions are for chat-seeded 'extras' counted cautiously in Coverage, missing success measures/decision points in Actionability, and slight bolding density in Communication. It survives every hardening trap noted in the key: it JOINs the generic acquire-timeout line to the config max and the metrics pool series, infers K3 from behavior rather than any 'no timeout' narration, and beats the unrebutted Redis bait with the flat 1/min baseline comparison."
+      },
+      {
+        "task": "p09",
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every quantitative claim checks against the metrics table (17/50 at 13:55, 20/20 + 2200ms wait at 14:02, 9/20 at 14:34); subtle points handled correctly — traffic framed as trigger not cause, 14ms-query-vs-10s-wait tell read correctly, approximations explicitly flagged in the footnote."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantive, plus unhinted material a senior reviewer would endorse: codifying pool=50 against silent revert, the Little's Law capacity model as a CI check, the async_receipts confounder analysis, flag-governance/progressive rollout."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The reframing that PR #4471's 'right-size to observed steady-state' measured a workload that ceased to exist the moment enrichment shipped in the same release ('predictable from arithmetic; nothing checked it') shifts remediation from one-off fixes to a process gap; second-order async_receipts hold-time analysis explains why post-fix usage (9/20) undershot baseline."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Remediations are concrete, role-owned, sequenced today/week/quarter, mapped to named gaps, with thresholds (page at ≥85% pool, >500ms wait budget) and a decision gate (re-enable enrichment only after timeout/load-test land); falls short of 5 — no explicit effort/cost estimates or success measures per item."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the 2–3 page band, tight bolded timeline table, conclusions findable in the Summary in one pass, every section earns its place, and the closing methodological footnote is exactly director-forwardable polish."
+          }
+        },
+        "quality_sum": 24,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Summary names BOTH coupled changes as working against each other ('More demand for connections, less supply, applied at the same moment sale traffic pushed... ~1,050 rps. The pool exhausted, requests queued... gave up at the 10 s acquire timeout'); root-cause section explicitly correlates the config diff with the metrics pool series (20/20 pinned, acquire-wait climb, flat db_query_p99) and states 'Shipping the demand increase and the supply cut together... is what tipped the system over.' Meets the combination + correlation bar despite labeling the pool cut 'primary contributing factor' rather than co-root."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Timeline 14:23 ('No alert or dashboard exists for pool health... opens the pool view manually'), 14:06 ('the only alert that fired all incident'), and the this-week remediation frames it as the gap that cost time: 'Oncall had to discover the pool view by hand at 14:23; this is the single change that would have cut time-to-diagnosis most.'"
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Dedicated 'Contributing factor: no early shedding or per-call timeout' section, distinct from K1: 'nothing shed it or skipped the slow step — it sat on the acquire queue until the 10 s timeout fired. One contended dependency was therefore able to drag the entire pool down'; the hold-vs-fail-fast mechanism is inferred from the 14:25 line (14ms query, 10s upstream) and the absent timeout keys, exactly the post-hardening inference path."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Both decoys actively dismissed with the cited disproof: Redis — 'redis_reset_per_min was a flat 1/min before and during the incident — identical to baseline' + fail-open; DB capacity — 'db_cpu_pct held at 29–32% and db_query_p99_ms at ~11–13 ms for the entire incident... the DB was never scaled or modified, yet the service recovered fully.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1-littles-law",
+            "verdict": "found",
+            "note": "Beyond-key derivation: Little's Law capacity arithmetic (790 rps × ~21ms ≈ 17 conns pre-deploy; peak demand >20) turns the root cause into a checkable model and feeds the load-test remediation; honestly flagged as approximate in the footnote."
+          },
+          {
+            "key_id": "D2-async-receipts-confounder",
+            "verdict": "found",
+            "note": "Explains the post-mitigation 9/20 undershooting the pre-deploy 17/50 via async_receipts shortening hold-time, correctly tagged [ASSUMPTION] and explicitly cleared as 'a confounder in the diff, not a contributor' — neatly sidesteps the planted clean decoy."
+          },
+          {
+            "key_id": "D3-stale-sizing-rationale",
+            "verdict": "found",
+            "note": "Insight that PR #4471's 'observed steady-state' baseline predated inline_enrichment, so the right-sizing measured a workload the same release abolished — drives the split-workload-from-sizing-changes remediation."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "One seamless analytical voice with a quantitative spine (Little's Law derivation woven from Summary through remediations into a methodological footnote), zero persona seams or section-stitching artifacts, and disciplined [ASSUMPTION] tagging — the depth-with-coherence signature of a large extended-thinking single pass rather than multi-agent or roundtable synthesis.",
+        "overall_note": "Exceptional deliverable: 4/4 keyed items found at full bar including the hardened K3 inference and active evidence-cited dismissal of both K4 decoys; both planted clean decoys (async_receipts, LB pod ejection) explicitly cleared rather than shotgunned; zero false positives. The only daylight from a perfect score is actionability lacking per-item effort/cost and success measures. Minor framing note: it labels enrichment the root cause and the pool cut the 'primary contributing factor,' but the text explicitly credits the combination, satisfying K1's bar."
+      },
+      {
+        "task": "p09",
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "All central claims check against the reference (pool 20/20 at 14:02, flat db_cpu 29-32%/query ~12ms, flat redis_reset 1/min, recovery sequence/timestamps exact); the Little's Law arithmetic (790 rps x ~21ms ≈ 17 conns vs 17/50 observed) is correct and qualified, assumptions are tagged, and the subtle root-vs-contributing arbitration is defended with the mitigation evidence (flag off with pool still at 20 cut 5xx 22%->6%)."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All five required sections substantive; engages implicit concerns (flag governance, release bundling, marketing comms routing) and adds material extras a senior reviewer would endorse (async_receipts confounder analysis, capacity-model-in-CI), though most extras trace to hints already in the chat."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Reframing finding: PR #4471's 'right-size to observed steady-state' baseline measured a workload the same release invalidated by adding enrichment — plus the 14ms-query-vs-10s-upstream tell and the 9/20-below-baseline anomaly explained via async_receipts; the 'predictable from arithmetic; nothing checked it' framing would change what leadership fixes."
+          },
+          "actionability": {
+            "score": 4,
+            "evidence": "Today/week/quarter sequencing with role owners, concrete thresholds (page at >=85% pool, >500ms wait budget), and an explicit decision gate (re-enable enrichment only after timeout/fallback + load test land); falls short of 5 because effort/cost and risks of each remediation are not stated."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the 2-3 page band, conclusions findable in the Summary in one pass, every section earns its place, blameless throughout, methodology caveat footnoted — a director could forward it unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Summary: 'Release v2.31.0... did two things at once that worked against each other' — names the 50->20 pool cut AND synchronous inline_enrichment, under ~1,050 rps sale load; correlates the config diff to the metrics pool series ('Pool already 20/20; acquire wait 2,200 ms' at 14:02, flat db_query_p99) and explicitly joins the generic 'db acquire: timed out after 10000ms' error to pool exhaustion, not DB capacity. The combination mechanism is stated ('shipping the demand increase and the supply cut together... is what tipped the system over'), so the editorial choice to label enrichment 'root cause' and the pool cut 'primary contributing factor' does not reduce it to a single-factor partial."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Timeline 14:06 'the *only* alert that fired all incident' and 14:23 'No alert or dashboard exists for pool health. Oncall opens the pool view manually'; remediation frames the gap as the time cost: 'Oncall had to discover the pool view by hand at 14:23; this is the single change that would have cut time-to-diagnosis most' — framed as a diagnosis-delaying gap, not merely 'an alert fired.'"
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Dedicated 'Contributing factor: no early shedding or per-call timeout' section: 'nothing shed it or skipped the slow step — it sat on the acquire queue until the 10 s timeout fired. One contended dependency was therefore able to drag the entire pool down' — names the fail-fast/shed gap as an amplifier distinct from K1 ('latent design weakness the release exposed rather than created'), plus cites the missing db.query.timeoutMs/enrichment.timeoutMs keys and the 14ms-query/10s-upstream observation."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "'What we ruled out' actively dismisses BOTH decoys with the keyed disproof: Redis — 'redis_reset_per_min was a flat 1/min before and during the incident — identical to baseline' plus fail-open cache; DB capacity — 'db_cpu_pct held at 29–32% and db_query_p99_ms at ~11–13 ms for the entire incident... the DB was never scaled or modified, yet the service recovered fully.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D1-littles-law",
+            "verdict": "found",
+            "note": "Derives per-request connection hold-time from rps x pool_in_use (Little's Law), verifies against observed 17/50 baseline and ~24-connection peak demand; correctly flagged as approximate in the footnote."
+          },
+          {
+            "key_id": "D2-stale-baseline",
+            "verdict": "found",
+            "note": "Non-obvious derivation that the PR's 'observed steady-state usage' justification for the 50->20 cut was measured on a pre-enrichment workload the same release invalidated — [ASSUMPTION]-tagged, well supported."
+          },
+          {
+            "key_id": "D3-async-receipts-confounder",
+            "verdict": "found",
+            "note": "Explains the otherwise-puzzling post-mitigation 9/20 (below pre-deploy 17/50 at lower rps) via async_receipts shortening hold-time, and correctly classifies the flag as a confounder/likely-helpful rather than causal — dodges the planted clean decoy and adds explanatory value."
+          },
+          {
+            "key_id": "D4-lb-ejection-symptom",
+            "verdict": "found",
+            "note": "Classifies pod flapping/LB ejection as a symptom downstream of the queue backup, dodging the second clean decoy."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single seamless analytic voice with a deep quantitative through-line (Little's Law derivation woven from Summary to footnote, the stale-baseline inference, the 9/20 anomaly resolved via async_receipts) and zero structural seams, persona residue, or coverage-by-committee padding — depth-over-breadth coherence characteristic of one large extended-thinking pass rather than assembled multi-agent or simulated-roundtable output; too precise and too well-integrated for a typical plain one-shot.\"}",
+        "overall_note": "Output C is a near-ceiling deliverable: perfect recall (4/4 found, including full-credit active dismissal of both K4 decoys with the exact keyed disproof evidence), zero false positives (both clean decoys — async_receipts and LB pod ejection — explicitly classified as non-causal), and genuine added analysis (capacity arithmetic, stale right-sizing baseline). The only scoring frictions: it labels enrichment 'root cause' and the pool cut 'primary contributing factor' where the key treats them as a coupled combination (the combined mechanism is nonetheless fully and explicitly stated, and the ranking is evidence-backed by the flag-flip-alone recovery), and remediations omit effort/cost estimates, capping Actionability at 4. Quality sum 23.5/25."
+      },
+      {
+        "task": "p09",
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Mechanism (hold-time × concurrency vs pool capacity) is exactly right, every metric citation checks against the reference, and the contested relative-weight question (flag vs pool cut) is handled with the 22%→6% recovery decomposition and honest [ASSUMPTION] tags on the doubled-hold-time inference and pod-flap ordering."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantive, plus materials the brief never hinted at that clearly belong: the spring-promo natural experiment, the async_receipts/LB-ejection dismissals, the release-coupling guardrail, and the marketing-blast comms gap."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Several non-obvious findings — '20 was already the steady-state ceiling before any trouble', 'the db acquire string misleadingly sounds like a DB fault', async_receipts 'mildly protective' — and the closing reframe that release coupling made the incident hard to reason about (highest-leverage fix) would change what leadership acts on."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Today/week/quarter tables with role owners, concrete thresholds (pool alert at >80% for 60s, ~150ms enrichment timeout), each action mapped to a named gap, quick wins flagged with proven-mitigation evidence; explicit decision points exist ('default OFF until timeout exists', 'no sale runs on 20 until load-tested') but success measures and effort/cost are only partly stated, so just shy of a full 5."
+          },
+          "communication": {
+            "score": 5,
+            "evidence": "Within the 2–3 page band, conclusions land in the Summary in one pass, the ruled-out section's falsification-test table is director-forwardable, and no section is filler."
+          }
+        },
+        "quality_sum": 24.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Root cause section: 'the interaction of two changes in v2.31.0... inline_enrichment flag adding a synchronous DB call on the held connection, combined with the pool being shrunk from 50 to 20', explicitly correlated to the metrics series ('pool pinned at 20/20 from 13:58 onward; db_pool_wait_ms ran away 0 → 2,200 → 7,600 → 9,800 → 9,900 ms') and to elevated sale load — meets the combination + diff-to-metrics-correlation bar fully."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "'Observability blind to the failure mode — no alert and no dashboard for pool health; oncall built the pool view by hand at 14:23, ~17 minutes after the page. The only alert that fired was the lagging downstream 5xx symptom' — framed as a contributing factor that cost diagnosis time, plus a concrete pool-saturation alert remediation."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Two contributing-factor bullets articulate the mechanism, not just a remediation: 'no db.query.timeoutMs or enrichment.timeoutMs keys anywhere in the manifest... an optional, decorative loyalty-tier lookup was given the power to block a payment authorization' and 'stalled requests sat on the acquire queue until the full 10s timeout instead of fast-failing or skipping the optional work' — the hold-vs-fail-fast amplifier is distinct from K1's pool-config cause."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Ruled-out table actively dismisses BOTH decoys with the keyed disproof: Redis — 'redis_reset_per_min flat at 1/min before, during, and in baseline; cache fails open; 100% of 500s are db acquire timeouts'; DB capacity — 'db_query_p99 ~12ms, db_cpu ~30% flat throughout... recovery achieved with the DB never touched.' Exceeds the active-dismissal-with-cited-evidence bar."
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "K1-join",
+            "verdict": "found",
+            "note": "Performed the required three-artifact join the hardening note demands: generic 'db acquire: timed out' error line explicitly connected to the config max ('failure to acquire a connection, not a query failure') and the used/max metrics notation, with the 14:25 14ms-query-vs-10s-wait line used as the decisive discriminator."
+          },
+          {
+            "key_id": "K4-clean-decoys",
+            "verdict": "found",
+            "note": "Also explicitly dismissed both hardening-added clean decoys with correct reasoning: async_receipts ('moves receipt emission off the request path... if anything mildly protective') and LB pod ejection ('symptom, not cause — ejection at 14:08 came after 5xx was already climbing'), avoiding the shotgun-solver precision trap entirely."
+          },
+          {
+            "key_id": "K1-relative-weight",
+            "verdict": "found",
+            "note": "Went beyond the bar: decomposed the two coupled changes' relative contributions from the staged recovery (flag-disable 22%→6%; residual 6% until pool restore), with attribution limits honestly tagged [ASSUMPTION]."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single, uniformly tight analytic voice with deep chained inference (the falsification-test table, the natural-experiment framing, the relative-weight decomposition from recovery stages) and zero redundancy or perspective seams — multi-agent/roundtable outputs typically buy breadth at the cost of this kind of compression and show stitch marks between sections; this reads like one very strong reasoner thinking long, not a synthesis.",
+        "overall_note": "Near-ceiling deliverable: 4/4 keyed items found at full credit, both named decoys actively dismissed with the exact disproving evidence the key requires, both clean decoys (async_receipts, LB ejection) explicitly cleared rather than shotgunned, zero false positives. Quality 24.5/25 — only deduction is Actionability lacking full success measures. The hardened materials' intended traps (unrebutted Redis WARNs, generic acquire-timeout string, buried two-line diff) were all defused with cited evidence; the relative-weight analysis and spring-promo natural experiment exceed what the key asks for."
+      },
+      {
+        "task": "p09",
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Mechanism, timeline, and decoy disproofs all accurate and [ASSUMPTION]-tagged; only slight overreaches like '100% of 500s... zero redis errors' asserted from curated, non-exhaustive log excerpts."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All five required sections substantive, plus unprompted material additions: ruled-out coverage of async_receipts and LB ejection, deploy-freeze window, release-coupling guardrail, marketing #oncall routing."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Relative-weight attribution via the residual 6% at maxSize=20, the spring-promo 'natural experiment', the 'db acquire sounds like a DB fault' trap, and the release-coupling guardrail reframing (attacks attributability, not the config value)."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Owners, today/week/quarter sequencing, concrete thresholds (80%/60s pool alert, ~150ms timeout), quick-wins triage and highest-leverage callout; lacks explicit success measures and effort/cost estimates for the 5 anchor."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight tables, bolded conclusions findable in one pass, blameless tone; dense and likely brushing the top of the ~2-3 page band, so not unambiguously 'forward unedited'."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Root cause section: 'the interaction of two changes in v2.31.0... inline_enrichment flag adding a synchronous DB call on the held connection, combined with the pool being shrunk from 50 to 20', explicitly correlated to the metrics ('pool pinned at 20/20 from 13:58 onward; db_pool_wait_ms ran away 0 → 2,200 → 7,600 → 9,800 → 9,900 ms') under sale load — full join of config diff + metrics series + load, with DB-health flatline cited."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "'Observability blind to the failure mode — no alert and no dashboard for pool health; oncall built the pool view by hand at 14:23, ~17 minutes after the page. The only alert that fired was the lagging downstream 5xx symptom' — framed as a diagnosis-delaying gap, plus the concrete pool-saturation alert remediation."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Named as a contributing factor distinct from K1: 'No per-call timeout or fallback on enrichment — there are no db.query.timeoutMs or enrichment.timeoutMs keys anywhere in the manifest' plus 'No load-shedding / early-bail — stalled requests sat on the acquire queue until the full 10s timeout instead of fast-failing or skipping the optional work' — the hold-vs-fail-fast amplifier mechanism articulated, not just a remediation line."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Ruled-out table actively dismisses BOTH decoys with cited disproof: Redis — 'redis_reset_per_min flat at 1/min before, during, and in baseline; cache fails open'; DB capacity — 'db_query_p99 ~12ms, db_cpu ~30% flat throughout... recovery achieved with the DB never touched.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 4,
+          "partial": 0,
+          "missed": 0,
+          "total": 4
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "D-relative-weight",
+            "verdict": "found",
+            "note": "Beyond the key: uses the staged mitigation (flag-kill 22%→6%, then pool restore to 0.4%) to attribute relative roles of the two coupled changes, with an honest [ASSUMPTION] that exact attribution is unmeasurable."
+          },
+          {
+            "key_id": "D-natural-experiment",
+            "verdict": "found",
+            "note": "Spring promo vs. 5/14 sale at ~1k rps used as a controlled comparison to eliminate traffic as the differentiating variable — derived from a single chat aside (14:12)."
+          },
+          {
+            "key_id": "D-clean-decoys-dismissed",
+            "verdict": "found",
+            "note": "Also rules out the hardening-note clean decoys: async_receipts ('moves receipt emission off the request path... if anything mildly protective') and LB pod ejection ('symptom, not cause' with ordering evidence)."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "A single, seamlessly unified analytic voice with deep chained quantitative reasoning (residual-6% attribution, falsification-test table, natural-experiment framing) and no section unevenness, persona residue, or stitched-together perspectives — reads like one mind thinking long, not a roundtable; the disciplined [ASSUMPTION] tagging and end-to-end consistency point to a large extended-thinking pass over multi-agent assembly.",
+        "overall_note": "Output D is a near-ceiling deliverable: 4/4 keyed items at full credit, zero decoys taken, zero hallucinations, and both named precision traps actively disproven with cited evidence rather than merely omitted. It additionally dismisses the post-hardening clean decoys (async_receipts, LB ejection) and adds genuine derivations (relative-weight attribution via the staged mitigation, the spring-promo natural experiment). Deductions are marginal: a couple of evidential overreaches from curated logs ('100% of 500s', 'immediately reads 20/20' from per-minute snapshots), no explicit success measures in remediations, and density that likely pushes the top of the 2-3 page band. Quality 23.5/25."
+      },
+      {
+        "task": "p10",
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every finding checks out against the key, including the subtle ones; decoys correctly treated (md5 handled as a calm FIPS/repr nit, os.replace recognized as the correct atomic pattern); even the _prune analysis ('stabilizes at maxfiles+1, oldest pinned forever') is more precise than the key's own description."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 8 keyed defects substantively covered, plus key-sanctioned extras (unlocked __contains__, clear() removing unrelated files) and genuinely new valid material (open() outside try aborts __init__ on a subdirectory; O(n) stat scan per write; RLock deadlock via exposed lock; missing MutableMapping API)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Caught all three subtle items (K3 split-lock, K7 LRU recency regression via cross-referencing reference/src, K8 eviction/disk divergence with resurrection-on-restart), and finding #4's 'library-wide regression buried in a persistence PR' framing materially changes the merge decision."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Severity-tiered (4 blockers / mediums / nits), file:line on each, concrete fix code for every blocker, claimed empirical reproduction numbers; falls just short of 5 (no explicit success measures or what-would-change-my-mind beyond the verdict)."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Clear verdict-first structure, every finding earns its place, but 8 findings + 6 multi-part nits with code blocks runs somewhat past the ~2-page target the brief set ('I'd rather have a short review'), so not a 5."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Finding 6: 'pickle.load on attacker-controlled bytes is arbitrary code execution... makes warm-start a cache from disk a code-execution vector', plus the correct note that except Exception cannot help because the payload runs during pickle.load. (Labeled MEDIUM where the key says high — credit bar met regardless.)"
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Finding 5: 'on the except: continue path f is never closed (FD leak, one per corrupt/partial file)'; fix uses a with-block context manager, exactly the bar."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Finding 1: identifies the two separate lock acquisitions with value + amount computed 'while no lock is held', names the lost-update outcome ('two threads can both read n... losing an increment'), and gives the single-lock fix — full mechanism per the bar."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Nits: 'get_or_set swallows all exceptions (except Exception: return default). A genuine bug in factory is silently masked as a cache miss... Consider narrowing what's caught, or letting it propagate' — meets the minimum-credit bar exactly, though placed in Nits rather than Findings (key rates it medium)."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Finding 2: 'names[1:excess]... skips index 0, so the single oldest file is never removed, and removes only excess − 1 files'; fix names[:excess] — the clean catch named in the key."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Finding 3: to_persistent defaults sync=False so '_load() is skipped and _write() is skipped... the flagship feature inert by default' — includes the both-load-and-write plus the key flags as extra credit."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Finding 4: 'The new get reads self.__data directly and bypasses __getitem__ entirely, so LRUCache.get() no longer updates recency' — names the concrete recency consequence the bar requires, plus the subclass-side-effects generalization."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Finding 7: eviction via popitem 'is not removed... on restart _load can resurrect keys that were evicted from memory long ago' — both the divergence/orphan-growth and resurrection consequences, where the bar requires either one."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "extra-load-abort",
+            "verdict": "found",
+            "note": "Beyond-key valid finding: open() sits outside the try in _load, so an unreadable entry or subdirectory raises (IsADirectoryError) and aborts construction — correct and not in the key's additional-findings list."
+          },
+          {
+            "key_id": "extra-prune-cost",
+            "verdict": "found",
+            "note": "Beyond-key valid finding: _prune does a full listdir + per-file getmtime stat on every write (~1024 stats per set near the cap) — correct performance observation, calmly presented."
+          },
+          {
+            "key_id": "extra-lock-deadlock",
+            "verdict": "found",
+            "note": "Beyond-key valid finding: exposed lock property is a non-reentrant Lock, so 'with synced.lock:' plus any SyncedCache call deadlocks — correct."
+          },
+          {
+            "key_id": "addl-contains-unlocked",
+            "verdict": "found",
+            "note": "Matches key's 'additional valid findings': SyncedCache.__contains__ reads without the lock; raised as a nit, correctly calibrated."
+          },
+          {
+            "key_id": "addl-clear-unrelated",
+            "verdict": "partial",
+            "note": "Touches the .tmp-files-left-by-crash idea inside Finding 5 but does not flag clear() removing unrelated files; no credit at stake."
+          }
+        ],
+        "arm_guess": "A4",
+        "arm_confidence": "low",
+        "arm_tell": "Repeated claims of live verification with specific, internally consistent measurements ('8 threads × 50 increments... measured 51', 'directory stabilizes at 5 with maxfiles=4', the IsADirectoryError repro) read like real execution against the applied diff, which points to an agentic arm; and perfect recall of all three subtle defects (K3/K7/K8, which the key says a cold solo pass rarely catches) plus zero decoys taken exceeds typical single-pass performance. The single unified reviewer voice with no persona seams argues against A3 and keeps A2 plausible (the numbers are all analytically derivable), hence low confidence.",
+        "overall_note": "Exceptional deliverable: 8/8 keyed defects found (all four key-designated 'rare' or 'sometimes' catches included), zero named decoys taken, zero hallucinated findings, and several correct beyond-key findings. The empirical numbers quoted are all consistent with the true semantics of the code (the maxfiles+1 stabilization is more precise than the key itself), though the 'I verified by running' claims are unverifiable from the text alone. Two minor calibration quibbles, neither costing credit: the pickle RCE (K1, key severity high) is filed as MEDIUM #6 with a docs-first remedy, and the K4 swallowed-factory-error (key severity medium) is relegated to Nits. Length runs past the ~2-page target, which is the only real rubric deduction. Quality sum 23.5/25."
+      },
+      {
+        "task": "p10",
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every mechanism stated is right (two-lock incr, names[1:excess], sync gating both load and write, __data bypassing __getitem__); subtle/contested points handled correctly — md5 framed as FIPS/repr-collision nit not 'insecure', os.replace pattern not flagged, KeyError catch not flagged; empirical claims ('stabilizes at 5 files') are mechanically consistent and even more precise than the key."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 8 keyed defects found, plus material extras the brief didn't hint at: open() outside try aborting __init__ on a subdirectory, O(n) stat scan per write, non-MutableMapping API gap, RLock deadlock via exposed lock, fsync semantics of 'sync'."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Caught all three subtle keys (K3 two-lock shape, K7 cross-referenced LRU recency regression 'buried in a persistence PR' — a decision-changing find, K8 eviction/disk divergence with resurrection-on-restart second-order effect)."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Severity-tiered (BLOCKER/MEDIUM/Nits), file:line, concrete code fixes, scoping advice ('shouldn't ride along silently in this PR'), alternatives for K8 (document vs hook eviction); just shy of 5 — no explicit success measures/what-would-change-my-mind."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the requested structure (verdict/Findings/Nits), conclusions in one pass, every section earns its place; slightly dense at the top of the ~2-page band with 8 findings + 6 nits, but tight per item — borderline forwardable unedited."
+          }
+        },
+        "quality_sum": 24,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Finding 6: 'pickle.load on attacker-controlled bytes is arbitrary code execution... makes warm-start a cache from disk a code-execution vector'; notes except Exception doesn't help because payload runs during load; suggests trusted-dir doc + safer serializer."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Finding 5: 'on the except: continue path f is never closed (FD leak, one per corrupt/partial file)'; fix uses a with-block context manager; bonus catch that open() outside the try aborts construction."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Finding 1: 'read and the write happen under two separate lock acquisitions, with value + amount computed in between while no lock is held... Two threads can both read n... losing an increment'; exact dropped-lock mechanism plus single-lock fix. Meets the strict bar."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Nit 3: 'get_or_set swallows all exceptions (except Exception: return default). A genuine bug in factory is silently masked as a cache miss returning default. Consider narrowing what's caught, or letting it propagate' — meets the minimum-credit bar verbatim, though filed under Nits rather than Findings (key rates it medium)."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Finding 2: 'names[1:excess]... skips index 0, so the single oldest file is never removed, and removes only excess − 1 files'; gives names[:excess] fix — the clean catch named in the key."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Finding 3: 'convenience method overrides it to sync=False. With sync=False, _load() is skipped and _write() is skipped... flagship feature inert by default'; includes the both-load-and-write plus the key calls out."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Finding 4: 'new get reads self.__data directly and bypasses __getitem__ entirely, so LRUCache.get() no longer updates recency... library-wide behavioral regression' — names the concrete LRU consequence the bar requires."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Finding 7: 'When the underlying cache evicts a key (LRU/FIFO popitem on overflow), the corresponding disk file is not removed... on restart _load can resurrect keys that were evicted from memory' — both divergence and resurrection consequences."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "AV-contains-unlocked",
+            "verdict": "found",
+            "note": "Nit 2 flags SyncedCache.__contains__ reading without the lock, calmly, as the key's additional-valid list allows; adds a correct RLock-deadlock observation about the exposed lock property."
+          },
+          {
+            "key_id": "AV-load-ignores-maxfiles",
+            "verdict": "missed",
+            "note": "Does not note that _load loads a directory wholesale regardless of maxfiles (no recall cost — additional-valid only)."
+          },
+          {
+            "key_id": "AV-clear-removes-unrelated",
+            "verdict": "missed",
+            "note": "clear() unlinking unrelated/.tmp files not raised (no recall cost), though .tmp leftovers are mentioned in the FD-leak finding."
+          },
+          {
+            "key_id": "AV-no-lock-composition",
+            "verdict": "missed",
+            "note": "Composing PersistentCache(SyncedCache(...)) leaving disk I/O unguarded not raised (no recall cost)."
+          },
+          {
+            "key_id": "EXTRA-load-aborts-on-subdir",
+            "verdict": "found",
+            "note": "Correct finding beyond the key: open() outside the try in _load means a subdirectory/unreadable file aborts __init__ (IsADirectoryError) — valid, no precision cost."
+          },
+          {
+            "key_id": "EXTRA-prune-on-every-write",
+            "verdict": "found",
+            "note": "Correct performance finding beyond the key: _prune does listdir + per-file getmtime stat on every __setitem__ (~maxfiles stats per write)."
+          }
+        ],
+        "arm_guess": "A4",
+        "arm_confidence": "med",
+        "arm_tell": "Specific runtime measurements ('8 threads × 50 increments... measured 51', 'directory stabilizes at 5 files', 'IsADirectoryError') imply actual code execution rather than pure reasoning, and the empirics are more precise than the answer key itself (stabilizes at maxfiles+1 vs the key's 'grows without bound'). Combined with perfect 8/8 recall including all three subtle keys (which the key says a cold solo pass rarely catches) and zero decoy hits, this looks like a tool-equipped multi-agent run. The single coherent first-person voice (no persona seams) argues against A3; the depth plus verification argues against A1/A2, though a strong extended-thinking run that fabricated 'I verified' claims can't be fully ruled out — hence medium confidence.\"",
+        "overall_note": "Near-ceiling deliverable: 8/8 keyed defects found at or above each minimum-credit bar, zero named-decoy hits, zero hallucinations, and several correct findings beyond the key (load aborts on subdirectory, O(n) prune per write, MutableMapping gap, RLock deadlock). The only quibbles are K4 being filed under Nits (key severity: medium — it still meets the credit bar verbatim) and unverifiable 'I ran it' claims, which are nonetheless mechanically consistent with the code. Decoy handling is exemplary: md5 treated as a calm FIPS/collision nit, os.replace and the KeyError catch correctly left alone. Quality 24/25."
+      },
+      {
+        "task": "p10",
+        "label": "B",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "Mechanisms are correct throughout including the subtle items (split-lock incr, __getitem__ bypass, eviction divergence) and claims are [ASSUMPTION]-qualified; docked half for a fabricated style nit (no semicolon-packed lines exist in __init__/_write) and slight overconfidence in F9's 'decorators will break'."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 8 keyed defects substantively covered plus valid extras (unlocked __contains__, no PersistentCache/SyncedCache lock integration, prune cost, None-vs-absent contract) and an interface-completeness concern the brief never hinted at."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "The summary reframes the line-level bugs as one design decision — 'which tier is authoritative' / two independent eviction authorities — and F5/F2 cross-reference shows second-order reasoning; F1+F6 combined into a restart DoS is a genuine non-obvious connection."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Severity-tiered (BLOCKER/MAJOR/nit), every finding has a concrete code-level fix, and F5 names an explicit pick-one-authority decision point; lacks explicit success measures / effort estimates beyond 'small to fix individually'."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Exactly the requested sections, conclusions findable in the first paragraph, tight prose with cross-references; but 9 findings + 8 nits runs noticeably past the ~2-page band the brief set."
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "F1: '_load runs pickle.load on untrusted directory contents (RCE) — BLOCKER ... unpickling executes arbitrary code via __reduce__', with trust-boundary fix direction (HMAC/safe codec/0o700 dir)."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "F6: 'open() is outside the try, and f.close() sits after except: continue, so every file that fails to unpickle leaks its descriptor'; fix is a with block."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "F4 quotes the two separate `with self.__lock` blocks, notes 'lock released here' around the arithmetic, and gives the lost-update scenario (two threads read 5, both store 6); single-critical-section fix."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "F8: 'except Exception: return default hides genuine factory failures — a DB timeout or a real bug surfaces as a silent default'; fix is propagate or narrow the catch."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "F2 identifies names[1:excess] starts at index 1, never removes the oldest file, deletes excess-1, worked example (13 files, cap 10 → 11 remain) and the excess==1 no-op; fix names[:excess]."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "F7: 'to_persistent defaults to sync=False, silently producing a non-persistent cache' and explicitly notes BOTH _load skipped and __setitem__ never writes through."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "F3: reading self.__data 'skips any subclass __getitem__' with the named concrete consequence 'LRUCache.get(k) no longer marks the key as recently used, so a hot key... becomes wrongly evictable' (TTLCache claim properly [ASSUMPTION]-tagged)."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "F5: eviction via popitem 'does not route through PersistentCache.__delitem__, so the disk file for the evicted key survives' and 'a key evicted from memory... is resurrected by _load on the next restart' — both keyed consequences."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [
+            {
+              "claim": "Style nit asserts 'semicolon-packed multi-statement lines in __init__/_write' — the diff's __init__ and _write contain no semicolons or multi-statement lines; the claim has no basis in the reviewed code (nit-level, but stated as fact)."
+            }
+          ],
+          "false_positive_count": 1
+        },
+        "derivation_items": [
+          {
+            "key_id": "AVF-contains-unlocked",
+            "verdict": "found",
+            "note": "Nit: 'SyncedCache.__contains__ is unlocked... Benign on CPython... Lock it or correct the docstring' — matches the key's additional valid finding, calibrated as a nit."
+          },
+          {
+            "key_id": "AVF-no-lock-integration",
+            "verdict": "found",
+            "note": "Nit: 'wrapping it inside SyncedCache does not protect the disk side' — matches the key's composition/locking-integration item."
+          },
+          {
+            "key_id": "AVF-load-ignores-maxfiles",
+            "verdict": "missed",
+            "note": "_load loading a directory already over maxfiles wholesale is not raised explicitly (F5 covers the adjacent divergence but not this load-time cap bypass)."
+          },
+          {
+            "key_id": "AVF-clear-removes-unrelated",
+            "verdict": "missed",
+            "note": "clear() removing unrelated/.tmp leftovers is not noted (the clear() nit raised is the TOCTOU-style remove guard instead)."
+          },
+          {
+            "key_id": "B3-handling",
+            "verdict": "partial",
+            "note": "Borderline: the exists-before-remove hunks are mentioned as a 'TOCTOU' nit with an EAFP fix; kept calm and in Nits, not asserted as a defect, so not counted as a decoy taken — but it grazes named bait B3."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 8/8 recall including all three subtle items with zero decoy bites, plus a single coherent authorial voice — findings cross-reference each other ('See also F5', 'subsumes F2's prune-by-mtime question') and the summary distills everything into one design decision. Multi-agent/persona outputs typically show seams: redundant overlapping findings, inconsistent severity calibration, and at least one persona biting the md5 or os.replace bait. This reads like one very deep reasoning pass that cross-referenced reference/src against the diff (the LRU __touch chain) and then compressed; the slightly-over-length but tightly integrated narrative fits a large extended-thinking single shot more than a merged roundtable.",
+        "overall_note": "Exceptional deliverable: full recall on all 8 keyed defects (including the three the key expects a cold pass to rarely catch — K3, K7, K8), correct sidesteps of every named decoy (explicitly notes 'MD5 collision resistance is irrelevant', leaves os.replace and the KeyError catch untouched), and the additional findings largely match the key's 'additional valid findings' list at nit severity. The only precision blemish is a fabricated style nit about semicolons that does not exist in the diff. Main rubric cost is length: ~17 items against a ~2-page target and a brief that asked for a short review that's right — though here it is both long and right. Quality 23/25; recall 8/8 found; false positives 1 (nit-level hallucination, no decoys taken)."
+      },
+      {
+        "task": "p10",
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4.5,
+            "evidence": "All eight keyed mechanisms stated accurately with correct details (worked example in F2, two-lock structure in F4, name-mangled dict bypass in F3); claims qualified with [ASSUMPTION] tags; only blemish is the final style nit asserting 'semicolon-packed multi-statement lines' that do not exist in the diff."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "Covers all 8 keyed defects including all three subtle ones (K3, K7, K8), plus valid extras the brief never hinted at (MutableMapping protocol gap F9, unlocked __contains__, prune cost, makedirs race) that a senior reviewer would agree belong."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Catches the rare cross-reference items (K7 via LRUCache.__getitem__, K8 second-order eviction divergence) and reframes the problem in the verdict: 'which tier is authoritative, and what is the durability guarantee across a restart?' — a decision-changing design framing that subsumes the line-level fixes."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Every finding has severity, file:line, and a concrete fix (often code); F5 offers an explicit decision point ('pick one authority'); F1 states what would change the risk assessment; lacks only effort estimates/success measures for a full 5."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Verdict-first, severity-tagged, findable in one pass and every finding earns its place, but 9 findings + 8 nits with code blocks runs ~3 pages against the stated ~2-page band, so length-band rule pulls it below 5."
+          }
+        },
+        "quality_sum": 23,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "F1: '_load runs pickle.load on untrusted directory contents (RCE) — BLOCKER ... unpickling executes arbitrary code via __reduce__'; fix names HMAC/safe codec/private directory."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "F6: 'open() is outside the try ... every file that fails to unpickle leaks its descriptor (the continue jumps past the close)'; fix is a with block."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "F4: 'The lock is dropped between the read and the write across two separate critical sections. Two threads each read 5, each compute 6 ... one increment vanishes' — names the two-separate-locks mechanism per the minimum bar, with single-critical-section fix."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "F8: 'except Exception: return default hides genuine factory failures — a DB timeout or a real bug surfaces as a silent default'; fix is propagate or narrow the catch."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "F2: 'names[1:excess] ... starts at index 1 ... names[0], the oldest file, is never removed ... excess==1 and names[1:1] is empty, so it never prunes at all'; fix names[:excess]."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "F7: 'to_persistent defaults to sync=False, silently producing a non-persistent cache ... neither loads on startup nor saves anything' — catches both the load and write halves (the plus)."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "F3: 'reads the name-mangled backing dict directly, skipping any subclass __getitem__ ... LRUCache.get(k) no longer marks the key as recently used, so a hot key ... becomes wrongly evictable' — names the concrete LRU recency consequence required by the bar."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "F5: 'eviction does not route through PersistentCache.__delitem__, so the disk file for the evicted key survives ... resurrected by _load on the next restart' — both the divergence and the resurrection consequence."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [
+            {
+              "claim": "Final style nit asserts 'semicolon-packed multi-statement lines in __init__/_write'; the diff's __init__ and _write contain no semicolon-packed lines, so this claim has no basis in the provided code."
+            }
+          ],
+          "false_positive_count": 1
+        },
+        "derivation_items": [
+          {
+            "key_id": "AV1-contains-unlocked",
+            "verdict": "found",
+            "note": "Nit 'SyncedCache.__contains__ is unlocked ... Benign on CPython' matches the key's additional valid finding, calm and correct."
+          },
+          {
+            "key_id": "AV2-load-ignores-maxfiles",
+            "verdict": "missed",
+            "note": "Does not explicitly state that _load ignores maxfiles on a pre-populated directory (F5's resurrection point is adjacent but distinct). No recall cost."
+          },
+          {
+            "key_id": "AV3-clear-removes-unrelated",
+            "verdict": "missed",
+            "note": "clear() deleting unrelated/.tmp leftovers not raised. No recall cost."
+          },
+          {
+            "key_id": "AV4-no-locking-integration",
+            "verdict": "found",
+            "note": "Nit: 'wrapping it inside SyncedCache does not protect the disk side; document that PersistentCache must be the inner layer, or give it its own lock.'"
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 8/8 recall including all three subtle items, zero decoys taken, and — the tell — a single coherent voice that cross-links findings into one mental model ('Resolving this also subsumes F2's prune question', 'Combined with F1 it's a cheap denial-of-service on restart', the authoritative-tier reframe). Multi-agent/roundtable outputs typically show seams, redundancy, or persona residue; this reads like one mind holding the whole diff plus the pre-PR source at once, which fits a large extended-thinking pass. The slightly-over-length, exhaustive nit list also fits a long-thinking single shot more than a synthesized party transcript.",
+        "overall_note": "Exceptional deliverable: full recall on all 8 keyed defects including the three subtle ones the key expects a cold pass to rarely catch (K3, K7, K8), with mechanisms stated to the minimum-credit bar or beyond, and every named precision bait avoided (md5 handled exactly as the key prescribes — collision resistance dismissed, repr-as-identity raised as the real nit; B4's KeyError catch correctly left alone; B2's atomic rename not flagged). Two borderline notes that did not count against precision: the B3 exists-before-remove pattern is mentioned, but only as a Nit with a benign try/except suggestion, below the key's 'confident finding asserting a defect' bar; and F3's TTLCache claim references a class trimmed from the vendored source, but it is explicitly [ASSUMPTION]-tagged, true for upstream cachetools, and hedged with the LRU fallback. The single false positive counted is the unfounded 'semicolon-packed multi-statement lines' style nit. Quality 23/25; the only deductions are that minor unfounded nit and modest overrun of the ~2-page band."
+      },
+      {
+        "task": "p10",
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every checked claim is accurate (incr lost-update mechanism, names[1:1] empty at excess==1, LRU recency via __getitem__/__touch); contested points handled correctly — pickle framed as trust-boundary not panic, B4 KeyError catch explicitly distinguished from the factory catch, md5 raised only as a calm FIPS nit."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 8 keyed defects plus key-listed extras (__contains__ unlocked, .tmp in scanned set, MutableMapping incompleteness) plus unprompted material items (RLock deadlock via exposed lock, sync-flag conflation, missing concurrency/restart tests)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Catches all three subtle keys (K3 two-lock shape, K7 cross-referenced against LRUCache.__touch, K8 resurrection-on-restart tied to the brief's restart scenario); the 'each blocker defeats its own feature's headline purpose' framing and the sync conflates write-through/load observation are decision-changing."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Severity legend, concrete code-level fixes (corrected incr, names[:excess], exist_ok=True), explicit fix-or-document decision points (Findings 4, 8), and named tests that would have caught each blocker; lacks only effort estimates and an explicit what-would-change-my-mind."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Tight, navigable, verdict-first with severity legend and one-pass conclusions, but 10 findings + 7 nits with code blocks runs ~3 pages against the ~2-page target band, which the length rule scores down."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Finding 8: '_load unpickles every file in directory... the next process start executes arbitrary code' — names directory-permissions/doc fix."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Finding 6: 'On the continue path the file handle is never closed (one leaked FD per unreadable file)' with a with-block fix."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Finding 1: 'takes the lock, reads, releases the lock, computes value + amount, then re-acquires the lock to write... one increment is lost' — exact two-lock mechanism plus corrected code."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Finding 10: 'except Exception: return default makes a bug in the factory indistinguishable from a miss... silent failure' — suggests propagate/narrow/log."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Finding 2: 'removing excess files requires names[:excess]... names[1:1] is empty and nothing is deleted — the cap is never enforced' — the clean catch per the key."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Finding 3: 'to_persistent passes sync=False... __setitem__ skips _write and __init__ skips _load, so the object never reads or writes disk' — also earns the both-load-and-write plus."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Finding 5: 'the new path reads __data directly and skips the recency touch, so LRUCache.get() no longer counts as a use. It also bypasses __missing__' — named consequence meets the bar fully."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Finding 4: eviction via popitem 'never goes through PersistentCache.__delitem__, so the evicted key's file stays on disk' — both unbounded-disk and 'resurrects values the cache had already evicted' on restart."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 8/8 recall including all three subtle keys with zero decoys taken, delivered in a single uniform authorial voice with dense cross-references between findings (2↔7, 4↔2, 8↔9) and one coherent severity scheme — depth-with-coherence that reads like one long careful pass, with none of the breadth-plus-seams redundancy or persona residue typical of roundtable/party outputs.",
+        "overall_note": "Near-ceiling deliverable: 8/8 keyed defects found at or above each minimum-credit bar, all five named decoys avoided (B4 explicitly disarmed by correctly locating the swallowed-error in the factory catch; B2 never flagged; md5 raised only as a calm FIPS nit with usedforsecurity=False). One borderline item not counted as a false positive: Finding 7 elevates key-to-filename derivation (repr non-injectivity/instability) to Major — adjacent to bait B1's hunk but it does not assert 'md5 is insecure' and the repr-instability mechanism is real, though the equal-repr collision scenario is contrived; the key's guidance ('treat a calm mention as a nit') argues this belongs in Nits, so it cost half a point on Actionability framing rather than precision. Main rubric deduction is length: ~3 pages against the ~2-page band. Quality 23.5/25."
+      },
+      {
+        "task": "p10",
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every mechanism is stated precisely and verifiably (e.g. F2: 'names[1:1] is empty' for excess==1; F1 quotes the two-lock split exactly); the contested points (md5, os.replace, except KeyError) are all handled correctly — md5 demoted to a FIPS nit with usedforsecurity=False rather than a bogus 'insecure' claim."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 8 keyed defects covered substantively, plus material extras a senior reviewer would endorse: RLock deadlock via public .lock, .tmp files counted by _prune/_load, MutableMapping incompleteness, sync-flag conflation, missing-tests list."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Catches all three subtle items (K3 dropped-lock incr, K7 LRU recency regression via cross-referencing reference/src, K8 eviction/disk divergence with resurrection-on-restart), and the summary reframes the PR as 'each component's single headline behavior is broken' — a decision-changing read."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Every finding has file:line, a concrete code-level fix, blocker/major/minor priority, and the closing 'Missing tests' item names the exact test that would catch each blocker; slightly short of 5 only because effort/cost framing is implicit rather than explicit."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the requested structure (verdict / Findings / Nits), severity legend, conclusions findable in one pass, findings cross-referenced (F4→F2, F8→F9); modestly over the ~2-page band at 10 findings + 7 nits, which costs the half-point."
+          }
+        },
+        "quality_sum": 24,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Finding 8: '_load unpickles every file in directory... the next process start executes arbitrary code' — names the ACE/trust-boundary risk and a fix direction (warning + 0o700 directory)."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Finding 6: 'On the continue path the file handle is never closed (one leaked FD per unreadable file)'; fix shows a with block — meets the bar exactly."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Finding 1: 'takes the lock, reads, releases the lock, computes value + amount, then re-acquires the lock to write... Two threads can both read 5 and both write 6; one increment is lost' — identifies the two-separate-locks structure and the lost update."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Finding 10: 'except Exception: return default makes a bug in the factory indistinguishable from a miss... nothing logged or stored — a hard-to-diagnose silent failure'; suggests propagating or narrowing the catch."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Finding 2: 'removing excess files requires names[:excess]... names[1:1] is empty and nothing is deleted — the cap is never enforced'; also notes the always-skipped oldest file — the clean catch plus the excess==1 degenerate case."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Finding 3: 'to_persistent passes sync=False. With sync=False, __setitem__ skips _write and __init__ skips _load' — flags the surprising default and earns the both-load-and-write plus."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Finding 5: rewrite 'bypasses __getitem__... skips the recency touch, so LRUCache.get() no longer counts as a use. It also bypasses __missing__' — names both concrete consequences required by the bar; recommends revert."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Finding 4: eviction 'never goes through PersistentCache.__delitem__, so the evicted key's file stays on disk indefinitely... on restart, _load... resurrects values the cache had already evicted' — both the divergence/growth and resurrection consequences."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "AV-contains-unlocked",
+            "verdict": "found",
+            "note": "Key's additional-valid item: SyncedCache.__contains__ reads without the lock — raised calmly as the first Nit, correctly noting GIL makes impact low."
+          },
+          {
+            "key_id": "AV-tmp-files-in-dir",
+            "verdict": "found",
+            "note": "Adjacent to the key's clear()-removes-.tmp note: Output C flags .tmp files being counted by _prune and read by _load (Nit) — calm and correct, not a B2 atomic-write false positive."
+          },
+          {
+            "key_id": "AV-repr-filename-instability",
+            "verdict": "found",
+            "note": "Finding 7 argues repr(key) is non-injective and embeds memory addresses (unstable across runs) — a genuine fidelity issue distinct from the B1 md5 decoy; mechanism is correct, though Major is arguably generous for a not-keyed item."
+          },
+          {
+            "key_id": "AV-makedirs-race",
+            "verdict": "found",
+            "note": "Finding 9: check-then-act on os.makedirs, fix exist_ok=True — real minor bug, correctly rated Minor; distinct from the B3 __delitem__ TOCTOU bait, which it did not take."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Perfect 8/8 recall including all three rarely-caught subtle items plus zero decoys taken implies far more than a cold one-shot pass, but the document is a single seamless voice with tight cross-references between findings (F4 cites F2, F8 cites F9, F2 forward-references F7) and no specialty-lens redundancy or seam artifacts — that integrated coherence reads like one large, careful extended-thinking pass rather than a synthesized multi-agent roundtable; A4 is the plausible alternative given the breadth across security/concurrency/filesystem/API-design lanes.",
+        "overall_note": "An exceptional review: all 8 keyed defects found at or above their minimum-credit bars (including the three the key expects to be rarely caught — K3, K7, K8), with correct mechanisms, concrete fixes, and sound severity calibration. It sidestepped every named decoy: md5 appears only as a calm FIPS nit (not 'insecure, use sha256'), the os.replace pattern is never flagged, B3/B4/B5 untouched. The only judgment calls against it are mild: Finding 7 (repr-derived filenames) is rated Major for a non-keyed issue — its mechanism (repr non-injectivity and memory-address instability) is correct and distinct from the B1 md5 decoy, so I did not count it as a false positive — and the document runs somewhat past the ~2-page band. Quality 24/25, recall 8/8, false positives 0."
+      },
+      {
+        "task": "p10",
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every finding checked out mechanically (worked example for the prune slice, correct note that except-Exception cannot mitigate pickle ACE since payload runs during load); sidesteps the contested md5 point with the genuinely-correct FIPS/usedforsecurity nuance instead of the naive 'md5 insecure' claim."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 8 keyed defects found, plus material valid extras the brief didn't hint at (RLock deadlock via the exposed .lock property, directory-ownership/clear() deletes unrelated files, MutableMapping protocol gap, repr(key) filename instability) that a senior reviewer would agree belong."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Caught all three subtle items the key expects a cold pass to rarely get (K3 dropped-lock incr, K7 LRU recency regression via __touch cross-reference, K8 eviction/disk divergence) and added the reframing observation that restart survival is determined by os.listdir order rather than recency."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Every finding has file:line, severity, and a concrete fix (often code); blockers vs nits separated; [ASSUMPTION] tag in finding 6 explicitly states what would move it High->Critical — only lacking explicit success measures keeps it off 5."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Exact structure requested (verdict / findings / nits), tight prose, conclusions findable in one pass, but 9 findings + 7 nits with code blocks runs ~3 pages against the ~2-page band, and the '(see #8)' cross-reference in finding 3 points at the wrong item."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Finding 6: 'Anyone who can write to that directory gets arbitrary code execution in the loading process' — names insecure deserialization as ACE, not merely pickle-is-slow, plus fix directions (trust-boundary docs, opt-in, non-executing format)."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Finding 5: 'The continue on unpickle failure skips f.close(), so each corrupt or partial file... leaks a descriptor' with a with-block rewrite — exactly the minimum-credit bar."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Finding 1: quotes the two separate 'with self.__lock' blocks, states 'Two threads can both read 0, both write 1; one increment is lost' — identifies the dropped-lock read-modify-write mechanism, not vague raciness."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Last nit: 'get_or_set swallows every Exception... it will mask real bugs in factory. Consider narrowing' — meets the bar (bare catch hides real errors + narrower-catch suggestion), though filed under Nits rather than Findings."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Finding 2: 'names[1:excess] (a) skips index 0 — the oldest file is never deleted — and (b) removes only excess - 1 files... Fix: names[:excess]' — the clean catch, with a correct worked example."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Finding 3: 'to_persistent defaults sync=False, but sync gates both writing and loading... a wrapper that neither mirrors writes to disk nor loads' — minimum credit plus the both-load-and-write bonus."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Finding 4: 'bypasses the subclass __getitem__. Previously get called self[key], which for LRUCache runs __touch and marks the key recently used... silently changes eviction behavior' — names the concrete LRU recency consequence."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Finding 7: 'the evicted key's file is not removed from disk... a restart can resurrect long-evicted keys' — both the orphaned-files and resurrection-on-reload consequences, exceeding the either/or bar."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "B1-md5",
+            "verdict": "found",
+            "note": "Navigated correctly: does NOT claim md5 is insecure; instead raises the real FIPS-build failure with usedforsecurity=False as a calm nit — per the key this earns no recall but costs no precision."
+          },
+          {
+            "key_id": "B2-B5",
+            "verdict": "found",
+            "note": "None of the other baits taken: temp+os.replace not flagged, exists-before-remove in __delitem__ not flagged (the makedirs TOCTOU nit is a different, real point), except-KeyError treated as the correct miss path, SyncedCache.get not flagged (the unlocked __contains__ is the key's sanctioned valid finding)."
+          },
+          {
+            "key_id": "additional-valid",
+            "verdict": "found",
+            "note": "Surfaced three of the key's four 'additional valid findings' (unlocked __contains__, clear() deleting unrelated files, _load ignoring maxfiles implicitly via finding 7) plus correct novel ones (RLock deadlock via .lock); all mechanisms check out, so none count against precision."
+          }
+        ],
+        "arm_guess": "A4",
+        "arm_confidence": "med",
+        "arm_tell": "Recall the key says a cold solo pass 'rarely' achieves: all three subtle items (K3/K7/K8) plus orthogonal specialist-flavored extras (FIPS md5 nuance, MutableMapping protocol audit, lock-reentrancy deadlock, fs-ordering analysis) reads like aggregated multiple expert passes merged into one voice — and finding 3's dangling '(see #8)' cross-reference, which points at an unrelated finding, looks like a renumbering seam from merging. A1 would miss the subtle trio; A3 usually leaves persona residue; A2 is the plausible alternative, hence only medium confidence.",
+        "overall_note": "Near-ceiling deliverable: 8/8 keyed defects at full credit, zero decoys taken, zero hallucinations, and every additional claim verified mechanically correct. Severity calibration is sound (the three behavior-defeating bugs are the blockers; pickle ACE honestly scoped with a tagged assumption). Only deductions: K4 demoted to a nit despite being a keyed medium, length runs past the ~2-page band, and one broken internal cross-reference. Quality 23.5/25, recall 8/8 found, false_positive_count 0."
+      },
+      {
+        "task": "p10",
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 5,
+            "evidence": "Every finding checked is mechanically accurate, including the worked _prune example (maxfiles=2, [a,b,c,d,e] -> deletes [b,c], stabilizes at maxfiles+1 with oldest pinned) and the correct note that except-continue does not mitigate pickle RCE since payload executes during load; severity calibrated with an explicit [ASSUMPTION]."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All 8 keyed defects substantively covered, plus 3 of the key's additional-valid findings and genuinely material extras the brief didn't hint at (non-reentrant .lock deadlock, repr(key) keys not surviving restart, per-write O(n log n) prune cost)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Catches all three subtle items (K3 dropped-lock, K7 LRU recency regression cross-referenced against src, K8 eviction/disk divergence) and adds a reframing second-order point: reload order is os.listdir-determined so a restart resurrects evicted keys and drops live ones."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Blocker/High/Medium/nit triage as the brief asked, concrete code fixes for #1/#2/#5, explicit alternatives at decision points (#3 'or drop the sync knob', #6 opt-in vs format change); slightly short of 5 on success measures/effort beyond 'none of this is hard to fix'."
+          },
+          "communication": {
+            "score": 4,
+            "evidence": "Exactly the requested sections, verdict findable in one pass, nits correctly quarantined; but 9 findings + 7 nits with code blocks runs noticeably past the ~2-page band, so docked under the length-band rule."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Finding 6: 'Anyone who can write to that directory gets arbitrary code execution in the loading process' — names insecure deserialization, trust boundary, and fix directions (warning, opt-in, non-executing format)."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Finding 5: 'The continue on unpickle failure skips f.close(), so each corrupt or partial file... leaks a descriptor... can exhaust the fd limit at startup' — with a context-manager fix."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Finding 1 (Blocker): 'incr takes the lock to read, releases it, computes, then re-takes it to write... Two threads can both read 0, both write 1; one increment is lost' — exact two-separate-locks mechanism plus correct fix."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Nits, last bullet: 'get_or_set swallows every Exception and returns default silently... it will mask real bugs in factory. Consider narrowing' — meets the bar (bare catch hides real errors + narrower-catch fix), though filed as a nit rather than a Finding."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Finding 2 (Blocker): 'names[1:excess] (a) skips index 0 — the oldest file is never deleted — and (b) removes only excess-1 files... Fix: names[:excess]' — the clean catch, with a correct worked example."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Finding 3 (Blocker): 'to_persistent defaults sync=False, but sync gates both writing and loading... a wrapper that neither mirrors writes to disk nor loads existing files' — includes the both-load-and-write plus."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Finding 4: 'this bypasses the subclass __getitem__. Previously get called self[key], which for LRUCache runs __touch... LRUCache.get() no longer counts as an access, which silently changes eviction behavior' — named concrete consequence as the bar requires."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Finding 7: 'the evicted key's file is not removed from disk... the directory accumulates files for keys no longer in memory; on restart, _load reads all files... a restart can resurrect long-evicted keys' — both consequences caught."
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 0,
+          "missed": 0,
+          "total": 8
+        },
+        "precision": {
+          "decoys_taken": [],
+          "hallucinations": [],
+          "false_positive_count": 0
+        },
+        "derivation_items": [
+          {
+            "key_id": "AV-contains-unlocked",
+            "verdict": "found",
+            "note": "Nit: 'SyncedCache.__contains__ is not taken under the lock, inconsistent with the docstring. Harmless on CPython' — matches the key's additional-valid finding, calibrated correctly as a nit."
+          },
+          {
+            "key_id": "AV-load-ignores-maxfiles",
+            "verdict": "partial",
+            "note": "Finding 7(b) notes _load re-inserts all files in listdir order so 'which maxsize entries survive is determined by filesystem order', adjacent to but not explicitly the over-maxfiles wholesale load."
+          },
+          {
+            "key_id": "AV-clear-deletes-everything",
+            "verdict": "found",
+            "note": "Finding 9: clear()/prune/_load operate on every file in the directory, deleting unrelated files; suggests scoping to *.cache — covers the key's clear() bullet and extends it."
+          },
+          {
+            "key_id": "AV-no-lock-composition",
+            "verdict": "missed",
+            "note": "Does not address composing PersistentCache(SyncedCache(...)); Finding 8 (non-reentrant .lock deadlock) is a different, also-valid lock concern not in the key."
+          },
+          {
+            "key_id": "EXTRA-md5-FIPS",
+            "verdict": "found",
+            "note": "Handles the B1 bait correctly: avoids the 'md5 insecure, use sha256' security framing entirely and instead raises the legitimate FIPS-build failure with usedforsecurity=False — a calm, correct nit."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Perfect 8/8 recall including all three hardened-subtle items with zero decoy takes is top-arm performance, but the document reads as one mind in one pass: a single uniform reviewer voice, dense cross-finding references ('see #8', stale-resurrect linking K5 to restarts), a verified numeric worked example, and no redundancy or perspective seams that merged multi-agent output typically leaves. That depth-without-seams profile points to large extended-thinking (A2) over a real party (A4), though A4 with a strong synthesizer would look similar — hence medium confidence.",
+        "overall_note": "Near-ceiling deliverable: 8/8 keyed recall (the key predicted K3/K7/K8 would 'rarely' be caught cold — all three are nailed with the exact mechanisms), zero false positives, and it sidesteps every named decoy including the md5 and atomic-rename baits. Extras (RLock deadlock via the exposed .lock property, repr(key) identity instability across restarts, per-write prune cost) are all technically correct. Only deductions: K4 is filed under Nits rather than Findings (content meets the bar, placement slightly undersells a medium), and the document overruns the ~2-page band, docking Communication per the length rule. Quality 23.5/25."
+      }
+    ]
+  }
+}

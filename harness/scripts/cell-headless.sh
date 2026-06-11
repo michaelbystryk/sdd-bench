@@ -270,6 +270,140 @@ for m, a in sorted(models.items()):
 PY
     ;;
 
+  party)
+    # P-track advisory cell (arms A1/A2/A3): blind headless `claude -p`.
+    # The brief (+ any arm wrapper, e.g. A3's roleplay prompt or A2's think
+    # line) is the prompt file $PF; reference/ is seeded so the cell reads it
+    # exactly as a real cell would. Runs in a throwaway mktemp dir with NO eval
+    # framing or harness CLAUDE.md, so the cell is blind. The deliverable file
+    # the cell writes is copied into the run dir's artifacts/. Cost comes from
+    # the result JSON (total_cost_usd + per-model modelUsage), same as the
+    # main-track automated arm.
+    #   party <task> <arm> <run> <deliverable-filename> <prompt-file> [think-budget]
+    # think-budget (optional, A2 only): MAX_THINKING_TOKENS for matched extended
+    # thinking. Set INSIDE the script (not an env prefix) so the scoped
+    # cell-headless allow-rule still matches.
+    TASK="$1"; ARM="$2"; RUN="$3"; DELIV="$4"; PF="$5"; THINK="${6:-}"
+    RUN_DIR="$HARNESS/runs/party/$TASK/$ARM/run-$RUN"
+    TURNS_DIR="$RUN_DIR/artifacts/turns"
+    [ -d "$RUN_DIR" ] || die "run logbook dir missing: $RUN_DIR (scaffold it first)"
+    [ -f "$PF" ] || die "prompt file missing: $PF"
+    mkdir -p "$TURNS_DIR"
+    WORK="$(mktemp -d "${TMPDIR:-/tmp}/advisory.XXXXXX")"
+    REF="$HARNESS/tasks/party/$TASK/reference"
+    if [ -d "$REF" ] && find "$REF" -type f | grep -q .; then
+      mkdir -p "$WORK/reference"; cp -R "$REF/." "$WORK/reference/"
+    fi
+    [ -n "$THINK" ] && export MAX_THINKING_TOKENS="$THINK"
+    PROMPT="$(cat "$PF")"
+    OUT="$TURNS_DIR/turn-001.json"
+    ( cd "$WORK" && claude -p --model "$MODEL" --dangerously-skip-permissions \
+        --output-format json "$PROMPT" </dev/null ) > "$OUT" 2>"$OUT.err" || {
+        echo "TURN_ERROR (exit $?). stderr:"; tail -5 "$OUT.err" >&2; }
+    if [ -f "$WORK/$DELIV" ]; then
+      cp "$WORK/$DELIV" "$RUN_DIR/artifacts/$DELIV"
+      echo "DELIVERABLE: $RUN_DIR/artifacts/$DELIV"
+    else
+      echo "DELIVERABLE_FILE_MISSING: cell did not write $DELIV — capturing result text instead"
+      python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get('result') or '')" "$OUT" \
+        > "$RUN_DIR/artifacts/$DELIV" 2>/dev/null && \
+        echo "DELIVERABLE (from result text): $RUN_DIR/artifacts/$DELIV"
+    fi
+    echo "WORKDIR: $WORK"
+    [ -n "$THINK" ] && echo "MAX_THINKING_TOKENS: $THINK"
+    python3 - "$OUT" <<'PY'
+import sys, json
+try: d = json.load(open(sys.argv[1]))
+except Exception as e: print("PARSE_FAIL", e); sys.exit(0)
+print("SESSION:", d.get("session_id"))
+print("IS_ERROR:", d.get("is_error"))
+print("NUM_TURNS:", d.get("num_turns"))
+print("API_MS:", d.get("duration_api_ms"))
+print("COST_USD:", d.get("total_cost_usd"))
+for m, u in (d.get("modelUsage") or {}).items():
+    print(f"MODEL {m}: in={u.get('inputTokens',0)} out={u.get('outputTokens',0)} "
+          f"cache_r={u.get('cacheReadInputTokens',0)} cache_w={u.get('cacheCreationInputTokens',0)} "
+          f"cost=${u.get('costUSD',0):.4f}")
+r = d.get("result") or ""
+print("RESULT_CHARS:", len(r))
+PY
+    echo "TURN_JSON: $OUT"
+    ;;
+
+  partybmad)
+    # P-track A4 (BMAD party mode), HEADLESS-AUTOMATED. Drives `/bmad-party-mode`
+    # via `claude -p` in a persistent cell dir pre-loaded with a reusable BMAD
+    # install (the installer can't go headless; copying is the documented
+    # workaround). Default invocation (no --model) — party mode picks the persona
+    # model per round (Opus on substantive tasks). If the one-shot turn doesn't
+    # write the deliverable (party mode sometimes stops to ask), auto-resume once
+    # with the locked closing line — the same neutral nudge the manual protocol
+    # permits, applied programmatically. Agent-operated (no human) — disclosed
+    # caveat, same as the main-track automated arm; gives operator parity with the
+    # headless A1/A2/A3 arms.
+    #   partybmad <task> <run> <deliverable> <brief-file> <cell-dir>
+    TASK="$1"; RUN="$2"; DELIV="$3"; BF="$4"; CELL="$5"
+    RUN_DIR="$HARNESS/runs/party/$TASK/a4/run-$RUN"
+    TURNS_DIR="$RUN_DIR/artifacts/turns"
+    [ -d "$RUN_DIR" ] || die "run logbook dir missing: $RUN_DIR"
+    [ -f "$BF" ] || die "brief file missing: $BF"
+    REUSE="$HOME/dev/sdd-private/orders-pagesize-a4"
+    [ -d "$REUSE/_bmad" ] || die "reusable BMAD install not found at $REUSE/_bmad"
+    mkdir -p "$TURNS_DIR" "$CELL"
+    [ -d "$CELL/_bmad" ]  || cp -R "$REUSE/_bmad"  "$CELL/"
+    [ -d "$CELL/.claude" ] || cp -R "$REUSE/.claude" "$CELL/"
+    REF="$HARNESS/tasks/party/$TASK/reference"
+    if [ -d "$REF" ]; then mkdir -p "$CELL/reference"; cp -R "$REF/." "$CELL/reference/"; fi
+    PROMPT="/bmad-party-mode
+
+$(cat "$BF")"
+    O1="$TURNS_DIR/turn-001.json"
+    ( cd "$CELL" && claude -p --model "$MODEL" --dangerously-skip-permissions \
+        --output-format json "$PROMPT" </dev/null ) > "$O1" 2>"$O1.err" || \
+        { echo "TURN1_ERROR"; tail -3 "$O1.err" >&2; }
+    if [ ! -f "$CELL/$DELIV" ]; then
+      SID=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get('session_id') or '')" "$O1" 2>/dev/null)
+      echo "NO_DELIVERABLE after turn 1 — auto-nudging (resume $SID) with closing line"
+      O2="$TURNS_DIR/turn-002.json"
+      ( cd "$CELL" && claude -p --resume "$SID" --model "$MODEL" --dangerously-skip-permissions \
+          --output-format json "Please wrap up and produce the deliverable specified in the brief as a standalone document. Write it to $DELIV." </dev/null ) > "$O2" 2>"$O2.err" || true
+    fi
+    if [ -f "$CELL/$DELIV" ]; then
+      cp "$CELL/$DELIV" "$RUN_DIR/artifacts/$DELIV"; echo "DELIVERABLE: $RUN_DIR/artifacts/$DELIV"
+    else
+      echo "DELIVERABLE_STILL_MISSING for $TASK (party mode never produced $DELIV)"
+    fi
+    # capture transcript + subagents from the project dir for this cell
+    PROJ=$(ls -dt "$HOME"/.claude/projects/*"$(basename "$CELL")"* 2>/dev/null | head -1)
+    if [ -n "$PROJ" ]; then
+      cp "$PROJ"/*.jsonl "$RUN_DIR/artifacts/transcript.jsonl" 2>/dev/null || true
+      mkdir -p "$RUN_DIR/artifacts/subagents"
+      find "$PROJ" -path '*/subagents/agent-*.jsonl' -exec cp {} "$RUN_DIR/artifacts/subagents/" \; 2>/dev/null || true
+    fi
+    # aggregate cost across turns + report persona model
+    python3 - "$TURNS_DIR" "$RUN_DIR/artifacts/subagents" <<'PY'
+import sys, glob, json, os
+tot=0.0; api=0; models={}
+for f in sorted(glob.glob(os.path.join(sys.argv[1],"turn-*.json"))):
+    try: d=json.load(open(f))
+    except: continue
+    tot+=d.get("total_cost_usd") or 0; api+=d.get("duration_api_ms") or 0
+    for m,u in (d.get("modelUsage") or {}).items():
+        models[m]=models.get(m,0)+u.get("outputTokens",0)
+print(f"TOTAL_COST_USD: {tot:.4f}")
+print(f"TOTAL_API_MS: {api} ({api/1000:.0f}s)")
+print("MODELS (out tokens):", models)
+pm=set()
+for f in glob.glob(os.path.join(sys.argv[2],"agent-*.jsonl")):
+    for l in open(f):
+        try: m=(json.loads(l).get("message") or {}).get("model")
+        except: m=None
+        if m: pm.add(m); break
+print("PERSONA_MODELS:", sorted(pm) or "(no subagents captured)")
+PY
+    echo "CELL_DIR: $CELL"
+    ;;
+
   *)
     sed -n '2,40p' "$0" | sed 's/^# \?//'
     exit 1 ;;

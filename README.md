@@ -40,10 +40,43 @@ See [`PROJECT-BRIEF.md`](PROJECT-BRIEF.md) for full design — thesis, methodolo
 ## Quick map
 
 - **`PROJECT-BRIEF.md`** — source of truth for the eval design
-- **`tasks/`** — locked briefs + reference materials per task (t1–t6, plus t4-rich)
-- **`harness/`** — PM persona + methodology config files
+- **`PARTY-TRACK-BRIEF.md`** — design for the second track (see below)
+- **`tasks/`** — locked briefs + reference materials per task (t1–t6, plus t4-rich; `tasks/party/` for the P-track)
+- **`harness/`** — PM persona + methodology config files (`harness/party/` for P-track arm configs + rubric)
 - **`runs/`** — per-cell session logs, token captures, and artifacts
 - **`analysis/`** — version-by-version writeups
+
+## Second track: Party Track (P-track) — is BMAD party mode a masquerade?
+
+*Status: complete — 11 tasks × 4 arms, 88 blind rater-guesses, full suite scored.*
+
+The main track found methodologies sell planning artifacts, not better programs. The
+P-track tests BMAD's purest artifact-free claim — **party mode**, the multi-persona
+roundtable — on 11 **advisory** tasks (threat model, ADR, product strategy/discovery/
+prioritization, quick decision, UX critique, bug hunt, postmortem, code review, test
+strategy) where the deliverable *is* the document. All four arms run on the same pinned model
+(`claude-opus-4-8`); the bench varies the **methodology**, not the model. Four arms per
+task isolate where any lift comes from: **A1** plain Claude (control) · **A2** +
+extended thinking with budget matched to party mode's spend (deliberation tokens) ·
+**A3** one prompt roleplaying the same persona roster (persona framing) · **A4** real
+`/bmad-party-mode` (the machinery). Six tasks carry **planted ground truth** (sealed answer keys, objective
+recall) as the defense against LLM-rater circularity; P6 is a deliberate over-ceremony
+control. Design: [`PARTY-TRACK-BRIEF.md`](PARTY-TRACK-BRIEF.md) · tasks:
+[`tasks/party/README.md`](tasks/party/README.md) · rubric:
+[`harness/party/scoring-rubric.md`](harness/party/scoring-rubric.md).
+
+**Result:** all four arms land within 0.34 pts/25 — inside rater noise. A4 (party mode)
+exactly ties A2 (extended thinking) at 22.98 and sits *below* A3 (persona prompt) at 23.20,
+while costing 3× more ($1.35 vs $0.44–0.52). 88 blind arm-guesses; party mode was correctly
+identified on 1 of 11 tasks. The multi-agent machinery is fully replicable by a single persona
+prompt at a third of the cost. The quiet winner is A2: same quality as the machinery, same
+cost as plain solo. Full rollup: [`analysis/party-findings/README.md`](analysis/party-findings/README.md).
+
+**Pre-run finding (2026-06-09):** the 6 planted-truth tasks calibrated over two cold-pass
+rounds; detection saturated before any arm ran — a single plain Opus-4.8 pass finds
+essentially everything the tasks plant. Objective axis re-roled to precision (engineered
+decoys) + rubric + cost as discriminators, with recall as a floor:
+[`analysis/party-findings/00-detection-saturation.md`](analysis/party-findings/00-detection-saturation.md).
 
 ## Coverage, cost & rankings
 
@@ -194,6 +227,7 @@ This is **exploratory** work — its defense is radical transparency and cross-t
 | Component | File | Hash (sha256) |
 |---|---|---|
 | PM persona system prompt | `harness/pm-persona-v1.md` | `6da5328b90574c80a20081a0363b05e5736beaf7dc1ae5df6ff684874b53f35e` |
+| P-track A3 persona-roleplay prompt | `harness/party/arm-configs/a3-persona-prompt.md` | `84f2fa4eba867762584243187bc1bfaa1969bb51af228a7917c65e498e54cb12` |
 
 Calibrate the persona via a separate adversarial play session on claude.ai before running any cell. If the prompt is edited during calibration, re-hash and update this table.
 

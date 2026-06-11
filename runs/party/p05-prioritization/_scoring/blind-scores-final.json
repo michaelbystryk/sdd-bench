@@ -1,0 +1,945 @@
+{
+  "summary": "P-track planted-truth blind scoring: Mythos raters score rubric + recall-floor + decoy-precision against the sealed key",
+  "agentCount": 8,
+  "logs": [],
+  "result": {
+    "count": 8,
+    "results": [
+      {
+        "label": "A",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "Core claims (Streamflow EOL, BL-09 us-east breach, audit math, K1/K2 edges) are accurate and [ASSUMPTION]-tagged, but it asserts edges the key rules out (BL-03→BL-19 as a 'hard dependency chain' L403, BL-22 residency trap L390) and says backlog totals 107 ew when it sums to ~105."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantively delivered, plus unprompted material concerns a senior reviewer would endorse: senior-platform-engineer contention between BL-11/BL-03 (L407), buffer discipline tied to the audit (L408), and the Q4 streaming-replacement implication of cutting BL-07 (L415)."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Multiple genuinely non-obvious findings incl. both subtle traps (BL-13/15 shared completion state L370-371; BL-09 us-east chain L383), the 'BL-03 is Med-rated but load-bearing — naive ranking cuts it and SSO dies in week 8' reframe (L401), and second-order effects (buffer-as-audit-insurance, contention tiebreak)."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Week-ranged two-track plan with a 44 ew committed total, ordered stretch list, and explicit decision points ('if they contend, BL-11 wins' L407; 'hold the buffer until BL-02 is frozen' L408; 're-open once a Streamflow replacement is chosen' L382); success measures per item are thin."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Follows the brief's exact section spec, ~2 pages prose + table as asked, every cut individually defensible in one pass; tight and forwardable with minor rhetorical flourish."
+          }
+        },
+        "quality_sum": 21.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "L363/L365 sequence BL-03 (wks 1-5) strictly before BL-04 (wks 6-9); L401 states 'BL-04 explicitly resolves each login to a Lumen role and team membership — that IS BL-03' with the no-authoritative-store rationale."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "L362 BL-11 wks 1-4 before BL-12 wks 9-11; L366 'Cheap because BL-11 already exists'; L400/L403 ground it in unstructured-stdout/un-queryable current state."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "L382 cuts BL-07 explicitly because Streamflow stops provisioning 1 Aug and shuts down 30 Sep — 'dead the day we'd ship it'; L412 'dead vendor; do not start'."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "L370-371 + L402 name the shared substrate — BL-13 'produces the per-step completion signal BL-15 needs', BL-15's logic 'requires BL-13's completion state' — and schedule them adjacently (wks 11-13 / 12-13); framed producer/consumer rather than build-once savings, but the shared layer is explicitly identified."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "L364 schedules BL-02 'done and frozen by end of week 9, giving a one-week cushion before the 8 Sep freeze' and names the full-quarter slip consequence."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "L383 makes the full chain: 'that cluster is in us-east, and EU personal data must be processed only in eu-central… no cross-region replication, so the data isn't even present', and re-scopes BL-09 to eu-central with a re-estimate."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "L341-346 derive 78 nominal, net the 20% tax (−16) and tagged PTO assumption (−12) to 45-50 realistic, commit 44 with the cut-line falling out of it; the committed total sits below the key's 55-65 band (conservative buffer choice, derivation itself exactly as required; stretch pull-in brings it to ~53)."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "L389 cuts BL-21: 'Highest effort on the board, lowest value, serves two customers. Easiest cut to defend.'"
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "L392 cuts all four (BL-06/17/18/24) as 'Low value polish… they lose every contested engineer-week to deadline and keystone work.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 9,
+          "partial": 0,
+          "missed": 0,
+          "total": 9
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-22 phantom residency problem (key K6 note: 'Inventing a residency problem for an item that has none (e.g. BL-22) = precision ding')",
+              "evidence": "L390: BL-22 'carries the same residency trap as BL-09 — EU-tenant exports must run in eu-central… flagged so it isn't naively built in us-east later.'"
+            },
+            {
+              "decoy": "BL-19 talked-up clean item (key: 'a clean Med/3 with no entanglement')",
+              "evidence": "L403 lists 'BL-03 → BL-01/BL-19' under 'Hard dependency chains' and L374 calls BL-19 'a natural follow-on once BL-03 exists' — an invented prerequisite edge for an item the key says has none."
+            },
+            {
+              "decoy": "BL-08 + BL-20 'pair' suggestion (key: 'no shared state — not a real synergy')",
+              "evidence": "L374 bundles them as a single 6 ew 'performance pair' stretch unit — 'together they answer the dashboard is slow / am I near my limit complaint' — crediting the PM-note pairing as a co-scheduling synergy (mild: stretch tier, attributed to the platform lead, no technical edge claimed)."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 3
+        },
+        "derivation_items": [
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "note": "Inferred the shared first-run-completion-state substrate from the two item behaviors alone (the planted 'same' cue was removed) and ordered BL-13 strictly before BL-15 with that as the stated reason."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Completed the three-fact chain (BL-09 'primary analytics cluster' → us-east → EU-only processing, no replication) and prescribed re-scope-to-eu-central with a higher re-estimate — the hardest cross-reference, fully landed. It then over-generalized the same trap onto BL-22 (counted as a precision FP)."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "note": "Showed the full prose derivation (78 nominal − 20% tax − tagged PTO assumption → 45-50 realistic) and committed 44 ew with held buffer. The committed total is below the key's 55-65 band — a conservative deviation from an aggressive PTO assumption, not a derivation failure; the cut-line falls out of the budget as required."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "Perfect 9/9 recall including both subtle items and the capacity derivation points to a heavy-deliberation arm, but the document has a single seamless authorial voice with no roundtable/persona residue and dense interlocking rationale throughout. The tell against A4 is the uncaught over-generalization spray — having found the identity and residency traps, it pattern-completes them onto neighbors (BL-19/BL-01 'lean on BL-03', BL-22 'same residency trap') with no independent critic pruning the phantom edges, which reads like one model thinking long rather than agents cross-checking each other. A3 would more likely leave stakeholder-voice seams; A1 would not have landed K4/K6/K7.",
+        "overall_note": "Exceptionally strong deliverable: full recall (9/9 found, including the two subtle traps and the capacity derivation the key hardened specifically to discriminate), correct sequencing structure, honest cut-line, and good use of [ASSUMPTION] tags. Its weakness is precision, exactly as the key predicted for a shotgun-leaning solver: 3 false positives — the explicitly-ruled-out BL-22 residency claim, an invented BL-03→BL-19 hard-dependency edge on the planted 'frequent ask' decoy, and a mild take of the BL-08/BL-20 pairing decoy (stretch-tier only). It cleanly dodged the BL-16 decoy, explicitly calling it independent. Two judgment notes: (1) K7 committed total (44 ew) sits below the key's 55-65 band due to an aggressive-but-tagged PTO assumption — scored found on derivation quality, flagged here for the harness; (2) the BL-11→BL-02 'audit-grade evidence' edge is not in the key but is hedged with [ASSUMPTION] and acknowledged as optional ('could technically be built against those logs'), so it was not counted as an FP. Recall exceeds the key's expected ceiling for a strong pass (6-8/9), which may itself warrant a salience re-check per the key's re-tune note."
+      },
+      {
+        "label": "A",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "Every load-bearing call (Streamflow EOL, us-east residency breach, identity/audit-pipeline edges, capacity haircut) is correct and [ASSUMPTION]-tagged, but it asserts three edges the key rules out (BL-22 residency, BL-03→BL-19, BL-08/20 pairing), states backlog total as 107 (actually 105), and contradicts itself on BL-19 ('no dependency' in cut-line vs 'BL-03→BL-19 rider' in dependencies)."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive, every one of the 25 items explicitly placed or cut with a reason, plus beyond-brief material a senior reviewer would want: senior-platform-engineer contention between BL-11/BL-03, buffer-discipline rule, and the Q4 streaming-replacement implication of cutting BL-07."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Multiple genuinely non-obvious, decision-changing findings — BL-09 as a compliance breach via the us-east chain, BL-07 as dead-vendor waste, BL-03 as an under-rated keystone — plus second-order reasoning ('if they contend, BL-11 wins'; buffer is a floor not a ceiling); blemished by a few phantom edges from over-extending real patterns."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Week-banded two-track schedule, committed 44 ew vs explicit budget, ordered stretch list, explicit decision points ('if they contend, BL-11 wins'; 'hold the buffer until BL-02 is frozen'; 're-open once a Streamflow replacement is chosen') — only formal success measures beyond milestone dates are missing."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Matches the brief's requested sections exactly, ~2 pages plus table (within band), conclusions findable in one pass, tight prose where every section earns its place; the BL-19 internal inconsistency and minor arithmetic slip keep it short of forward-unedited."
+          }
+        },
+        "quality_sum": 21.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "BL-03 wks 1–5 strictly before BL-04 wks 6–9; 'BL-04 explicitly \"resolves each login to a Lumen role and team membership\" — that *is* BL-03' (Dependencies: 'BL-03 → BL-04 → BL-25'), rationale tied to no authoritative user/role store existing."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "BL-11 wks 1–4 before BL-12 wks 9–11; 'BL-11 → BL-12' stated as a hard chain, with the rationale grounded in 'unstructured stdout — not queryable, not retained' and BL-12 'cheap *because* BL-11 already exists.'"
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "BL-07 is 'the headline cut,' attributed explicitly to Streamflow: 'stops provisioning new channels on 1 Aug... shuts down entirely on 30 Sep... dead the day we'd ship it,' with a re-open condition once a replacement exists."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Names the shared substrate inferred from behavior — BL-13 'produces the per-step completion signal BL-15 needs'; 'that completion state is precisely what BL-13's checklist produces' — and schedules them adjacently (wks 11–13 / 12–13). Does not capture the combined-effort-under-8 saving, but clears the minimum bar."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "BL-02 wks 5–9, 'done and frozen by end of week 9, giving a one-week cushion before the 8 Sep freeze,' with the slip-a-full-quarter / deals-waiting rationale named."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Makes the full chain: 'on the existing primary analytics cluster — that cluster is in us-east, and EU personal data must be processed only in eu-central... no cross-region replication, so the data isn't even present,' then sends BL-09 back for re-scoping in eu-central with a re-estimate."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "evidence": "Derives 78 nominal and nets the stated drains (−~16 KTLO tax, −~12 PTO) but lands at 45–50 realistic and commits only ~44 ew — below the key's credited ~55–65 band. Methodologically right, numerically over-haircut, leaving ~10–15 ew of real capacity unused."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "'BL-21... Highest effort on the board, lowest value, serves two customers. Easiest cut to defend' — below the cut-line on exactly the cost-vs-reach basis."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "All four named as a tier: 'BL-06 dark mode, BL-17 status page, BL-18 i18n formats, BL-24 high-contrast — Low value polish... they lose every contested engineer-week to deadline and keystone work.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 8,
+          "partial": 1,
+          "missed": 0,
+          "total": 9
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-08 + BL-20 'pair' (PM-note decoy — no shared state, not a real synergy)",
+              "evidence": "Stretch tier credits the pairing as a unit: 'BL-08 + BL-20 performance pair (6 ew) — the platform lead wants them paired; together they answer the dashboard-is-slow / am-I-near-my-limit complaint.' Mild (uncommitted stretch, no technical dependency invented), but the pairing is credited as real."
+            },
+            {
+              "decoy": "BL-19 (key: clean Med/3 with no entanglement)",
+              "evidence": "Invents an edge: 'BL-03 → BL-01/BL-19 (cheap riders)... their low cost is contingent on the foundation landing first' and 'a cheap, natural follow-on once BL-03 exists' — and contradicts its own cut-line which says BL-19 has 'no dependency.'"
+            },
+            {
+              "decoy": "BL-22 residency problem (key K6 explicitly names inventing a BL-22 residency issue as a precision ding)",
+              "evidence": "'BL-22... carries the *same* residency trap as BL-09 — EU-tenant exports must run in eu-central... flagged so it isn't naively built in us-east later' — confidently asserted; the key rules BL-22 clean."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 3
+        },
+        "derivation_items": [
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "note": "The hard inference landed despite 'same' being removed: it derives the shared setup-completion state from the two behaviors and orders BL-13 before BL-15 adjacently. Only the build-once effort saving (combined < 8 ew) is missing."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Full three-fact chain executed: BL-09 → primary cluster → us-east → EU-only processing + no replication, with the correct remedy (re-scope to eu-central, re-estimate up). Then over-generalizes the same pattern to BL-22 — the key's named precision trap."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "note": "The derivation is genuinely shown (78 nominal, −20% tax, −PTO assumption, on-call folded in) and the cut-line falls out of the budget, but the committed 44 ew sits below the 55–65 credited band — an over-conservative haircut rather than the naive over-commit."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Near-ceiling recall on the cross-reference items (8 found + 1 partial, including both subtle traps K4 and K6) combined with systematic over-extension of every discovered pattern — the residency finding gets generalized to BL-22, the identity dependency to BL-01/BL-19, the audit pipeline to a hedged BL-11→BL-02 edge — is the signature of one model with a large thinking budget exhaustively cross-referencing with no adversarial agent pruning speculative edges. The prose is also a single seamless authorial voice (rhetorical callbacks like 'not discovered in week 8' echoing the brief), with none of the seams or stakeholder-lens residue a roundtable simulation (A3) or real multi-agent synthesis (A4) typically leaves, and no synthesis step caught the internal BL-19 contradiction.",
+        "overall_note": "A genuinely strong deliverable: 8/9 found + 1 partial against a key calibrated so a cold solo pass lands 3–6/9, including both subtle items (the BL-13/BL-15 shared-state inference and the full BL-09 us-east residency chain). The committed plan is correct on every load-bearing call, properly sequenced in two tracks, and assumption-tagged. The losses are precision and calibration: it took all three planted traps to some degree (the BL-08/20 'pairing,' an invented BL-03→BL-19 edge that contradicts its own cut-line text, and the BL-22 residency claim K6 explicitly names as a precision ding), and its capacity haircut overshoots — committing ~44 ew against the key's ~55–65 realistic band, leaving real capacity on the table. False positives are confined to deferred/stretch items, so they don't poison the committed quarter, but a roadmap that pattern-extends real findings into phantom edges has spent some of its credibility; scored 21.5/25 with recall 8F/1P/0M and 3 false positives reported separately per the planted-truth note."
+      },
+      {
+        "label": "B",
+        "rater": 1,
+        "arm_confidence": "med",
+        "arm_guess": "A2",
+        "arm_tell": "One seamless rhetorical voice throughout — inline derivations (the 78→44 capacity math), chained cross-references (BL-09 us-east breach), and quotable one-liner defenses (\"building on a corpse\") with zero redundancy or perspective seams. The depth of multi-hop inference plus a few over-eager invented edges (BL-19 entanglement, \"shared query-path metering\") reads like a single model with a large thinking budget over-connecting the graph, not a roundtable synthesis (no residual persona framing) and not a plain one-shot (too much derivation shown and too many subtle traps caught).",
+        "derivation_items": [
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "note": "Subtle item. B states the ordering edge correctly ('the drip emails... a signal produced by the checklist. Never fund BL-15 without BL-13 first') — it sees the shared setup-state signal — but never draws the build-once economy (combined effort well under 8 ew) and effectively splits them: BL-13 is a conditional buffer swing item, BL-15 is cut outright. Names the substrate relationship, schedules them apart."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Subtle item, fully chained: B explicitly connects BL-09's 'primary analytics cluster' to us-east, names the EU-only processing rule, calls it 'a data-residency breach — a deal-losing event', re-scopes the legal version to eu-central at 8–10 ew, and adds 'Hard stop: do not let the us-east version ship.' This is the cleanest catch of the hardest trap."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "note": "The derivation discriminator. B does the full netting (78 nominal − 13 on-call − 9 PTO − 11 KTLO ≈ 44, tagged [ASSUMPTION]) and the cut-line falls out of the budget — the trap (planning to 78) is decisively avoided. But the committed total (37 ew + 7 buffer = 44) lands well below the key's credited 55–65 band, likely from double-counting on-call against the 'fifth of squad time' drag. Right method, over-haircut result outside the band."
+          }
+        ],
+        "overall_note": "Output B is a genuinely strong roadmap: 7 found / 2 partial / 0 missed against the key, including a full catch of the subtle K6 residency chain and clean handling of both dependency edges, the Streamflow invalidation, and the deadline gate. Its two partials are instructive: K7 is methodologically right but over-haircuts to 44 ew (below the key's 55–65 band, plausibly double-counting on-call inside the one-fifth drag), and K4 sees the BL-13→BL-15 signal dependency but splits the pair rather than building the shared layer once. Precision is where it bleeds: it brushes two of the three planted PM-note decoys — affirming the BL-08/BL-20 pairing with an invented 'shared query-path metering' mechanism (though it does un-bundle them), and hanging BL-19 off the identity service as a silent dependency the key rules out. The added value (access-snapshot slice, Type II observation-window front-loading, swing-capacity discipline, named reopen conditions) is the kind of thing a senior reviewer would keep. Rubric 21/25: excellent on actionability and communication, dinged on correctness for the invented edges.",
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-08 + BL-20 'pairing' (key: no shared state, not a real synergy)",
+              "evidence": "Dependencies §4: \"BL-08 + BL-20 *was* sensibly paired (shared query-path metering)\" — affirms the decoy synergy and invents a shared mechanism ('query-path metering') that appears nowhere in the materials; mitigated only by the fact that it then un-bundles them (keep BL-08, cut BL-20)."
+            },
+            {
+              "decoy": "BL-19 talked up in PM notes (key: a clean Med/3 with no entanglement)",
+              "evidence": "Sequenced plan: BL-19 \"rides the identity backbone already built\"; Dependencies §2: \"BL-25 (session policy), BL-19 (bulk import)... all silently assume it too\" with \"BL-19 and BL-22 hanging off BL-03\" — confidently asserts a BL-03 dependency edge for BL-19 that the key rules out."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 2
+        },
+        "quality_sum": 21,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Dependencies §2: SSO \"is written as 'resolve each login to a Lumen role and team membership' — against a source of truth that doesn't exist... Chain: BL-03 → BL-04 → BL-25\"; plan sequences BL-03 (wks 3–8) strictly before BL-04 (wks 8–12) with the missing-directory rationale stated."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Cut-line: \"BL-12 becomes a cheap rider once BL-11 exists and is the natural first add in a future quarter\" — correct direction; the stdout rationale is explicit nearby (\"today's audit events are unstructured stdout logs with no schema and no retention guarantee\"). BL-12 is not scheduled before/without BL-11."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Cut-line: \"BL-07... CUT. Built on Streamflow, which stops new channel provisioning 1 Aug and shuts down entirely 30 Sep — inside this quarter... a feature whose only foundation is demolished before the quarter ends\" — cut, attributed precisely to the sunset, with the reclaimed 6 ew noted."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "evidence": "Dependencies §4: \"BL-13 → BL-15 is a true ordering constraint: the drip emails 'based on how far through setup a user got,' a signal produced by the checklist. Never fund BL-15 without BL-13 first.\" Names the shared setup-state signal, but never concludes they should be built together as one effort (no combined-effort point) and splits them: BL-13 is buffer-conditional, BL-15 cut."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Plan row: \"BL-02 SOC 2 evidence dashboard (5) | Wks 6–9 · FROZEN wk 10 / 8 Sep | The deadline gate... ~1 week of buffer before the freeze, deliberately\"; Method §2 names the full-quarter slip and contracted deals as the reason."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Cut-line: \"As specified it runs the EU customer-usage export on the us-east cluster, which is a data-residency breach... The correct version (stand the job up inside eu-central) is... 8–10 ew, not 4... Hard stop: do not let the us-east version ship.\" Makes the primary-cluster↔us-east connection explicitly and re-scopes to eu-central."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "evidence": "Method §1: \"~44 ew, not 78... 78 nominal (6 eng × 13 wk) − 13 on-call − 9 summer PTO − 11 (20% support/KTLO) ≈ 44 ew\" — derivation shown, cut-line falls out of the budget, overcommit trap avoided; but the committed total (37+7 buffer = 44 ew) lands materially below the key's 55–65 credited band (likely double-counts on-call against the one-fifth drag)."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Cut-line: \"BL-21 Legacy v1 chart-renderer rewrite (Low, 8) — CUT. 'Eight weeks — 18% of the quarter — to serve two accounts we should be sunsetting, not rebuilding.'\" — cost-vs-reach basis exactly."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Cut-line: \"BL-06 Dark mode (2), BL-24 High-contrast (2), BL-17 Status page (2), BL-18 i18n (3) — CUT. Real, but none unblock a deal or the deadline\" — all four cosmetic items cut with a value-vs-capacity rationale (plus a sensible VPAT watch-item caveat on BL-24)."
+          }
+        ],
+        "recall_summary": {
+          "found": 7,
+          "partial": 2,
+          "missed": 0,
+          "total": 9
+        },
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "All load-bearing claims (Streamflow EOL, SOC 2 date math, us-east residency chain, BL-03→BL-04 edge) are accurate and well-qualified, but a domain reviewer would flag the invented BL-19→BL-03 dependency, the fabricated 'shared query-path metering' basis for BL-08/BL-20, and second-guessing BL-23's estimate as 'happy-path' against the explicit 'treat at face value' instruction."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "Every required section delivered substantively, plus implicit concerns the brief didn't ask for: buffer discipline rules, reopen conditions, the Type II observation-window timing argument, and the VPAT watch-item on BL-24 — material additions a senior reviewer would agree belong."
+          },
+          "insight": {
+            "score": 4,
+            "evidence": "Several genuinely non-obvious findings with second-order effects engaged: the SOC 2 chain is ~13 ew not 5 with an evidence-accumulation window forcing week-1 start; 'SSO this quarter means the identity backbone this quarter'; the legal BL-09 is 8–10 ew not 4 — though two of its 'connections' (BL-19, BL-08/20 metering) are invented, diluting the hit rate."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Week-ranged parallel streams, explicit buffer spend order, hard internal milestones (snapshot in prod by wk 7), tagged assumptions, and an explicit what-would-change-my-mind clause ('if such a deal exists, name it and we reopen that one item only') — just shy of 5 because the access-snapshot slice is unvalidated invented scope and success measures are gestural ('an activation metric')."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the brief's four sections at roughly the target length, conclusions findable in one pass, every cut armed with a one-line defense for the skeptical room; slightly dense and the italic soundbites verge on theatrical, but a director could forward it nearly unedited."
+          }
+        }
+      },
+      {
+        "label": "B",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 3,
+            "evidence": "All five hard constraint traps handled correctly (Streamflow, us-east residency chain, BL-03->BL-04, BL-11->BL-02/12, wk-10 freeze), but capacity derivation double-counts on-call inside the 20% interrupt drain (lands at ~44 ew vs the defensible ~55-65 band) and several confident dependency claims are unfounded (see precision)."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive; engages implicit concerns (buffer discipline, reopen conditions, VPAT watch-item) and surfaces unhinted material points a senior reviewer would endorse (Type II observation window forcing BL-11 to weeks 1-3; access-snapshot slice decoupling BL-02 from full BL-03)."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Multiple genuinely non-obvious, second-order findings: 'the SOC 2 chain is ~13 ew, not 5, and must start week 1' reframes the deadline item from a date to a chain; 'the legal BL-09 is 8-10 ew, not 4' reframes a residency flag into a sizing decision; 'SSO this quarter means identity backbone this quarter' is the right message for sales."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Week-level sequencing in parallel streams, per-cut one-line defenses, ordered buffer spend list, explicit reopen condition ('name the contracted deal and we reopen that one item only'), tagged assumptions; only success metrics are thin and the 44-ew budget under-commits real capacity."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Tight, quotable, structured exactly per the brief's section spec, conclusions findable in one pass, roughly within the ~2-page-plus-table band; near forwardable-unedited, with slight prose overage in the cut-line section."
+          }
+        },
+        "quality_sum": 21,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Sequenced plan puts BL-03 wks 3-8 before BL-04 wks 8-12, and Dependencies #2 states the edge explicitly with the right rationale: \"SSO (BL-04) is written as 'resolve each login to a Lumen role and team membership' — against a source of truth that doesn't exist... Chain: BL-03 -> BL-04 -> BL-25.\""
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "States the prerequisite in the right direction and grounds it in the stdout state: \"today's audit events are unstructured stdout logs with no schema and no retention guarantee\" (re BL-11), and the cut-line notes \"BL-12 becomes a cheap rider once BL-11 exists\" — BL-11 is scheduled wks 1-3, BL-12 correctly deferred until after it exists, never before."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Cut-line: \"BL-07 ... CUT. Built on Streamflow, which stops new channel provisioning 1 Aug and shuts down entirely 30 Sep — inside this quarter ... not building on a corpse\" — cut with the exact Streamflow-sunset attribution."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "evidence": "Dependencies #4 sees the shared signal in one direction (\"the drip emails 'based on how far through setup a user got,' a signal produced by the checklist. Never fund BL-15 without BL-13 first\") but frames it as an ordering edge, not a shared-substrate build-once synergy with combined effort < 8 ew, and schedules them split: BL-13 as a lone swing item, BL-15 out entirely."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Method #2 names the deadline (\"frozen and in production by 8 Sep (~week 10)... slips the audit a full quarter\"); table schedules BL-02 wks 6-9 \"FROZEN wk 10 / 8 Sep\" with deliberate buffer — full credit plus the extra observation-window point."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Makes the full three-fact chain: \"As specified it runs the EU customer-usage export on the us-east cluster, which is a data-residency breach — a deal-losing event... The correct version (stand the job up inside eu-central)... Hard stop: do not let the us-east version ship.\" Cut-as-written with re-scope path = full credit."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "evidence": "Derives the nominal 78 and nets out the stated drains with shown work (\"78 − 13 on-call − 9 PTO − 11 KTLO ≈ 44 ew\"), so it clears the no-overcommit failure mode — but it double-counts on-call/incident duty against the 'fifth of the squad' interrupt drag and commits only ~37+7 ew, materially below the key's 55-65 band, leaving real capacity unplanned."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Cut-line: \"BL-21 ... CUT. 'Eight weeks — 18% of the quarter — to serve two accounts we should be sunsetting, not rebuilding.'\" — cost-vs-reach basis exactly."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Final cut-line bullet cuts all four (BL-06, BL-24, BL-17, BL-18) with a value-vs-deadline rationale (\"none unblock a deal or the deadline\"), plus a sensible VPAT caveat on BL-24."
+          }
+        ],
+        "recall_summary": {
+          "found": 7,
+          "partial": 2,
+          "missed": 0,
+          "total": 9
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-08 + BL-20 'pairing' (key: no shared state, not a real synergy)",
+              "evidence": "Dependencies #4 asserts the synergy as fact before unbundling: \"BL-08 + BL-20 *was* sensibly paired (shared query-path metering)\" — 'shared query-path metering' is invented; the key rules the pairing out. Mitigated by the un-pairing action, but the shared-state claim is confidently asserted."
+            },
+            {
+              "decoy": "BL-19 bulk import (key: a clean Med/3 with no entanglement)",
+              "evidence": "Asserts a dependency edge the materials don't support: BL-19 listed among items that \"silently assume\" BL-03 (\"with BL-19 and BL-22 hanging off BL-03\") and in the table as riding \"the identity backbone already built\" — exactly the entanglement the key says doesn't exist."
+            }
+          ],
+          "hallucinations": [
+            {
+              "claim": "BL-22 (DSAR export) \"needs BL-03 done first\" / \"needs an authoritative tenant->user map\" — a confidently asserted prerequisite edge with no basis in the materials; BL-22 has no stated entanglement."
+            },
+            {
+              "claim": "BL-23's estimate: \"the '6' is the happy-path estimate\" — directly contradicts constraints.md ('They are not padded; treat them at face value'), plus unfounded specifics ('no eval harness, no hallucination guardrails') asserted about Lumen."
+            }
+          ],
+          "false_positive_count": 4
+        },
+        "derivation_items": [
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "note": "Inferred the shared setup-state signal from the two item behaviors (the hard part) but cast it as a one-way BL-13->BL-15 ordering edge rather than a build-once shared substrate, and split the pair across the cut-line (BL-13 swing-only, BL-15 cut)."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Full three-hop chain made: BL-09's 'primary analytics cluster' -> us-east -> EU-only processing rule. Cut as written with an explicit eu-central re-scope (and re-sizing) path and a 'hard stop' on the us-east version. The strongest derivation in the deliverable."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "note": "Did the derivation transparently from the prose drains (78 nominal computed, drains itemized, tagged [ASSUMPTION]) — but double-counted on-call/incident duty against the 20% interrupt figure and landed at ~44 ew committed, well below the 55-65 band; conservative direction, so it avoids overcommit but leaves ~15 ew of real capacity uncut-for."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "One seamless authorial voice with deep multi-hop cross-referencing (the us-east chain, the observation-window inference) and zero roundtable seams or persona residue — but it confabulates connective tissue under pressure to make everything cohere ('shared query-path metering', BL-19/BL-22 hanging off BL-03), the signature of a single model with a large deliberation budget over-generating edges rather than agents checking each other. The stakeholder-adjudication framing reads as prompted PM craft, not as synthesized distinct voices.",
+        "overall_note": "A genuinely strong deliverable: 7 found + 2 partial / 9 with zero misses, including the subtle K6 residency chain in full — well above the calibrated cold-solo band (3-6/9) and at the top of the strong-pass target (6-8/9). It adds real unkeyed value (Type II observation window forcing BL-11 to week 1; access-snapshot slice decoupling BL-02 from BL-03). The cost is precision: it takes 2 of the 3 planted PM-note decoys (inventing 'shared query-path metering' for BL-08/20 and an identity-service edge for BL-19) plus 2 unfounded claims (BL-22->BL-03 edge; second-guessing BL-23's estimate against the explicit face-value instruction), for 4 false positives — a tendency to fabricate dependency texture around an otherwise correct skeleton. Capacity (K7) is derived honestly but over-haircut to ~44 ew via double-counting, under-committing the quarter. Quality 21/25: would survive the skeptical planning review, but the invented edges would not survive the engineering leads."
+      },
+      {
+        "label": "C",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "All keyed claims correct and well-qualified ([ASSUMPTION] tags throughout); two key-ruled errors — BL-22 'inherits the same eu-central residency constraint' (key K6 names this exact claim a precision ding) and a soft BL-03→BL-19 edge on a decoy item — keep it off 5."
+          },
+          "coverage": {
+            "score": 5,
+            "evidence": "All four required sections present, all 25 items dispositioned with reasons, plus material considerations the brief didn't hint at (streaming-replacement as a separate Q4 initiative, BL-09 re-estimate needed, migrate the two v1 customers instead of rewriting)."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Reframing findings throughout: 'real cost of SSO this quarter is 11 ew, not 5', BL-11+BL-02 as 'one 10-ew deliverable', the full capacity-haircut arithmetic, Streamflow as 'a mid-quarter cliff, not just a BL-07 problem' — several second-order, decision-changing insights."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Week-ranged tracks, committed (40 ew) vs ranked stretch tier, a designated release valve (BL-15), explicit commit triggers ('only as the real PTO/incident picture confirms capacity'), and a what-would-change-my-mind on BL-24 ('pull it forward the moment a specific deal names it')."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Executive summary up top, clean table, tiered cut-line by cut-rationale type, roughly within the ~2-pages-plus-table band, conclusions findable in one pass; dense in the dependencies section but nearly forwardable unedited."
+          }
+        },
+        "quality_sum": 23.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Dependencies #2 'BL-03 → BL-04 (the enterprise unlock)… nothing today authoritatively stores roles or team membership; it's ad hoc, per feature… SSO can't ship correctly without BL-03 first'; table starts BL-03 wk 1, BL-04 wks 5–9 'as BL-03 lands'."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "BL-11 starts wk 1 ('cannot be built on today's unstructured stdout logs'); BL-12 cut with the correct edge stated: 'Becomes a cheap, natural fast-follow once BL-11 exists' — BL-11 strictly precedes BL-12 with the stdout-state rationale grounded in the doc."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "BL-07 cut as a feasibility call: 'built on Streamflow, which stops provisioning new channels on 1 Aug and shuts down entirely on 30 Sep… Committing it would be committing throwaway work', plus replacement-not-on-backlog noted."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Names the shared substrate and the direction: BL-13 'Builds the first-run completion-state signal that the email drip then consumes — so it ships first'; dependencies: 'That progress signal — which steps are done — is precisely what the BL-13 checklist builds'; both scheduled adjacently (wks 9–13). Combined-effort-under-8 not stated, but minimum bar (shared setup-state identified + done adjacently) is cleared."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "BL-02 scheduled wks 4–8, '**Must be in production by ~wk 10 (8 Sep).** Front-loaded with a 2-week margin… missing it slips the audit a full quarter'; deadline named as the reason."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Full chain made: 'The description runs the EU export job on the **us-east** primary cluster. EU personal data must be… **only in eu-central**, and there is deliberately no cross-region replication — so the data isn't even reachable from us-east'; cut as written, re-scope to eu-central with re-estimate."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Derives 78 nominal, nets the stated drains step by step ('78 → ~62 after the 20% operational haircut → ~50 after ~12 ew of summer PTO'), commits 40 ew + ~9 ew ranked stretch with the cut-line falling out of the budget. Lands conservatively below the key's 55–65 band (49 incl. stretch), but the derivation-from-drains requirement is fully met and the deviation is deliberate buffering against the immovable audit date, not a failure to derive."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "'BL-21… The worst value/effort on the board — 8 ew to serve **two** remaining customers. Migrate those two off v1; don't rewrite the engine. Hard cut.'"
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "All four cut as a tier: 'BL-06 Dark mode (2), BL-24 High-contrast (2), BL-17 Status page (2), BL-18 i18n (3). Low value, unforced. Cut.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 9,
+          "partial": 0,
+          "missed": 0,
+          "total": 9
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-22 residency problem (key K6: 'Inventing a residency problem for an item that has none (e.g. BL-22) = precision ding')",
+              "evidence": "Cut-line: BL-22 'for EU tenants it inherits the same eu-central residency constraint as BL-09'; risks: 'Any export/analytics/batch job touching raw EU records — including **BL-22**'s GDPR export for EU tenants — must execute in eu-central'. Confidently asserted, exactly the claim the key rules out."
+            },
+            {
+              "decoy": "BL-19 'no entanglement' decoy — credited with a dependency",
+              "evidence": "Listed under 'ordering chains (don't reorder these)': 'BL-03 → BL-19, BL-25… sit naturally on the real identity store. Sequenced into the stretch tail *after* BL-03/BL-04' and stretch row 'sits cleanly on BL-03 once it exists' — an invented edge on an item the key says is clean. Softly worded but presented as a fixed ordering constraint."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 2
+        },
+        "derivation_items": [
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "note": "Only output behavior consistent with actually doing the derivation: computes the unstated 78 nominal, applies the ~20% interrupt drag and a PTO estimate explicitly, and lets the cut-line fall out of the resulting budget. Conservative landing (~50 budget / 40 committed) is below the key's 55–65 band but is a deliberate, explained buffer, not a missed derivation."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "note": "Infers the shared first-run-setup-completion substrate from the two item behaviors (the word 'same' never appears in the materials), names it ('that progress signal… is precisely what the BL-13 checklist builds'), and schedules the pair adjacently with BL-13 first. Frames it as an edge rather than a build-once cost saving, and doesn't note combined effort < 8 ew — clears minimum credit cleanly but not maximally."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Makes the full three-hop chain the key demands: BL-09's 'primary cluster' → us-east platform fact → EU-only processing + no cross-region replication. Adds the correct second-order consequence that the 4-ew estimate is invalidated by re-scoping to eu-central. Exemplary — but the same logic is over-generalized to BL-22, which the key explicitly rules a precision ding."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "A single, unified, opinionated first-person voice ('I did not sort by value…', 'Leadership's favorite, and I'm cutting it anyway') with no multi-perspective seams, plus deep chained derivation (capacity arithmetic, three-hop residency cross-reference) and a habit of generalizing each constraint to its whole class ('not just a BL-07 problem', 'not unique to BL-09') — the signature of one model deliberating long. The over-generalization is also what bought both precision dings. 9/9 recall incl. both subtle items rules out a plain one-shot (calibrated cold pass is 3–6/9); A4 is the alternative, but I'd expect more aggregation residue (perspective-tagged findings, slight tonal stitching) from a real party-mode system.",
+        "overall_note": "Near-ceiling deliverable: 9/9 recall including both subtle items (K4, K6) and the K7 derivation done with shown arithmetic, well above the key's 6–8/9 target for a strong pass. Quality 23.5/25 — genuinely excellent method framing, tiered cut-line, and risk section. Precision is the only blemish: 2 false positives, both anticipated by the key — the BL-22 residency over-generalization (explicitly named as a ding in K6) and a soft invented BL-03→BL-19 edge on a named decoy. It handled the other two decoys correctly (BL-16 scheduled on value with 'no dependencies' stated; BL-08/BL-20 explicitly labeled 'Independent' with the pairing attributed to the platform lead, not asserted as real). One borderline non-keyed edge — BL-11→BL-02 as a hard prerequisite — is tagged [ASSUMPTION], grounded in the stdout/no-retention constraint, and not ruled out by the key, so it was not counted as a hallucination."
+      },
+      {
+        "label": "C",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 3.5,
+            "evidence": "Core claims (Streamflow EOL, BL-09 us-east breach, identity/audit-pipeline prerequisites, capacity haircut arithmetic) are all sound and well-qualified with [ASSUMPTION] tags, but a careful review per the key finds two over-asserted edges: BL-22 'inherits' the residency constraint (key rules BL-22 clean) and a BL-03→BL-19 dependency (key says BL-19 has no entanglement)."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections delivered; every one of the 25 items is explicitly dispositioned (committed/stretch/cut); goes beyond the brief with a Q4 streaming-replacement initiative, a migrate-two-customers-off-v1 alternative to BL-21, and a buffer/release-valve policy — slight ding for spending coverage on the phantom BL-22 residency issue."
+          },
+          "insight": {
+            "score": 5,
+            "evidence": "Finds all the deep traps including the three-fact BL-09 chain ('the title says residency; the description does the opposite', lines 418–427), the capacity derivation (78→~62→~50, lines 356–365), 'real cost of SSO is 11 ew, not 5' (line 487), and reframes BL-23 as the Q4 headline — findings that would change the buyer's decision."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Week-ranged parallel tracks, ranked stretch tier with explicit commit conditions, a designated release valve (BL-15), re-scope recommendation for BL-09, and what-would-change-my-mind triggers (BL-24 deal caveat, line 459); only success metrics are missing from the 5 anchor."
+          },
+          "communication": {
+            "score": 3.5,
+            "evidence": "Excellent structure with a TL;DR, bolded load-bearing claims, and conclusions findable in one pass, but at ~3 pages of prose it materially exceeds the brief's ~2-page band, which the length-band rule scores down."
+          }
+        },
+        "quality_sum": 21,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "Lines 383, 386, 481–488: 'BL-03 → BL-04 (the enterprise unlock)... nothing today authoritatively stores roles or team membership; it's ad hoc, per feature' — correct direction, correct missing-directory rationale, BL-03 starts wk 1 before BL-04 wks 5–9."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "Lines 446–448: BL-12 'becomes a cheap, natural fast-follow once BL-11 exists' — BL-11 scheduled wk 1 in-quarter, BL-12 deferred behind it, with the unqueryable-stdout state articulated at lines 471–474."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Lines 410–417: BL-07 cut explicitly because 'Streamflow... stops provisioning new channels on 1 Aug and shuts down entirely on 30 Sep... Committing it would be committing throwaway work'; plus the bonus cross-cutting cliff warning at lines 512–515."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "evidence": "Lines 389–390 and 495–499: BL-13 'builds the first-run completion-state signal that the email drip then consumes — so it ships first'; both scheduled adjacently (wks 9–12 / 11–13) with the shared setup-state substrate named explicitly, not just co-scheduled."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "Line 385: BL-02 scheduled wks 4–8, 'Must be in production by ~wk 10 (8 Sep)... front-loaded with a 2-week margin'; lines 507–510 name the full-quarter slip consequence."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "Lines 418–427: chains all three facts — 'runs the EU export job on the us-east primary cluster... EU personal data must be stored and processed only in eu-central, and there is deliberately no cross-region replication' — and re-scopes rather than scheduling the 4-ew version."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "evidence": "Lines 356–365: derives 78 nominal, nets the stated drains (78 → ~62 after the 20% haircut → ~50 after ~12 ew PTO), and the cut-line falls out of the budget; commits 40 + ~9 ranked stretch, which is below the key's 55–65 band (conservative rather than overcommitted) but the derivation requirement is fully met."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "Lines 454–456: 'The worst value/effort on the board — 8 ew to serve two remaining customers... Hard cut,' with a migrate-them-off alternative."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "Lines 457–460: all four (BL-06, BL-24, BL-17, BL-18) cut together as 'Low value, unforced.'"
+          }
+        ],
+        "recall_summary": {
+          "found": 9,
+          "partial": 0,
+          "missed": 0,
+          "total": 9
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-19 'frequent ask' decoy — key states it is a clean Med/3 with no entanglement",
+              "evidence": "Lines 500–502 list 'BL-03 → BL-19' under 'ordering chains (don't reorder these)' and line 394 says it 'sits cleanly on BL-03 once it exists' — crediting a dependency edge the key rules out. (The other two decoys were dodged: BL-16 is scheduled on value with 'no dependencies' explicitly stated, line 384; the BL-08+BL-20 pair is explicitly called 'Independent' and kept adjacent only as a stakeholder preference, lines 503–504.)"
+            }
+          ],
+          "hallucinations": [
+            {
+              "claim": "BL-22 'inherits the same eu-central residency constraint as BL-09' (lines 442–445) and is named in the risks section as an EU-residency landmine (lines 516–519) — the key explicitly calls inventing a residency problem for BL-22 a precision ding."
+            }
+          ],
+          "false_positive_count": 2
+        },
+        "derivation_items": [
+          {
+            "key_id": "K7",
+            "verdict": "found",
+            "note": "The hard derivation item: deliverable shows the full arithmetic (78 nominal → ~62 after the 20% interrupt haircut → ~50 after a tagged ~12-ew PTO assumption) rather than asserting a number. Its committed total (40, ~49 with stretch) lands below the key's 55–65 band — over-conservative sandbagging rather than the keyed overcommit failure, mitigated by a ranked stretch tier."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "found",
+            "note": "Subtle inference item: names the shared first-run completion-state substrate explicitly ('builds the... signal that the email drip then consumes'), fixes the order, and schedules them adjacently; does not note combined effort < 8 ew, which the key marks as ideal-not-required."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Subtle three-fact chain fully executed: primary cluster → us-east → EU-only processing + no replication, with the right remediation (re-scope to eu-central, re-estimate, do not schedule as written). Slightly over-extends the same logic to BL-22, which is the precision ding above."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "low",
+        "arm_tell": "9/9 recall including all three derivation/inference items is well above the key's calibrated ceiling for a cold solo pass (~3–6) and even the strong-pass target (6–8), so this is a heavy-compute arm. The tell pointing to extended thinking over a real party: a single, seamless authorial voice with tight cross-references (the release valve appears consistently in the table, cut-line, and risks), explicit multi-step arithmetic shown inline, and an exhaustive every-item cross-referencing habit that over-generates a couple of phantom edges (BL-03→BL-19, BL-22 residency) — the signature of one model reasoning long and hard, with no roundtable seams, persona residue, or redundancy that simulated/real multi-agent synthesis usually leaves. A4 is the runner-up; the uncaught phantom edges argue weakly against an adversarial multi-agent check.\"}",
+        "overall_note": "Output C is the strongest plausible result on this key: 9/9 found including both subtle items (K4 shared setup-state, K6 three-fact residency chain) and the K7 capacity derivation, with the plan's structure — not just prose — reflecting every trap (BL-11/BL-03 start wk 1, BL-02 lands with margin before wk 10, BL-07 and BL-09 cut for the right reasons). The cost is precision: 2 false positives (the BL-19 decoy taken as a BL-03 dependency edge under an explicit 'don't reorder these' heading, and an invented BL-22 residency constraint asserted in both the cut-line and risks sections), consistent with a solver that cross-references aggressively and finds one or two edges too many. Both errors land on cut/stretch items, so they don't misdirect the committed plan, but a domain reviewer would flag them. Rubric quality 21/25; the main rubric deductions are the two over-asserted edges (Correctness) and exceeding the ~2-page prose band (Communication). Notable reviewer flag not counted as a false positive: the BL-11→BL-02 prerequisite (treated as 'the single most important sequencing fact') is not an edge the key recognizes, but it is [ASSUMPTION]-tagged and has genuine textual basis in the 'audit-relevant events are unstructured stdout' constraint, and its scheduling effect is conservative."
+      },
+      {
+        "label": "D",
+        "rater": 1,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "Core claims (Streamflow EOL on BL-07, us-east/eu-central breach on BL-09, BL-03-before-BL-04, week-10 audit gate) all true and precisely stated; docked for two fabricated minor edges (BL-08/BL-20 'shared query/API layer', BL-19 as 'rider on BL-03') and an over-conservative ~45-48ew budget below the realistic ~55-65 band."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive; all 25 items dispositioned; goes beyond the brief (Streamflow-replacement design recommendation, BL-22 DSAR queue-jump trigger, BL-24 VPAT re-entry condition, explicit drop-first order)."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Caught both subtle traps (K6 full three-fact chain plus the extra 'data isn't in us-east' point; K4 shared step-state substrate named) and reframes the quarter ('the three loudest items were respectively an under-costed program, undeliverable, and discretionary'); slightly diluted by two pattern-matched phantom synergies."
+          },
+          "actionability": {
+            "score": 4.5,
+            "evidence": "Bucketed sequence with weeks and ew totals, internal week-8 deadline with buffer, explicit drop order (BL-25 first, then BL-19), tagged assumptions with fallbacks; lacks explicit success measures, so not a full 5."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Matches the ~2-page-plus-table band, cut-line categorized by reason class (cannot-ship / deferred / low-value) which is exactly what a skeptical review needs; small repetition between cut-line and dependencies section."
+          }
+        },
+        "quality_sum": 22,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "\"BL-03 -> BL-04 -> BL-25... SAML SSO is written as if a central identity/role/team service already exists; it doesn't. So '5ew SAML' is really 11ew\"; BL-03 scheduled Early, BL-04 Mid with 'builds on BL-03' rationale."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "BL-11 scheduled Early in-quarter; BL-12 deferred with explicit direction-correct rationale: \"Becomes cheap once BL-11 exists, so defer it to Q4 where the cost is low\" — BL-11 strictly precedes BL-12 and the dependency is stated."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "\"BL-07... built on Streamflow, which stops new channel provisioning 1 Aug and shuts down entirely 30 Sep... still undeliverable\" — cut for the Streamflow sunset, not scheduled for build."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "evidence": "Names the shared substrate (\"also the step-state model BL-15 (deferred) will need\"; \"the drip nudges users by how far they got through setup; the checklist is what knows that\") but then splits the pair across quarters (BL-13 Late, BL-15 Q4) instead of doing them adjacently as one effort — names the insight, schedules it wrong per the key."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "BL-02 Mid: \"Target done ~week 8, two weeks before the week-10 freeze\"; Method anchors the whole plan on the 8 Sep / full-quarter-slip deadline."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "\"BL-09... specified to run on the primary us-east cluster, but EU personal data is contractually confined to eu-central with no cross-region replication... a deal-losing compliance breach and technically impossible... Re-scope to run inside eu-central\" — full chain made, item not shipped as written."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "evidence": "Derivation shown (78 nominal, ~20% KTLO, on-call, PTO netted out) and commits well below nominal, but the committed total (~45ew against a claimed ~48ew budget) falls below the key's 55-65 ew credited band — over-applies the haircut, leaving ~10-15ew of real capacity unplanned."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "\"BL-21... 8ew, 'Low,' for two customers. The worst value-per-week on the board. Clearest cut.\""
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "All four cut as a named tier: \"BL-06 dark mode / BL-24 high-contrast / BL-17 status page / BL-18 i18n — Low-value polish, ~9ew combined. Cut.\""
+          }
+        ],
+        "recall_summary": {
+          "found": 7,
+          "partial": 2,
+          "missed": 0,
+          "total": 9
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-08 + BL-20 'pair them' PM-note bait",
+              "evidence": "Asserts a synergy the materials don't support: \"pairs with BL-20 in the query/API layer\", \"BL-08 + BL-20 are paired by design (shared query/API layer)... sequence them together for efficiency\" — the key rules there is no shared state; the 'shared layer' is invented (though it correctly disclaims a hard dependency)."
+            },
+            {
+              "decoy": "BL-19 frequent-ask bait",
+              "evidence": "Invents an entanglement for a clean item: BL-19 scheduled as \"a cheap rider on BL-03's new user store\" — the key marks BL-19 as a clean Med/3 with no entanglement; the BL-03 linkage has no basis in the item text."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 2
+        },
+        "derivation_items": [
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "note": "Made the hard inference (both items ride the same first-run step-state tracking, never stated in the text) but framed it as a one-way dependency BL-13 -> BL-15 and split the pair across quarters rather than building the shared layer once for both — insight named, conclusion not drawn."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Full three-fact chain executed: BL-09's 'primary analytics cluster' -> us-east -> EU-only processing rule, plus the bonus derivation that no-cross-region-replication makes it technically impossible, not just non-compliant; re-scoped to eu-central with an honest note the re-scope exceeds the 4ew tag."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "note": "Derived the unstated 78 nominal and netted the prose drains (20% KTLO, on-call, PTO) rather than asserting a number — but landed at ~48ew budget / ~45ew committed, below the key's 55-65 realistic band; likely double-counts on-call inside the 20% interrupt drag. Directionally right (does not overcommit), quantitatively outside the credit bar."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Single, uniform authorial voice doing long chained derivations (the three-fact BL-09 chain extended one step further to 'the data isn't in us-east'; the capacity haircut worked from first principles with an [ASSUMPTION]-tagged range and buffer) and a tight self-consistent rule system in Method — that depth-over-breadth profile, with no perspective seams, redundant multi-angle coverage, or roundtable residue, reads like one model with a large thinking budget rather than a synthesized party. The decoy nibbles (echoing the PM notes' 'highest-leverage retention bet' and 'paired per the platform lead' verbatim) also suggest a single deferential pass no second persona pushed back on.",
+        "overall_note": "A genuinely strong deliverable: 7/9 found + 2 partial with zero misses, including full credit on the subtlest trap (K6, with an extra correct derivation) and the named substrate on K4. The two partials are instructive — it sees the K4 shared layer but still splits the pair, and it over-applies the K7 haircut to ~45-48ew, under-planning the quarter relative to the ~55-65 band (plausibly double-counting on-call within the 20% drag). Precision is good but not clean: it avoids the BL-16 bait as a constraint but takes the BL-08/BL-20 pairing as an invented 'shared query/API layer' synergy and fabricates a BL-19-rides-on-BL-03 entanglement (FP count 2, both mild and partially hedged). Rubric 22/25. Net: a strong/deliberative pass per the key's calibration target (6-8/9), with two soft precision dings rather than phantom blockers."
+      },
+      {
+        "label": "D",
+        "rater": 2,
+        "scores": {
+          "correctness": {
+            "score": 4,
+            "evidence": "All load-bearing claims check out (Streamflow EOL, us-east residency chain, identity gap, week-10 freeze, 105ew backlog sum is exactly right); kept from 5 by the unsupported 'shared query/API layer' for BL-08/BL-20, the BL-19 'rider on BL-03' edge, and a capacity number (~48ew) that double-counts the stated drains."
+          },
+          "coverage": {
+            "score": 4.5,
+            "evidence": "All four required sections substantive; every one of the 25 items is explicitly dispositioned, plus unprompted material (drop-order under velocity sag, Q4 re-entry plans, VPAT/DSAR triggers) — just shy of 5 because ~10ew of band capacity is left unexamined and the BL-13/BL-15 synergy is mishandled."
+          },
+          "insight": {
+            "score": 4.5,
+            "evidence": "Several genuine reframes: 'SAML is an 11ew program, not a 5ew feature', BL-09 is 'technically impossible (the data isn't in us-east)', and the closing 'the three loudest items were under-costed / undeliverable / discretionary'; docked half a point for two pseudo-insights that are actually planted decoys."
+          },
+          "actionability": {
+            "score": 5,
+            "evidence": "Week-bucketed sequence with effort totals, an internal week-8 deadline with buffer rationale, explicit drop-order ('BL-25 drops first, then BL-19'), and what-would-change-my-mind triggers (auditor accepts log story, VPAT demand, DSAR clock) — hits the 5 anchor."
+          },
+          "communication": {
+            "score": 4.5,
+            "evidence": "Exactly the requested sections, within the ~2-pages-plus-table band, conclusions bolded and findable in one pass; dense in spots and a director might trim the rhetorical flourishes before forwarding, so not quite 5."
+          }
+        },
+        "quality_sum": 22.5,
+        "recall": [
+          {
+            "key_id": "K1",
+            "verdict": "found",
+            "evidence": "'BL-03 → BL-04 → BL-25... SAML SSO is written as if a central identity/role/team service already exists; it doesn't. So 5ew SAML is really 11ew' — correct direction, rationale tied to the missing central directory, and BL-03 sequenced Early before BL-04 Mid."
+          },
+          {
+            "key_id": "K2",
+            "verdict": "found",
+            "evidence": "BL-11 Early ('can't rest on unstructured stdout with no retention'); BL-12 deferred with 'Becomes cheap once BL-11 exists, so defer it to Q4' — BL-11 strictly precedes BL-12 with the stdout/retention rationale stated."
+          },
+          {
+            "key_id": "K3",
+            "verdict": "found",
+            "evidence": "Cut-line: 'BL-07... built on Streamflow, which stops new channel provisioning 1 Aug and shuts down entirely 30 Sep... it is still undeliverable' — cut for exactly the sunset reason, plus a Q4 replacement-design recommendation."
+          },
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "evidence": "Identifies the shared substrate ('BL-13... also the step-state model BL-15 (deferred) will need'; 'the checklist is what knows that') but converts it into a one-way dependency and splits the pair across quarters (BL-13 Q3, BL-15 Q4) instead of building the shared layer once for both — names the insight, schedules it wrong."
+          },
+          {
+            "key_id": "K5",
+            "verdict": "found",
+            "evidence": "'BL-02... The dated deliverable... Target done ~week 8, two weeks before the week-10 freeze' with the slip-a-full-quarter consequence named in Method point 1 — deadline-gated and front-loaded."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "evidence": "'BL-09... specified to run on the primary us-east cluster, but EU personal data is contractually confined to eu-central with no cross-region replication of raw records... both a deal-losing compliance breach and technically impossible... Needs a re-scope to run inside eu-central' — the full three-fact chain, plus the effort-growth implication."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "evidence": "Derives the 78 nominal and nets the stated drains ('~20% lost weekly... two engineers always on-call... summer PTO') but lands at '~48ew of deliverable scope' / ~45ew committed — materially below the key's ~55–65 band; the derivation is shown but the drains are double-counted, over-cutting the quarter."
+          },
+          {
+            "key_id": "K8",
+            "verdict": "found",
+            "evidence": "'BL-21... 8ew, Low, for two customers. The worst value-per-week on the board. Clearest cut.' — cost-vs-reach rationale exactly."
+          },
+          {
+            "key_id": "K9",
+            "verdict": "found",
+            "evidence": "'BL-06 dark mode / BL-24 high-contrast / BL-17 status page / BL-18 i18n... Low-value polish, ~9ew combined. Cut.' — all four named as the cut tier with a value-vs-capacity rationale."
+          }
+        ],
+        "recall_summary": {
+          "found": 7,
+          "partial": 2,
+          "missed": 0,
+          "total": 9
+        },
+        "precision": {
+          "decoys_taken": [
+            {
+              "decoy": "BL-08 + BL-20 'pairing' (key: no shared state, not a real synergy)",
+              "evidence": "Asserts a synergy the materials don't support: 'pairs with BL-20 in the query/API layer', 'Paired with BL-08 per the platform lead; same layer', and in Dependencies: 'BL-08 + BL-20 are paired by design (shared query/API layer)... sequence them together for efficiency' — softened with 'not by hard dependency' but the invented shared-layer claim is the decoy taken."
+            },
+            {
+              "decoy": "BL-19 as a clean Med/3 with no entanglement",
+              "evidence": "'BL-19... a cheap rider on BL-03's new user store' — invents a synergy edge onto an item the key marks entanglement-free (mild: it's a plausible-sounding inference, not a blocker claim, but it is credited as a relationship)."
+            }
+          ],
+          "hallucinations": [],
+          "false_positive_count": 2
+        },
+        "derivation_items": [
+          {
+            "key_id": "K4",
+            "verdict": "partial",
+            "note": "The hard inference WAS made — Output D connects BL-15's 'how far they've gotten through setup' to BL-13's step-state tracker without textual cues — but the conclusion is wrong: it splits the pair across quarters as a fast-follow dependency instead of building the shared layer once (no combined-effort-under-8ew observation)."
+          },
+          {
+            "key_id": "K6",
+            "verdict": "found",
+            "note": "Full three-fact chain executed: BL-09's 'primary analytics cluster' → us-east platform fact → EU-only processing rule, plus the no-replication detail ('technically impossible — the data isn't in us-east') and a concrete eu-central re-scope with effort-growth warning. The strongest derivation in the deliverable."
+          },
+          {
+            "key_id": "K7",
+            "verdict": "partial",
+            "note": "Computes the unstated 78 nominal and nets the prose drains, with the cut-line genuinely falling out of the budget — but commits ~45ew against a ~48ew estimate, well below the key's 55–65 band; appears to double-count on-call/interrupt/PTO drains. Errs conservative (under-commit) rather than the keyed failure mode (over-commit)."
+          }
+        ],
+        "arm_guess": "A2",
+        "arm_confidence": "med",
+        "arm_tell": "Seamless single argumentative voice with one coherent prioritization logic carried end-to-end, internally consistent arithmetic (105ew backlog sum exact, capacity netting shown), and deep multi-hop derivations (full K6 chain, K4 substrate inference) — the depth-over-breadth profile of one model with a large thinking budget. Tellingly, both PM-note decoys (the platform-lead pairing, BL-19) were absorbed at face value rather than challenged, which a real multi-agent or roundtable arm with an adversarial voice would more likely have contested; there are no perspective seams, no stakeholder-attributed sections, and no synthesis residue.",
+        "overall_note": "A genuinely strong deliverable: 7 found + 2 partial / 9 with zero misses, including a complete hit on the hardest item (K6 residency chain) and the core inference on K4. The two partials are instructive — it found the K4 shared-substrate insight but drew the wrong scheduling conclusion (split across quarters), and its capacity derivation over-corrects to ~45-48ew, below the key's 55-65 band, leaving real value on the table (BL-12, BL-05, or BL-14 likely fit). Precision is good but not clean: it took the BL-08/BL-20 pairing decoy (inventing a 'shared query/API layer') and lightly took the BL-19 decoy ('rider on BL-03'), for 2 false positives; the hedged [ASSUMPTION]-tagged BL-11→BL-02 edge was not counted as it is explicitly qualified and defensible. Rubric 22.5/25 — well above the key's expected strong-pass band on recall, slightly blemished on precision."
+      }
+    ]
+  }
+}

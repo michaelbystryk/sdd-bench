@@ -1,0 +1,219 @@
+diff --git a/src/cachetools/__init__.py b/src/cachetools/__init__.py
+index a20466d..f5d1d51 100644
+--- a/src/cachetools/__init__.py
++++ b/src/cachetools/__init__.py
+@@ -4,6 +4,9 @@ __all__ = (
+     "Cache",
+     "FIFOCache",
+     "LRUCache",
++    "PersistentCache",
++    "SyncedCache",
++    "get_or_set",
+ )
+ 
+ __version__ = "7.1.4"
+@@ -86,10 +89,13 @@ class Cache(collections.abc.MutableMapping):
+         return len(self.__data)
+ 
+     def get(self, key, default=None):
+-        if key in self:
+-            return self[key]
+-        else:
+-            return default
++        return self.__data.get(key, default)
++
++    def to_persistent(self, directory, maxfiles=1024, sync=False):
++        """Return a :class:`PersistentCache` mirroring this cache to disk."""
++        from .persistent import PersistentCache
++
++        return PersistentCache(self, directory, maxfiles=maxfiles, sync=sync)
+ 
+     def pop(self, key, default=__marker):
+         if key in self:
+diff --git a/src/cachetools/persistent.py b/src/cachetools/persistent.py
+new file mode 100644
+index 0000000..53785a7
+--- /dev/null
++++ b/src/cachetools/persistent.py
+@@ -0,0 +1,181 @@
++"""Disk-backed and thread-safe cache wrappers.
++
++This module adds three small building blocks on top of the in-memory
++caches in :mod:`cachetools`:
++
++* :class:`PersistentCache` -- a write-through wrapper that mirrors every
++  entry of an underlying cache to a directory on disk, so the cache can
++  survive a process restart.
++* :class:`SyncedCache` -- a thread-safe wrapper that guards an underlying
++  cache with a lock.
++* :func:`get_or_set` -- a small "compute if absent" helper.
++"""
++
++import hashlib
++import os
++import pickle
++import threading
++
++__all__ = ("PersistentCache", "SyncedCache", "get_or_set")
++
++
++def _key_filename(key):
++    """Return a stable filename for *key*.
++
++    Keys may be arbitrary hashable objects, so we derive a filename from
++    a digest of the key's string form.
++    """
++    digest = hashlib.md5(repr(key).encode("utf-8")).hexdigest()
++    return digest + ".cache"
++
++
++class PersistentCache:
++    """Write-through disk persistence for any mutable mapping.
++
++    Every value stored in the cache is also written to *directory* as a
++    pickled file, and the directory is loaded back into the underlying
++    cache when a :class:`PersistentCache` is constructed.  The underlying
++    cache keeps serving reads from memory; disk is only consulted on
++    construction.
++    """
++
++    def __init__(self, cache, directory, maxfiles=1024, sync=True):
++        self.__cache = cache
++        self.__directory = directory
++        self.__maxfiles = maxfiles
++        self.__sync = sync
++        if not os.path.exists(directory):
++            os.makedirs(directory)
++        if sync:
++            self._load()
++
++    def _path(self, key):
++        return os.path.join(self.__directory, _key_filename(key))
++
++    def _load(self):
++        """Populate the underlying cache from files already on disk."""
++        for name in os.listdir(self.__directory):
++            path = os.path.join(self.__directory, name)
++            f = open(path, "rb")
++            try:
++                key, value = pickle.load(f)
++            except Exception:
++                continue
++            self.__cache[key] = value
++            f.close()
++
++    def __getitem__(self, key):
++        return self.__cache[key]
++
++    def __setitem__(self, key, value):
++        self.__cache[key] = value
++        if self.__sync:
++            self._write(key, value)
++
++    def _write(self, key, value):
++        path = self._path(key)
++        tmp = path + ".tmp"
++        with open(tmp, "wb") as f:
++            pickle.dump((key, value), f)
++        os.replace(tmp, path)
++        self._prune()
++
++    def _prune(self):
++        """Keep at most ``maxfiles`` files in the cache directory.
++
++        Oldest files (by modification time) are removed first.
++        """
++        names = os.listdir(self.__directory)
++        if len(names) <= self.__maxfiles:
++            return
++        names.sort(key=lambda n: os.path.getmtime(os.path.join(self.__directory, n)))
++        excess = len(names) - self.__maxfiles
++        for name in names[1:excess]:
++            os.remove(os.path.join(self.__directory, name))
++
++    def __delitem__(self, key):
++        del self.__cache[key]
++        path = self._path(key)
++        if os.path.exists(path):
++            os.remove(path)
++
++    def __contains__(self, key):
++        return key in self.__cache
++
++    def get(self, key, default=None):
++        if key in self.__cache:
++            return self.__cache[key]
++        return default
++
++    def clear(self):
++        self.__cache.clear()
++        for name in os.listdir(self.__directory):
++            os.remove(os.path.join(self.__directory, name))
++
++    def __len__(self):
++        return len(self.__cache)
++
++
++class SyncedCache:
++    """Thread-safe wrapper that guards *cache* with a lock.
++
++    All mutating operations take the lock for their full duration.  Reads
++    return a snapshot of the value under the lock.
++    """
++
++    def __init__(self, cache, lock=None):
++        self.__cache = cache
++        self.__lock = lock or threading.Lock()
++
++    def __getitem__(self, key):
++        with self.__lock:
++            return self.__cache[key]
++
++    def __setitem__(self, key, value):
++        with self.__lock:
++            self.__cache[key] = value
++
++    def __delitem__(self, key):
++        with self.__lock:
++            del self.__cache[key]
++
++    def __contains__(self, key):
++        return key in self.__cache
++
++    def get(self, key, default=None):
++        with self.__lock:
++            return self.__cache.get(key, default)
++
++    def incr(self, key, amount=1):
++        """Increment the integer counter stored at *key* by *amount*.
++
++        If *key* is absent it is treated as 0.
++        """
++        with self.__lock:
++            value = self.__cache.get(key, 0)
++        value = value + amount
++        with self.__lock:
++            self.__cache[key] = value
++        return value
++
++    @property
++    def lock(self):
++        return self.__lock
++
++
++def get_or_set(cache, key, factory, default=None):
++    """Return ``cache[key]``, computing and storing it via *factory* if absent.
++
++    *factory* is a zero-argument callable invoked only on a cache miss.
++    If *factory* raises, *default* is returned and nothing is stored.
++    """
++    try:
++        return cache[key]
++    except KeyError:
++        pass
++    try:
++        value = factory()
++    except Exception:
++        return default
++    cache[key] = value
++    return value
